@@ -38,7 +38,7 @@ module.exports = (sequelize, Sequelize) => {
     });
 
     reservation.associate = function(models){
-        reservation.hasMany(models.recurrence, {
+        reservation.belongsTo(models.recurrence, {
             foreignKey: 'recurrence_id'
         });
         reservation.belongsTo(models.salle, {
