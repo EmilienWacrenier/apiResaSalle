@@ -1,8 +1,10 @@
 const CONFIG = require('../config/config');
+const salle = require('../routes/salle.route');
 
 module.exports = app => {
   console.log('ROUTER MODULE STARTED');
 
-  // app.use(CONFIG.uri_prefix, testRouter);
+  //Salle
+  app.use('/salles', salle);
 
 };
