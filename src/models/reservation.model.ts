@@ -44,7 +44,7 @@ module.exports = (sequelize, Sequelize) => {
         reservation.belongsTo(models.salle, {
             foreignKey: 'salle_id'
         });
-        reservation.hasOne(models.user, {
+        reservation.belongsTo(models.user, {
             foreignKey: 'user_id'
         });
         reservation.belongsToMany(models.user, {
