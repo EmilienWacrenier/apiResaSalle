@@ -21,13 +21,13 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: false,
             defautValue: true
         },
-        User_id: {
+        user_id: {
             type: Sequelize.INTEGER(45)
         },
-        Recurrence_id:  {
+        recurrence_id:  {
             type: Sequelize.INTEGER(45)
         },
-        Salle_id: {
+        salle_id: {
             type: Sequelize.INTEGER(45)
         }
     }, {
@@ -36,6 +36,21 @@ module.exports = (sequelize, Sequelize) => {
         timestamps: false,
         freezeTableName: true,
     });
+
+    reservation.associate = function(models){
+        reservation.hasMany(models.recurrence, {
+            foreignKey: 'recurrence_id'
+        });
+        reservation.belongsTo(models.salle, {
+            foreignKey: 'salle_id'
+        });
+        reservation.hasOne(models.user, {
+            foreignKey: 'user_id'
+        });
+        reservation.belongsToMany(models.user, {
+            through: 'user_reservation'
+        })
+    }
 
     return reservation;
 };

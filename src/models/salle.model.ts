@@ -8,12 +8,15 @@ module.exports = (sequelize, Sequelize) => {
             unique: true,
         },
         nom: {
+            allowNull: false,
             type: Sequelize.STRING(45)
         },
         zone: {
+            allowNull: true,
             type: Sequelize.STRING(45)
         },
         capicite: {
+            allowNull: false,
             type: Sequelize.INTEGER
         }
     }, {

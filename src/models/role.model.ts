@@ -2,6 +2,7 @@ module.exports = (sequelize, Sequelize) => {
     const role = sequelize.define('role', {
         idRole: {
             type: Sequelize.INTEGER,
+            autoIncrement: true,
             primaryKey: true
         },
         roleName: {
@@ -13,6 +14,8 @@ module.exports = (sequelize, Sequelize) => {
         timestamps: false,
         freezeTableName: true,
     });
+
+    
 
     return role;
 };
