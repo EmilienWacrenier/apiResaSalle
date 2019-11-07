@@ -6,7 +6,7 @@ module.exports.findSalles = function () {
         resolve(salles);
     });
   };
-//Trouver 1 Salle
+//Trouver 1 Salle par id
   module.exports.findSalle = function (id) {
     return new Promise(async (resolve, reject) => {
         const salle = await db.models.Salle.findOne(

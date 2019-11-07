@@ -8,7 +8,7 @@ module.exports = app => {
   // app.use(CONFIG.uri_prefix, testRouter);
   app.use('/user', USER);
 
-  //Salle
+  //Salles
   app.use('/salles', salle);
 
 };
