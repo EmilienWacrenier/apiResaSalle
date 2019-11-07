@@ -7,9 +7,23 @@ module.exports.get_users = () => {
     })
 }
 
-module.exports.get_user = () => {
+module.exports.get_user = (req) => {
     return new Promise(async (resolve, reject) => {
-        const user = await userBuilder.findUser();
+        const user = await userBuilder.findUser(req);
         resolve(user);
     })
 }
+
+/*module.exports.user_inscription = (req) => {
+    return new Promise(async (resolve, reject) => {
+        try{
+            const newUser = userBuilder.inscriptionUser(req);
+            resolve(newUser);
+        } catch(err){
+            reject({
+                status: 500,
+                message: err
+            })
+        }
+    })
+}*/

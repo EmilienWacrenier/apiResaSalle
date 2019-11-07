@@ -16,3 +16,4 @@ module.exports.get_salle = (params) => {
     resolve(salle);
   });
 };
+

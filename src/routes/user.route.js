@@ -8,6 +8,8 @@ const userController = require('../controllers/user.controller.js');
 //GET POSTS
 router.get('/users', userController.getUsers);
 router.get('/user', userController.getUser);
+router.post('/inscription', userController.inscription);
+router.post('/connexion', userController.connexion);
 
 // Export routes
 module.exports = router;    
