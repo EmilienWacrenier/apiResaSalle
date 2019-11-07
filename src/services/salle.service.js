@@ -1,5 +1,5 @@
 const salleBuilder = require('../builders/salle.builder');
-
+//get all salles
 module.exports.get_salles = () => {
   return new Promise(async (resolve, reject) => {
     const salles = await salleBuilder.findSalles();
