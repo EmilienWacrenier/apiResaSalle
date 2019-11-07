@@ -9,7 +9,7 @@ module.exports = app => {
   // app.use(CONFIG.uri_prefix, testRouter);
   app.use('/user', USER);
   //Reservation
-  app.use('/reservations', RESERVATION).
+  app.use('/reservations', RESERVATION);
   //Salles
   app.use('/salles', SALLE);
 

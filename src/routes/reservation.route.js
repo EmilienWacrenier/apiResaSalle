@@ -9,7 +9,7 @@ const ReservationController = require('../controllers/reservation.controller.js'
 //GET all reservations
 router.get('/reservations', ReservationController.getReservations);
 //GET 1 reservation by id
-router.get('/reservation/:id', ReservationController.getReservatione);
+router.get('/reservation/:id', ReservationController.getReservation);
 
 // Export routes
 module.exports = router;
