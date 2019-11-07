@@ -1,6 +1,9 @@
 const userService = require('../services/user.service');
+
 const jwt = require('../interceptors/jwt');
 const db = require('../config/db.config');
+const Op = require('Sequelize').Op;
+const bcrypt = require('bcrypt');
 
 exports.getUsers = async (req, res) => {
     let data = await userService.get_users();
@@ -14,28 +17,34 @@ exports.getUser = async (req, res) => {
 
 exports.inscription = async (req, res) => {
     try {
-        // Vérification de l'existance du das
+        // Vérification de l'existance du das ou du mail
         db.models.User.findOne({
             attributes: ['email', 'das'],
             where: {
-                email: req.body.email,
-                das: req.body.das
+                [Op.or]: [
+                    { email: req.body.email },
+                    { das: req.body.das }
+                ]
             }
         })
             .then(function (userFound) {
                 if (!userFound) {
                     // Si le das n'existe pas, création d'un utilisateur
-                    var responseUser = db.models.User.create({
-                        firstname: req.body.firstname,
-                        lastname: req.body.lastname,
-                        das: req.body.das,
-                        email: req.body.email,
-                        mdp: req.body.mdp,
-                        role_id: 1
-                    })
-                        .then(function (responseUser) {
-                            return res.status(200).json(responseUser);
+                    var mdp = req.body.mdp;
+                    bcrypt.hash(mdp, 5, function (err, bcryptedPassword) {
+                        var responseUser = db.models.User.create({
+                            firstname: req.body.firstname,
+                            lastname: req.body.lastname,
+                            das: req.body.das,
+                            email: req.body.email,
+                            mdp: bcryptedPassword,
+                            role_id: 1
                         })
+                            .then(function (responseUser) {
+                                return res.status(200).json(responseUser);
+                            })
+                    });
+
                 }
                 else {
                     // L'utilisateur existe déjà
@@ -44,7 +53,7 @@ exports.inscription = async (req, res) => {
             })
     }
     catch (err) {
-        return res.json(err);
+        return res.json({ 'err': 'error' });
     }
 }
 
@@ -63,18 +72,20 @@ exports.connexion = async (req, res) => {
         })
             .then(function (userFound) {
                 if (userFound) {
-                    // Si l'utilisateur existe bien dans la bdd
-                    if(mdp == userFound.mdp){
-                        // Si le mdp est correct
-                        return res.status(200).json({
-                            'idUser': userFound.idUser,
-                            'token': jwt.generateTokenForUser(userFound)
-                        })
-                    }
-                    else{
-                        // Si le mdp n'est pas correct
-                        return res.status(403).json({'Erreur':'Le mot de passe n\'est pas valide'})
-                    }
+                    // Comparaison du mdp hashé
+                    bcrypt.compare(mdp, userFound.mdp, function (errBycrypt, resByCrypt) {
+                        if (resByCrypt) {
+                            // Si le mdp est correct
+                            return res.status(200).json({
+                                'idUser': userFound.idUser,
+                                'token': jwt.generateTokenForUser(userFound)
+                            })
+                        }
+                        else {
+                            // Si le mdp n'est pas correct
+                            return res.status(403).json({ 'Erreur': 'Le mot de passe n\'est pas valide' })
+                        }
+                    })
                 }
                 else {
                     // Si l'utilisateur n'est pas trouvé
