@@ -3,6 +3,7 @@ const db = require('../config/db.config');
 module.exports.createReservation = function (dateDebut, dateFin, objet, etat, user_id, /*recurrence_id,*/ salle_id) {
   return new Promise(async (resolve,reject) => {
     try {
+
       const nouvReservation = await db.models.Reservation.create(
         {
           dateDebut: dateDebut,
@@ -23,21 +24,23 @@ module.exports.createReservation = function (dateDebut, dateFin, objet, etat, us
 };
 //Trouver toutes les reservations
 module.exports.findReservations = function () {
-    return new Promise(async (resolve, reject) => {
-        const reservations = await db.models.Reservation.findAll();
-        resolve(reservations);
-    });
-  };
+  return new Promise(async (resolve, reject) => {
+      const reservations = await db.models.Reservation.findAll();
+      resolve(reservations);
+  });
+};
 //Trouver 1 reservation par id
-  module.exports.findReservation = function (id) {
-    return new Promise(async (resolve, reject) => {
-        const reservation = await db.models.Reservation.findOne(
-          {
-            where: {
-              id: id
-            }
+module.exports.findReservationById = function (id) {
+  return new Promise(async (resolve, reject) => {
+      const reservation = await db.models.Reservation.findOne(
+        {
+          where: {
+            id: id
           }
-        );
-        resolve(reservation);
-    });
-  };
+        }
+      );
+      resolve(reservation);
+  });
+};
+//Trouver 1 reservation par salle
+module.exports.findReservationBySalle =

@@ -14,7 +14,7 @@ exports.getReservations = async (req, res) => {
         return res.status(200).json(data);
 }
 //get 1 reservation by id
-exports.getReservation = async (req, res) => {
-        let data = await reservationService.get_reservation(req.params);
+exports.getReservationById = async (req, res) => {
+        let data = await reservationService.get_reservation_by_id(req.params);
         return res.status(200).json(data);
 }

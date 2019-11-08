@@ -11,7 +11,7 @@ router.post('/creerReservation', ReservationController.creerReservation);
 //GET all reservations
 router.get('/reservations', ReservationController.getReservations);
 //GET 1 reservation by id
-router.get('/reservation/:id', ReservationController.getReservation);
+router.get('/reservationById/:id', ReservationController.getReservationById);
 
 // Export routes
 module.exports = router;

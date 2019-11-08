@@ -31,12 +31,12 @@ module.exports.get_reservations = () => {
   });
 };
 //get reservation by id
-module.exports.get_reservation = (params) => {
+module.exports.get_reservation_by_id = (params) => {
   return new Promise(async (resolve, reject) => {
     const {
       id
     } = params;
-    const reservation = await reservationBuilder.findReservation(id);
+    const reservation = await reservationBuilder.findReservationById(id);
     resolve(reservation);
   });
 };
