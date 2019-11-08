@@ -7,7 +7,7 @@ var router = express.Router();
 const ReservationController = require('../controllers/reservation.controller.js');
 
 //Create 1 reservation
-router.post('/reserver', ReservationController.reserver);
+router.post('/creerReservation', ReservationController.creerReservation);
 //GET all reservations
 router.get('/reservations', ReservationController.getReservations);
 //GET 1 reservation by id
