@@ -1,4 +1,5 @@
 const db = require('../config/db.config');
+
 //Trouver toutes les reservations
 module.exports.findReservations = function () {
     return new Promise(async (resolve, reject) => {
