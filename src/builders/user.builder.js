@@ -1,4 +1,5 @@
 const db = require('../config/db.config');
+const Op = require('Sequelize').Op
 
 module.exports.findUsers = function () {
     return new Promise(async (resolve, reject) => {
@@ -7,38 +8,53 @@ module.exports.findUsers = function () {
     })
 }
 
-module.exports.findUser = function (req) {
+module.exports.findUserByEmail = function (req) {
     return new Promise(async (resolve, reject) => {
         const user = await db.models.User.findOne({
             where: {
-                das: req.body.das
+                email: req.body.email
             }
         });
         resolve(user);
     })
 }
 
-/*module.exports.inscriptionUser = function (req) {
+module.exports.findUserByEmailOrByDas = function (req) {
     return new Promise(async (resolve, reject) => {
-        try {
-            if(db.models.User.findOne({where: {das: req.body.das}})){
-                reject('Utilisateur deja trouve');
-            }
-            else{
-                const create = await db.models.User.create({
-                    firstname: req.body.firstname,
-                    lastname: req.body.lastname,
-                    das: req.body.das,
-                    email: req.body.email,
-                    mdp: req.body.mdp,
-                    role_id: 1
-                })
-                resolve(create)
-            }
-
-        } catch (err) {
-            console.log(err);
-            reject(err);
+        try{
+            const user = await db.models.User.findOne({
+                where: {
+                    [Op.or]: [
+                        { das: req.body.das },
+                        { email: req.body.email }
+                    ]
+                }
+            });
+            resolve(user);
+        }
+        catch(err){
+            resolve(err);
         }
     })
-}*/
+}
+
+module.exports.createUser = function (req, bcryptedPassword) {
+    return new Promise(async (resolve, reject) => {
+        try{
+            var createdUser = await db.models.User.create({
+                firstname: req.body.firstname,
+                lastname: req.body.lastname,
+                das: req.body.das,
+                email: req.body.email,
+                mdp: bcryptedPassword,
+                role_id: 2
+            }).then(function(createdUser){
+                resolve(createdUser);
+            })
+        }
+        catch(err){
+            resolve(err);
+        }
+    })
+}
+

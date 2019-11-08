@@ -9,7 +9,7 @@ const userController = require('../controllers/user.controller.js');
 router.get('/users', userController.getUsers);
 router.get('/user', userController.getUser);
 router.post('/inscription', userController.inscription);
-router.post('/connexion', userController.connexion);
+router.get('/connexion', userController.connexion);
 
 // Export routes
 module.exports = router;    
