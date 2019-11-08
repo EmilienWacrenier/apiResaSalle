@@ -36,7 +36,7 @@ logger.info(`Environment: ${CONFIG.app}`);
 
 // Sync Database
 db.sequelize.sync().then(function() {
-  console.log('sync has been established successfully.');
+  console.log('Sync has been established successfully.');
 }).catch(function(err) {
   console.log('Unable to connect to the database:', err.message);
 });
