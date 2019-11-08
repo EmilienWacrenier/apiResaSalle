@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "local": "nodemon -r dotenv/config app.js dotenv_config_path=./.env.local",
-    "dev": "node -r dotenv/config app.js dotenv_config_path=./.env.dev",
+    "dev": "nodemon -r dotenv/config app.js dotenv_config_path=./.env.dev",
     "prod": "node -r dotenv/config app.js dotenv_config_path=./.env.prod",
     "recette": "node -r dotenv/config app.js dotenv_config_path=./.env.recette",
     "mocha": "env-cmd ./.env.local mocha",

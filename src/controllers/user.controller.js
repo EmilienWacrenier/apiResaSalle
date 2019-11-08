@@ -23,7 +23,7 @@ exports.getUser  = async (req, res) => {
     let data = await userService.get_user(req);
     return res.status(200).json(data);
 }
-
+ 
 exports.inscription = async (req, res) => {
     let data = await userService.inscription(req);
     return res.status(getCode(data.code)).json(data);
