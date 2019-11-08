@@ -7,15 +7,15 @@ module.exports.findSalles = function () {
     });
   };
 //Trouver 1 Salle par id
-  module.exports.findSalle = function (id) {
-    return new Promise(async (resolve, reject) => {
-        const salle = await db.models.Salle.findOne(
-          {
-            where: {
-              id: id
-            }
+module.exports.findSalle = function (id) {
+  return new Promise(async (resolve, reject) => {
+      const salle = await db.models.Salle.findOne(
+        {
+          where: {
+            id: id
           }
-        );
-        resolve(salle);
-    });
-  };
+        }
+      );
+      resolve(salle);
+  });
+};
