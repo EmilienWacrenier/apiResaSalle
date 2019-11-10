@@ -26,9 +26,11 @@ module.exports = (sequelize, Sequelize) => {
         freezeTableName: true,
     });
 
-    // salle.associate = function(models) {
-    //   salle.hasMany(models.reservation);
-    // };
+    salle.associate = function(models) {
+      salle.hasMany(models.reservation, {
+        foreignKey: 'salle_id'
+      });
+    };
 
     return salle;
 };

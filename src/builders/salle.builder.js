@@ -22,6 +22,7 @@ module.exports.findSallesBookedToday = function () {
         }
         ]
       });
+      resolve(sallesBookedToday);  
     } catch (err) {
       console.log(err);
       reject(err);
