@@ -3,8 +3,13 @@ const db = require('../config/db.config');
 //Trouver toutes les Salles
 module.exports.findSalles = function () {
   return new Promise(async (resolve, reject) => {
+    try {
       const salles = await db.models.Salle.findAll();
       resolve(salles);
+    } catch (err) {
+      console.log(err);
+      reject(err);
+    }
   });
 };
 //Trouver les salles associées à une résa pour le jour courant
@@ -22,7 +27,7 @@ module.exports.findSallesBookedToday = function () {
         }
         ]
       });
-      resolve(sallesBookedToday);  
+      resolve(sallesBookedToday);
     } catch (err) {
       console.log(err);
       reject(err);
@@ -32,6 +37,7 @@ module.exports.findSallesBookedToday = function () {
 //Trouver 1 Salle par id
 module.exports.findSalle = function (id) {
   return new Promise(async (resolve, reject) => {
+    try {
       const salle = await db.models.Salle.findOne(
         {
           where: {
@@ -40,5 +46,9 @@ module.exports.findSalle = function (id) {
         }
       );
       resolve(salle);
+    } catch (err) {
+      console.log(err);
+      reject(err);
+    }
   });
 };
