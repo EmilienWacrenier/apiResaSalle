@@ -1,4 +1,5 @@
 const userService = require('../services/user.service');
+const recurrenceService = require('../services/recurrence.service');
 
 const jwt = require('../interceptors/jwt');
 const db = require('../config/db.config');
@@ -27,7 +28,9 @@ exports.getUsers = async (req, res) => {
 }
 
 exports.getUser  = async (req, res) => {
-    let data = await userService.get_user(req);
+    //let data = await userService.get_user(req);
+    //return res.status(200).json(data);
+    let data = await recurrenceService.createRecurrence(req);
     return res.status(200).json(data);
 }
  
