@@ -14,9 +14,16 @@ getCode = function(code){
     }
 }
 
+
+
 exports.getUsers = async (req, res) => {
-    let data = await userService.get_users();
-    return res.status(200).json(data);
+    if(jwt.testToken(req)){
+        let data = await userService.get_users();
+        return res.status(200).json(data);
+    }
+    else{
+        return res.status(400).json({'Erreur':'Wrong Token'});
+    }
 }
 
 exports.getUser  = async (req, res) => {
