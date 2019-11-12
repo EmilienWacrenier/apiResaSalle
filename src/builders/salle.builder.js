@@ -14,19 +14,15 @@ module.exports.findSalles = function () {
   });
 };
 //Trouver les salles associées à une résa pour le jour courant
-module.exports.findSallesBookedToday = function () {
+module.exports.findSallesBookedToday = function (today,tomorrow) {
   return new Promise(async (resolve, reject) => {
     try {
-      const today = new Date();
-      console.log(today);
-      const todayMonth = today.getMonth();
-      const todayDay = today.getDate();
       const sallesBookedToday = await db.models.Salle.findAll({
         include: [{
           model: db.models.Reservation,
           where: {
             dateDebut: {
-              [Op.gte] : today
+              [Op.between] : [today,tomorrow]
             },
             etat: 1,
           }

@@ -15,7 +15,12 @@ module.exports.get_salles = () => {
 module.exports.get_salles_booked_today = function () {
   return new Promise(async (resolve, reject) => {
     try {
-      const sallesBookedToday = await salleBuilder.findSallesBookedToday();
+        const today = new Date();
+        console.log(today);
+        const tomorrow = new Date();
+        tomorrow.setHours(today.getHours()+12);
+        console.log(tomorrow);
+      const sallesBookedToday = await salleBuilder.findSallesBookedToday(today,tomorrow);
       resolve(sallesBookedToday);
     } catch (err) {
       console.log(err);
