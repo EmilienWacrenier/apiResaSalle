@@ -1,4 +1,5 @@
 const db = require('../config/db.config');
+const Op = require('Sequelize').Op;
 
 //Trouver toutes les Salles
 module.exports.findSalles = function () {
@@ -17,11 +18,16 @@ module.exports.findSallesBookedToday = function () {
   return new Promise(async (resolve, reject) => {
     try {
       const today = new Date();
+      console.log(today);
+      const todayMonth = today.getMonth();
+      const todayDay = today.getDate();
       const sallesBookedToday = await db.models.Salle.findAll({
         include: [{
           model: db.models.Reservation,
           where: {
-            dateDebut: today,
+            dateDebut: {
+              [Op.gte] : today
+            },
             etat: 1,
           }
         }
