@@ -10,8 +10,8 @@ const SalleController = require('../controllers/salle.controller.js');
 router.get('/salles', SalleController.getSalles);
 //GET 1 salle by id
 router.get('/salle/:id', SalleController.getSalle);
-//Get salles booked sallesBookedToday
-router.get('/sallesReserveesCeJour', SalleController.getSallesBookedToday);
+//Get salles booked entre startDate et endDate
+router.get('/sallesReserveesEntre', SalleController.getSallesBookedBetween);
 
 // Export routes
 module.exports = router;
