@@ -17,6 +17,9 @@ const DATE_REGEX = /[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]) (2[0-3]|
 module.exports.get_salles_booked_between = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
+            if (!req.body.startDate || !req.body.endDate) {
+                reject("Il manque une startDate ou une endDate !")
+            }
             if (DATE_REGEX.test(req.body.startDate) && DATE_REGEX.test(req.body.endDate)) {
                 const sallesBookedToday = await salleBuilder.findSallesBookedBetween(req);
                 resolve(sallesBookedToday);
