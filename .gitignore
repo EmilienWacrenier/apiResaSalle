@@ -760,4 +760,4 @@ transfert/bibliotheque/
 out/
 archives/out/
 
-.env.dev
+./.env.dev
