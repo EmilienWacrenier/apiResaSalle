@@ -11,12 +11,18 @@ module.exports.get_salles = () => {
         }
     });
 };
+//Regex de la date au format YYYY-MM-DD HH:mm:ss
+const DATE_REGEX = /[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]) (2[0-3]|[01][0-9]):[0-5][0-9]:[0-5][0-9]/;
 //get les salles occupées entre startDate et endDate
 module.exports.get_salles_booked_between = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sallesBookedToday = await salleBuilder.findSallesBookedBetween(req);
-            resolve(sallesBookedToday);
+            if (DATE_REGEX.test(req.body.startDate) && DATE_REGEX.test(req.body.endDate)) {
+                const sallesBookedToday = await salleBuilder.findSallesBookedBetween(req);
+                resolve(sallesBookedToday);
+            } else {
+                reject("Les dates ne sont pas au bon format ! Utiliser le format TIMESTAMP : YYYY-MM-DD HH:mm:ss");
+            }
         } catch (err) {
             console.log(err);
             reject(err);
