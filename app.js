@@ -47,4 +47,17 @@ app.listen(PORT, ()=> {
   }
 });
 
+//Implémentation de Nodemailer pour l'envoi de mails d'invitation à la réunion
+var transporter = nodemailer.createTransport({
+    host: 'smtp.gmail.com',
+    port: 465,
+    secure: true,
+    auth: {
+        user: 'paprikaatos@gmail.com',
+        pass: 'Paprika123456'
+    }
+});
+
+
+
 module.exports = app;
