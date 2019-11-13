@@ -51,6 +51,7 @@ app.listen(PORT, ()=> {
 var transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
     port: 465,
+    proxy: 'http://proxy-host:193.56.47.20:8080',//mettre dans config
     secure: true,
     auth: {
         user: 'paprikaatos@gmail.com',
@@ -65,6 +66,16 @@ transporter.verify(function(error, success) {
         console.log("Le serveur est prêt à prendre nos messages");
     }
 });
-
+//Configuration du message
+var message = {
+    from: 'paprikaatos@gmail.com',
+    to: {
+        name: req.body.name,
+        address: req.body.email
+    },
+    subject: 'Réunion ' + req.body.objet + '    [NO-REPLY]',
+    text: 'Plain Text Message',
+    html: '<p>HTML Text Message</p>'
+};
 
 module.exports = app;
