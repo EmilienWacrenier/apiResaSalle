@@ -19,9 +19,18 @@ transporter.verify(function(error, success) {
 //Configuration du message
 var message = {
     from: CONFIG.message.from,
-    to: CONFIG.message.to,
-    subject: CONFIG.message.subject,
+    to: req.body.senderEmail,
+    {
+        name: req.body.name,
+        address: req.body.email
+    },
+    subject: 'Réunion ' + req.body.objet + '    [NO-REPLY]',
     text: CONFIG.message.text,
     html: CONFIG.message.html,
-    dsn: CONFIG.message.dsn
+    dsn: {
+        id: CONFIG.message.dsn.id,
+        return: CONFIG.message.dsn.return,
+        notify: CONFIG.message.dsn.notify,
+        recipient: req.body.senderEmail
+    },
 };
