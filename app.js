@@ -57,7 +57,14 @@ var transporter = nodemailer.createTransport({
         pass: 'Paprika123456'
     }
 });
-
+//Verification de la configuration de la Connection
+transporter.verify(function(error, success) {
+    if (error) {
+        console.log(error);
+    } else {
+        console.log("Le serveur est prêt à prendre nos messages");
+    }
+});
 
 
 module.exports = app;
