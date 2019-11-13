@@ -47,7 +47,7 @@ module.exports.createUser = function (req, bcryptedPassword) {
                 das: req.body.das,
                 email: req.body.email,
                 mdp: bcryptedPassword,
-                role_id: 2
+                role_id: 1
             }).then(function(createdUser){
                 resolve(createdUser);
             })

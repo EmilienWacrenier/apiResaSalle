@@ -25,6 +25,7 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.INTEGER(45)
         },
         recurrence_id:  {
+            
             type: Sequelize.INTEGER(45)
         },
         salle_id: {
