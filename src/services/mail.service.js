@@ -1,3 +1,5 @@
+const CONFIG = require('../config/config');
+
 //Implémentation de Nodemailer pour l'envoi de mails d'invitation à la réunion
 var transporter = nodemailer.createTransport({
     host: 'smtp.gmail.com',
