@@ -1,5 +1,6 @@
 const reservationBuilder = require('../builders/reservation.builder');
 const recurrenceBuilder = require('../builders/recurrence.builder');
+const mailService = require('../service/mail.service');
 
 //Créer une réservation
 module.exports.create_reservation = (body, req) => {
@@ -83,7 +84,13 @@ module.exports.create_reservation = (body, req) => {
                 );
                 resolve(CreatedReservation);
             }
-
+            mailService.transporter.sendMail(mailService.message, function(error,info){
+                if(error) {
+                    return console.log(error);
+                }
+                console.log('Message sent: ' + info.reponse);
+            });
+            mailService.close();
             // Avant
             //const nouvReservation = await reservationBuilder.createReservation(
             // dateDebut, dateFin, objet, etat, user_id, /*recurrence_id,*/ salle_id
