@@ -18,7 +18,7 @@ module.exports.create_reservation = (body, req) => {
             // Vérification de la présence des infos sur la récurrence
             if (req.body.libelleRecurrence != null && req.body.dateDebutRecurrence != null
                 && req.body.dateFinRecurrence != null) {
-                    
+
                 // Vérification du libelleRecurrence
                 if (req.body.libelleRecurrence == "quotidien" || req.body.libelleRecurrence == "hebdomadaire"
                     || req.body.libelleRecurrence == "mensuel" || req.body.libelleRecurrence == "annuel") {
@@ -74,11 +74,14 @@ module.exports.create_reservation = (body, req) => {
                         resolve({ 'Msg': 'OK Recurrence' });
                     }
                 }
-
-
             }
             else {
-                resolve({ 'Erreur': 'Champs recurrence vide' });
+                // Résa simple
+                var CreatedReservation = await reservationBuilder.createReservation(
+                    req.body.dateDebut, req.body.dateFin, objet, etat, user_id,
+                    null, salle_id
+                );
+                resolve(CreatedReservation);
             }
 
             // Avant

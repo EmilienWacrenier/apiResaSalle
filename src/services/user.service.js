@@ -77,7 +77,7 @@ module.exports.connexion = (req) => {
                     if (res) {
                         toResolve = {
                             'idUser': user.idUser,
-                            'token': jwt.generateTokenForUser(user)
+                            'token': jwt.generateTokenForUser(user.idUser, user.role_id)
                         }
                         resolve(toResolve);
                     }
