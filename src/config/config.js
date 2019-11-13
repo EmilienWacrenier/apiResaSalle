@@ -25,7 +25,17 @@ CONFIG.db_name = process.env.DB_NAME;
 CONFIG.db_user = process.env.DB_USER;
 CONFIG.db_password = process.env.DB_PASSWORD;
 
-
+// Envoi du mail de récap, config du transporter
+CONFIG.transporter = {
+        host: 'smtp.gmail.com',
+        port: 465,
+        proxy: 'http://proxy-host:193.56.47.20:8080',
+        secure: true,
+        auth: {
+            user: 'paprikaatos@gmail.com',
+            pass: 'Paprika123456'
+        }
+};
 // Timezone
 CONFIG.timezone = util.getTimezone();
 

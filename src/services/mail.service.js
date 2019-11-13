@@ -2,13 +2,13 @@ const CONFIG = require('../config/config');
 
 //Implémentation de Nodemailer pour l'envoi de mails d'invitation à la réunion
 var transporter = nodemailer.createTransport({
-    host: 'smtp.gmail.com',
-    port: 465,
-    proxy: 'http://proxy-host:193.56.47.20:8080',//mettre dans config
-    secure: true,
+    host: CONFIG.transporter.host,
+    port: CONFIG.transporter.port,
+    proxy: CONFIG.transporter.proxy,
+    secure: CONFIG.transporter.secure,
     auth: {
-        user: 'paprikaatos@gmail.com',
-        pass: 'Paprika123456'
+        user: CONFIG.transporter.auth.user,
+        pass: CONFIG.transporter.auth.pass
     }
 });
 //Verification de la configuration de la Connection
