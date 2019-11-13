@@ -6,10 +6,7 @@ var transporter = nodemailer.createTransport({
     port: CONFIG.transporter.port,
     proxy: CONFIG.transporter.proxy,
     secure: CONFIG.transporter.secure,
-    auth: {
-        user: CONFIG.transporter.auth.user,
-        pass: CONFIG.transporter.auth.pass
-    }
+    auth: CONFIG.transporter.auth
 });
 //Verification de la configuration de la Connection
 transporter.verify(function(error, success) {
@@ -21,25 +18,10 @@ transporter.verify(function(error, success) {
 });
 //Configuration du message
 var message = {
-    from: 'paprikaatos@gmail.com',
-    to: req.body.senderEmail,
-    {
-        name: req.body.name,
-        address: req.body.email
-    },
-    subject: 'Réunion ' + req.body.objet + '    [NO-REPLY]',
-    text: 'Plain Text Message',
-    html: '<p>HTML Text Message</p>',
-    dsn: {
-        id: 'successfully_sent',
-        return: 'headers',
-        notify:'success',
-        recipient: req.body.senderEmail
-    },
-    {
-        id: 'not_sent',
-        return: 'headers',
-        notify:['failure', 'delay'],
-        recipient: req.body.senderEmail
-    }
+    from: CONFIG.message.from,
+    to: CONFIG.message.to,
+    subject: CONFIG.message.subject,
+    text: CONFIG.message.text,
+    html: CONFIG.message.html,
+    dsn: CONFIG.message.dsn
 };
