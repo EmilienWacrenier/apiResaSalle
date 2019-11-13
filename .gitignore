@@ -759,3 +759,5 @@ ssh.exe.stackdump
 transfert/bibliotheque/
 out/
 archives/out/
+
+./.env.dev
