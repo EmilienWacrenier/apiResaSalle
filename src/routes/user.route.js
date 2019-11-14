@@ -9,10 +9,10 @@ const userController = require('../controllers/user.controller.js');
 //GET
 router.get('/users', jwt.verifyToken, jwt.verifyRole(1),userController.getUsers);
 router.get('/user', userController.getUser);
-router.get('/connexion', userController.connexion);
+router.get('/login', userController.connexion);
 
 // POST
-router.post('/inscription', userController.inscription);
+router.post('/register', userController.inscription);
 
 // PUT
 
