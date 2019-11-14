@@ -59,6 +59,7 @@ module.exports.connexion = (req) => {
     return new Promise(async (resolve, reject) => {
         // Récupération des paramètres
         let email = req.body.email;
+        
         let mdp = req.body.mdp;
         // Vérification des paramètres
         if (email == null || mdp == null) {
