@@ -80,10 +80,10 @@ module.exports.connexion = (req) => {
                             'idUser': user.idUser,
                             'token': jwt.generateTokenForUser(user.idUser, user.role_id)
                         }
-                        resolve(toResolve);
+                        resolve({'code':200,'erreur':toResolve});
                     }
                     else {
-                        resolve('mot de passe incorrect');
+                        resolve({'code':400,'erreur':'mot de passe incorrect'});
                     }
                 });
             }

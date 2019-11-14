@@ -37,5 +37,5 @@ exports.inscription = async (req, res) => {
 
 exports.connexion = async (req, res) => {
     let data = await userService.connexion(req);
-    return res.status(200).json(data);
+    return res.status(data.code).json(data.erreur);
 }
