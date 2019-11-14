@@ -22,13 +22,15 @@ module.exports = (sequelize, Sequelize) => {
             defautValue: true
         },
         user_id: {
+            allowNull: false,
             type: Sequelize.INTEGER(45)
         },
         recurrence_id:  {
-            
+            allowNull: true,
             type: Sequelize.INTEGER(45)
         },
         salle_id: {
+            allowNull: false,
             type: Sequelize.INTEGER(45)
         }
     }, {
