@@ -46,10 +46,10 @@ module.exports.get_salles_booked_today = () => {
 module.exports.get_salles_booked_between = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!req.body.endDate) {
+            if (!req.body.startDate || !req.body.endDate) {
                 reject("Il manque une startDate ou une endDate !")
             }
-            if (DATE_REGEX.test(req.body.endDate)) {
+            if (DATE_REGEX.test(req.body.startDate) && DATE_REGEX.test(req.body.endDate)) {
                 const sallesBookedBetween = await salleBuilder.findSallesBookedBetween(req);
                 resolve(sallesBookedBetween);
             } else {

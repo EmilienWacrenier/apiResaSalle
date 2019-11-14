@@ -71,7 +71,7 @@ module.exports.findSallesBookedBetween = function (req) {
                     model: db.models.Reservation,
                     where: {
                         dateDebut: {
-                            [Op.between] : [today,req.body.endDate]
+                            [Op.between] : [req.body.startDate,req.body.endDate]
                         },
                         etat: 1,
                     }
