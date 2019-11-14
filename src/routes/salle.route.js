@@ -12,7 +12,7 @@ router.get('/salles', SalleController.getSalles);
 router.get('/salle/:id', SalleController.getSalle);
 //GET les salles réservées aujourd'hui
 router.get('/sallesBookedToday', SalleController.getSallesBookedToday);
-//Get salles booked entre startDate et endDate
+//Get salles booked entre today et endDate
 router.get('/sallesBookedBetween', SalleController.getSallesBookedBetween);
 
 // Export routes

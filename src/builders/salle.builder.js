@@ -1,6 +1,9 @@
 const db = require('../config/db.config');
 const Op = require('Sequelize').Op;
 
+const today = new Date();
+const endOfTheDay = new Date().setHours(today.getHours()+8);
+
 //Trouver toutes les Salles
 module.exports.findSalles = function () {
     return new Promise(async (resolve, reject) => {
@@ -37,13 +40,14 @@ module.exports.findSalle = function (id) {
 module.exports.findSallesBookedToday = function () {
     return new Promise(async (resolve, reject) => {
         try {
-            const today = new Date();
+            console.log(today);
+            console.log(endOfTheDay);
             const sallesBookedToday = await db.models.Salle.findAll({
                 include: [{
                     model: db.models.Reservation,
                     where: {
                         dateDebut: {
-                            [Op.gte] : today
+                            [Op.between] : [today,endOfTheDay]
                         },
                         etat: 1,
                     }
@@ -67,7 +71,7 @@ module.exports.findSallesBookedBetween = function (req) {
                     model: db.models.Reservation,
                     where: {
                         dateDebut: {
-                            [Op.between] : [req.body.startDate,req.body.endDate]
+                            [Op.between] : [today,req.body.endDate]
                         },
                         etat: 1,
                     }
