@@ -13,16 +13,37 @@ module.exports.findSalles = function () {
         }
     });
 };
-//Trouver les salles associées à une résa entre startDate et endDate
-module.exports.findSallesBookedBetween = function (req) {
+
+//Trouver 1 Salle par id
+module.exports.findSalle = function (id) {
     return new Promise(async (resolve, reject) => {
         try {
+            const salle = await db.models.Salle.findOne(
+                {
+                    where: {
+                        id: id
+                    }
+                }
+            );
+            resolve(salle);
+        } catch (err) {
+            console.log(err);
+            reject(err);
+        }
+    });
+};
+
+//Trouver les salles réservées aujourd'hui
+module.exports.findSallesBookedToday = function () {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const today = new Date();
             const sallesBookedToday = await db.models.Salle.findAll({
                 include: [{
                     model: db.models.Reservation,
                     where: {
                         dateDebut: {
-                            [Op.between] : [req.body.startDate,req.body.endDate]
+                            [Op.gte] : today
                         },
                         etat: 1,
                     }
@@ -36,18 +57,24 @@ module.exports.findSallesBookedBetween = function (req) {
         }
     });
 };
-//Trouver 1 Salle par id
-module.exports.findSalle = function (id) {
+
+//Trouver les salles associées à une résa entre startDate et endDate
+module.exports.findSallesBookedBetween = function (req) {
     return new Promise(async (resolve, reject) => {
         try {
-            const salle = await db.models.Salle.findOne(
-                {
+            const sallesBookedBetween = await db.models.Salle.findAll({
+                include: [{
+                    model: db.models.Reservation,
                     where: {
-                        id: id
+                        dateDebut: {
+                            [Op.between] : [req.body.startDate,req.body.endDate]
+                        },
+                        etat: 1,
                     }
                 }
-            );
-            resolve(salle);
+            ]
+        });
+        resolve(sallesBookedBetween);
         } catch (err) {
             console.log(err);
             reject(err);
