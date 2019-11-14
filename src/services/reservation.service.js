@@ -84,13 +84,14 @@ module.exports.create_reservation = (body, req) => {
                 );
                 resolve(CreatedReservation);
             }
+            // Envoi d'un mail aux participants
             mailService.transporter.sendMail(mailService.message, function(error,info){
                 if(error) {
                     return console.log(error);
                 }
                 console.log('Message sent: ' + info.reponse);
             });
-            mailService.close();
+            mailService.transporter.close();
             // Avant
             //const nouvReservation = await reservationBuilder.createReservation(
             // dateDebut, dateFin, objet, etat, user_id, /*recurrence_id,*/ salle_id
