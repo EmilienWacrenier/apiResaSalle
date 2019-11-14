@@ -29,7 +29,7 @@ CONFIG.db_password = process.env.DB_PASSWORD;
 CONFIG.transporter = {
         host: 'smtp.gmail.com',
         port: 465,
-        proxy: 'http://proxy-host:193.56.47.20:8080',
+        proxy: 'https://proxy-host:193.56.47.20:8080',
         secure: true,
         auth: {
             user: 'paprikaatos@gmail.com',

@@ -1,6 +1,6 @@
 const reservationBuilder = require('../builders/reservation.builder');
 const recurrenceBuilder = require('../builders/recurrence.builder');
-const mailService = require('../service/mail.service');
+const mailService = require('./mail.service');
 
 //Créer une réservation
 module.exports.create_reservation = (body, req) => {
@@ -85,13 +85,37 @@ module.exports.create_reservation = (body, req) => {
                 resolve(CreatedReservation);
             }
             // Envoi d'un mail aux participants
-            mailService.transporter.sendMail(mailService.message, function(error,info){
-                if(error) {
-                    return console.log(error);
+                //Configuration du message
+                var message = {
+                    from: CONFIG.message.from,
+                    to: req.body.senderEmail,
+                    subject: 'Réunion ' + req.body.objet + '    [NO-REPLY]',
+                    text: CONFIG.message.text,
+                    html: CONFIG.message.html,
+                    dsn: {
+                        id: CONFIG.message.dsn.id,
+                        return: CONFIG.message.dsn.return,
+                        notify: CONFIG.message.dsn.notify,
+                        recipient: req.body.senderEmail
+                    },
+                };
+                    // Envoi du mail
+            //Verification de la configuration de la Connection
+            mailService.transporter.verify(function(error, success) {
+                if (error) {
+                    console.log(error);
+                } else {
+                    console.log("Le serveur est prêt à prendre nos messages");
+                    mailService.transporter.sendMail(mailService.message, function(error,info){
+                        if(error) {
+                            return console.log(error);
+                        }
+                        console.log('Message sent: ' + info.response);
+                    });
                 }
-                console.log('Message sent: ' + info.reponse);
             });
             mailService.transporter.close();
+
             // Avant
             //const nouvReservation = await reservationBuilder.createReservation(
             // dateDebut, dateFin, objet, etat, user_id, /*recurrence_id,*/ salle_id
