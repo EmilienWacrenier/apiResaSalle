@@ -7,10 +7,10 @@ module.exports = app => {
   console.log('ROUTER MODULE STARTED');
 
   // app.use(CONFIG.uri_prefix, testRouter);
-  app.use('/users', USER);
+  app.use('/user', USER);
   //Reservation
-  app.use('/reservations', RESERVATION);
+  app.use('/reservation', RESERVATION);
   //Salles
-  app.use('/salles', SALLE);
+  app.use('/salle', SALLE);
 
 };

@@ -10,14 +10,14 @@ module.exports.create_reservation = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
             // Vérification de la présence des infos sur la réservation
-            if (req.body.dateDebut == null || req.body.dateFin == null || req.body.objet == null
+            if (req.body.startDate == null || req.body.endDate == null || req.body.objet == null
                 || req.body.salle_id == null || req.body.user_id == null) {
                 resolve({ 'Erreur': 'Un champs de réservation est nul' });
             }
 
             // Vérification de la présence des infos sur la récurrence
-            if (req.body.libelleRecurrence != null && req.body.dateDebutRecurrence != null
-                && req.body.dateFinRecurrence != null) {
+            if (req.body.libelleRecurrence != null && req.body.startDateRecurrence != null
+                && req.body.endDateRecurrence != null) {
 
                 // Vérification du libelleRecurrence
                 if (req.body.libelleRecurrence == "quotidien" || req.body.libelleRecurrence == "hebdomadaire"
@@ -28,19 +28,19 @@ module.exports.create_reservation = (req) => {
 
                     // Vérification de la création de la récurrence
                     if (createdRecurrence.idRecurrence != null) {
-                        var currentDateDebut = new Date(req.body.dateDebut);
-                        currentDateDebut.setHours(currentDateDebut.getHours() + 1)
-                        var currentDateFin = new Date(req.body.dateFin);
-                        currentDateFin.setHours(currentDateFin.getHours() + 1)
-                        var dateFinRecurrence = new Date(req.body.dateFinRecurrence);
+                        var currentstartDate = new Date(req.body.startDate);
+                        currentstartDate.setHours(currentstartDate.getHours() + 1)
+                        var currentendDate = new Date(req.body.endDate);
+                        currentendDate.setHours(currentendDate.getHours() + 1)
+                        var endDateRecurrence = new Date(req.body.endDateRecurrence);
                         var nbResa = 0;
 
                         // Création des réservations associées à la récurrence
-                        while (currentDateFin < dateFinRecurrence) {
+                        while (currentendDate < endDateRecurrence) {
                             // Ignorer les week-ends
-                            if (!(currentDateDebut.getDay() == 6 || currentDateDebut.getDay() == 0)) {
+                            if (!(currentstartDate.getDay() == 6 || currentstartDate.getDay() == 0)) {
                                 var currentCreatedReservation = await reservationBuilder.createReservation(
-                                    currentDateDebut, currentDateFin, req.body.objet, 1, req.body.user_id,
+                                    currentstartDate, currentendDate, req.body.objet, 1, req.body.user_id,
                                     createdRecurrence.idRecurrence, req.body.salle_id
                                 );
                                 nbResa++;
@@ -49,28 +49,23 @@ module.exports.create_reservation = (req) => {
                             // Test du type de récurrence + incrémentation de la date
                             switch (createdRecurrence.libelle) {
                                 case "quotidien":
-                                    currentDateDebut.setDate(currentDateDebut.getDate() + 1);
-                                    currentDateFin.setDate(currentDateFin.getDate() + 1);
+                                    currentstartDate.setDate(currentstartDate.getDate() + 1);
+                                    currentendDate.setDate(currentendDate.getDate() + 1);
                                     break;
 
                                 case "hebdomadaire":
-                                    currentDateDebut.setDate(currentDateDebut.getDate() + 7);
-                                    currentDateFin.setDate(currentDateFin.getDate() + 7);
+                                    currentstartDate.setDate(currentstartDate.getDate() + 7);
+                                    currentendDate.setDate(currentendDate.getDate() + 7);
                                     break;
 
                                 case "mensuel":
-                                    currentDateDebut.setMonth(currentDateDebut.getMonth() + 1);
-                                    currentDateFin.setMonth(currentDateFin.getMonth() + 1);
+                                    currentstartDate.setMonth(currentstartDate.getMonth() + 1);
+                                    currentendDate.setMonth(currentendDate.getMonth() + 1);
                                     break;
 
-                                /*case "annuel":
-                                    currentDateDebut.setYea(currentDateDebut.getDate() + 7);
-                                    currentDateFin.setDate(currentDateFin.getDate() + 7);
-                                    break;*/
-
                                 default:
-                                    currentDateDebut.setDate(currentDateDebut.getDate() + 1);
-                                    currentDateFin.setDate(currentDateFin.getDate() + 1);
+                                    currentstartDate.setDate(currentstartDate.getDate() + 1);
+                                    currentendDate.setDate(currentendDate.getDate() + 1);
                                     break;
                             }
                         }
@@ -84,25 +79,21 @@ module.exports.create_reservation = (req) => {
             else {
                 // Résa simple
                 try {
-                    const timezone = 'Europe/Paris';
-                    const momentDateDebut = moment(req.body.dateDebut, 'YYYY-MM-DD HH:mm');
-                    const momentDateFin = moment(req.body.dateFin, 'YYYY-MM-DD HH:mm');
-                    //console.log(momentDateFin.toString());
-                    //resolve(new Date (Date.UTC(req.body.dateDebut, 'YYYY-MM-DD HH:mm')))
-                    //console.log(momentDate.toString());
+                    var date = moment(req.body.startDate);
+                    console.log(date.hour())
 
                     var createdReservation = await reservationBuilder.createReservation(
-                        req.body.dateDebut, req.body.dateFin, req.body.objet, 1, req.body.user_id,
+                        /*req.body.startDate*/date.toString(), req.body.endDate, req.body.objet, 1, req.body.user_id,
                         null, req.body.salle_id
                     );
                     resolve(createdReservation);
                 }
                 catch (error) {
-                    resolve({'error':error})
+                    resolve({ 'error': error })
                 }
             }
         } catch (err) {
-            reject({
+            resolve({
                 status: 500,
                 message: err
             });
