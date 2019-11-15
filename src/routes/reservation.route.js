@@ -16,6 +16,8 @@ router.get('/reservationById/:id', ReservationController.getReservationById);
 router.get('/reservationsByDate', ReservationController.getSallesBooked);
 // Get les réservations par salle id
 router.get('/reservationsBySalleId', ReservationController.getSallesBookedById);
+// Get les réservations par user id
+router.post('/reservationsByUserId', ReservationController.getReservationsByUserId);
 
 // Export routes
 module.exports = router;

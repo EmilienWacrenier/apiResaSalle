@@ -30,3 +30,8 @@ exports.getSallesBookedById = async (req, res) => {
     let data = await reservationService.get_salles_booked_by_id(req);
     return res.status(data.code).json(data.result);
 }
+
+exports.getReservationsByUserId = async (req, res) => {
+    let data = await reservationService.get_reservations_by_user_id(req);
+    return res.status(data.code).json(data.result);
+}

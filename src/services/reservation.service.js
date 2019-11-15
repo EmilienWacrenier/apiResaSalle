@@ -163,3 +163,14 @@ module.exports.get_salles_booked_by_id = (req) => {
         }
     });
 };
+module.exports.get_reservations_by_user_id = (req) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const reservationsByUserId = await reservationBuilder.findReservationsByUserId(req);
+            return resolve({ code:200, result:reservationsByUserId });
+        } catch (err) {
+            console.log(err);
+            reject(err);
+        }
+    });
+};

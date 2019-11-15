@@ -117,3 +117,19 @@ module.exports.findSallesBookedById = function (req) {
         }
     });
 };
+
+module.exports.findReservationsByUserId = function (req) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const reservationsByUserId = await db.models.Reservation.findAll({
+                    where: {
+                        user_id:req.body.user_id
+                    }
+            });
+        resolve(reservationsByUserId);
+        } catch (err) {
+            console.log(err);
+            reject(err);
+        }
+    });
+};
