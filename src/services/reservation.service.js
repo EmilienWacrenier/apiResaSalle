@@ -15,7 +15,7 @@ module.exports.create_reservation = (req) => {
             // Vérification de la présence des infos sur la réservation
             if (req.body.startDate == null || req.body.endDate == null || req.body.objet == null
                 || req.body.salle_id == null || req.body.user_id == null) {
-                resolve({ 'Erreur': 'Un champs de réservation est nul' });
+                return resolve({ code: 400, result: 'Un champs de réservation est nul' });
             }
 
             // Vérification de la présence des infos sur la récurrence
@@ -72,11 +72,11 @@ module.exports.create_reservation = (req) => {
                                     break;
                             }
                         }
-                        resolve({ 'Msg': 'OK Recurrence', 'Nombre d\'entrée': nbResa });
+                        return resolve({ code: 200, result: nbResa });
                     }
                 }
                 else {
-                    resolve({ 'Erreur': 'Libelle récurrence incorrect' });
+                    return resolve({ code: 400, result: 'Libelle récurrence incorrect' });
                 }
             }
             else {
@@ -89,16 +89,16 @@ module.exports.create_reservation = (req) => {
                         /*req.body.startDate*/date.toString(), req.body.endDate, req.body.objet, 1, req.body.user_id,
                         null, req.body.salle_id
                     );
-                    resolve(createdReservation);
+                    return resolve({ code: 200, result: createdReservation });
                 }
                 catch (error) {
-                    resolve({ 'error': error })
+                    return resolve({ code: 400, result: error })
                 }
             }
         } catch (err) {
-            resolve({
-                status: 500,
-                message: err
+            return resolve({
+                code: 500,
+                result: err
             });
         };
     })
@@ -107,7 +107,7 @@ module.exports.create_reservation = (req) => {
 module.exports.get_reservations = () => {
     return new Promise(async (resolve, reject) => {
         const reservations = await reservationBuilder.findReservations();
-        resolve(reservations);
+        resolve({code:200,result:reservations});
     });
 };
 //get reservation by id
@@ -117,7 +117,7 @@ module.exports.get_reservation_by_id = (params) => {
             id
         } = params;
         const reservation = await reservationBuilder.findReservationById(id);
-        resolve(reservation);
+        resolve({code:200,result:reservation});
     });
 };
 //get les salles occupées entre startDate et endDate
