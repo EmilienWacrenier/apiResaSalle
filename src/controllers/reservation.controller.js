@@ -1,19 +1,19 @@
 const reservationService = require('../services/reservation.service');
 
-exports.creerReservation = async (req,res) => {
+exports.creerReservation = async (req, res) => {
     let data = await reservationService.create_reservation(req);
-    return res.status(data.code).json(data);
+    return res.status(data.code).json({ result: data.result });
 
 };
 
 exports.getReservations = async (req, res) => {
-        let data = await reservationService.get_reservations();
-        return res.status(data.code).json(data.result);
+    let data = await reservationService.get_reservations();
+    return res.status(data.code).json(data.result);
 }
 
 exports.getReservationById = async (req, res) => {
-        let data = await reservationService.get_reservation_by_id(req.params);
-        return res.status(data.code).json(data.result);
+    let data = await reservationService.get_reservation_by_id(req.params);
+    return res.status(data.code).json(data.result);
 }
 
 exports.getSallesBooked = async (req, res) => {
@@ -26,7 +26,7 @@ exports.getSallesBooked = async (req, res) => {
     }
 }
 
-exports.getSallesBookedById = async (req,res) => {
+exports.getSallesBookedById = async (req, res) => {
     let data = await reservationService.get_salles_booked_by_id(req);
     return res.status(200).json(data);
 }
