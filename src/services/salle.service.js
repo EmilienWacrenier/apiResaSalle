@@ -1,8 +1,5 @@
 const salleBuilder = require('../builders/salle.builder');
 
-
-
-//get all salles
 module.exports.get_salles = () => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -14,7 +11,7 @@ module.exports.get_salles = () => {
         }
     });
 };
-//get salle by id
+
 module.exports.get_salle = (params) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -29,3 +26,13 @@ module.exports.get_salle = (params) => {
         }
     });
 };
+
+module.exports.get_salles_available = (query) => {
+    return new Promise(async (resolve, reject) => {
+        const salles = await salleBuilder.findSallesAvailable(query)
+        .then(function(salles){
+            console.log("dans then")
+            return resolve({ code: 200, result: 'bobo' });
+        })
+    });
+}

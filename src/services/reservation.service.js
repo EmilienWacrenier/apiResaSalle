@@ -82,14 +82,14 @@ module.exports.create_reservation = (req) => {
             else {
                 // Résa simple
                 try {
-                    var date = moment(req.body.startDate);
-                    console.log(date.hour())
 
                     var createdReservation = await reservationBuilder.createReservation(
-                        /*req.body.startDate*/date.toString(), req.body.endDate, req.body.objet, 1, req.body.user_id,
+                        req.body.startDate, req.body.endDate, req.body.objet, 1, req.body.user_id,
                         null, req.body.salle_id
-                    );
-                    return resolve({ code: 200, result: createdReservation });
+                    )
+                    .then(function(createdReservation){
+                        return resolve({ code: 200, result: createdReservation });
+                    })
                 }
                 catch (error) {
                     return resolve({ code: 400, result: error })
