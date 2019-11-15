@@ -5,6 +5,9 @@ const mailService = require('./mail.service');
 const moment = require('moment');
 const momentTz = require('moment-timezone');
 
+//Regex de la date au format YYYY-MM-DD HH:mm:ss
+const DATE_REGEX = /[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]) (2[0-3]|[01][0-9]):[0-5][0-9]:[0-5][0-9]/;
+
 //Créer une réservation
 module.exports.create_reservation = (req) => {
     return new Promise(async (resolve, reject) => {
@@ -115,5 +118,48 @@ module.exports.get_reservation_by_id = (params) => {
         } = params;
         const reservation = await reservationBuilder.findReservationById(id);
         resolve({code:200,result:reservation});
+    });
+};
+//get les salles occupées entre startDate et endDate
+module.exports.get_salles_booked_between = (req) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (!req.body.startDate || !req.body.endDate) {
+                reject("Il manque une startDate ou une endDate !")
+            }
+            if (DATE_REGEX.test(req.body.startDate) && DATE_REGEX.test(req.body.endDate)) {
+                const sallesBookedBetween = await reservationBuilder.findSallesBookedBetween(req);
+                resolve(sallesBookedBetween);
+            } else {
+                reject("Les dates ne sont pas au bon format ! Utiliser le format TIMESTAMP : YYYY-MM-DD HH:mm:ss");
+            }
+        } catch (err) {
+            console.log(err);
+            reject(err);
+        }
+    });
+};
+// get salles réservées par jour (body: date)
+module.exports.get_salles_booked_by_day = (req) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const sallesBookedByDay = await reservationBuilder.findSallesBookedByDay(req);
+            resolve(sallesBookedByDay);
+        } catch (err) {
+            console.log(err);
+            reject(err);
+        }
+    });
+};
+//Get une réservation by salle_id between une startDate et une endDate
+module.exports.get_salles_booked_by_id = (req) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const sallesBookedById = await reservationBuilder.findSallesBookedById(req);
+            resolve(sallesBookedById);
+        } catch (err) {
+            console.log(err);
+            reject(err);
+        }
     });
 };
