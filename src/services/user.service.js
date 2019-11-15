@@ -80,6 +80,8 @@ module.exports.connexion = (req) => {
                     if (res) {
                         toResolve = {
                             'idUser': user.idUser,
+                            'lastname': user.lastname,
+                            'firstname': user.firstname,
                             'token': jwt.generateTokenForUser(user.idUser, user.role_id)
                         }
                         return resolve({ code: 200, result: toResolve });
