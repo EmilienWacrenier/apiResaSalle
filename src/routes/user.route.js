@@ -10,7 +10,7 @@ const userController = require('../controllers/user.controller.js');
 router.get('/users', jwt.verifyToken, jwt.verifyRole(1),userController.getUsers);
 router.get('/user', userController.getUser);
 
-router.get('/login', userController.connexion);
+router.post('/login', userController.connexion);
 
 // POST
 router.post('/register', userController.inscription);

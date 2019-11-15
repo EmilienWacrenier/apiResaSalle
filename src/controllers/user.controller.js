@@ -29,10 +29,13 @@ exports.getUser  = async (req, res) => {
  
 exports.inscription = async (req, res) => {
     let data = await userService.inscription(req);
+    if(data.code != null){
+        return res.status(400).send('erreur mon gars');
+    }
     return res.status(getCode(data.code)).json(data);
 }
 
 exports.connexion = async (req, res) => {
     let data = await userService.connexion(req);
-    return res.status(200).json(data);
+    return res.status(data.code).json(data.erreur);
 }

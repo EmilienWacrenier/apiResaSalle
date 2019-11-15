@@ -59,6 +59,7 @@ module.exports.connexion = (req) => {
     return new Promise(async (resolve, reject) => {
         // Récupération des paramètres
         let email = req.body.email;
+        
         let mdp = req.body.mdp;
         // Vérification des paramètres
         if (email == null || mdp == null) {
@@ -79,10 +80,10 @@ module.exports.connexion = (req) => {
                             'idUser': user.idUser,
                             'token': jwt.generateTokenForUser(user.idUser, user.role_id)
                         }
-                        resolve(toResolve);
+                        resolve({'code':200,'erreur':toResolve});
                     }
                     else {
-                        resolve('mot de passe incorrect');
+                        resolve({'code':400,'erreur':'mot de passe incorrect'});
                     }
                 });
             }
