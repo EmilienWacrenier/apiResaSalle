@@ -23,34 +23,36 @@ module.exports.inscription = (req) => {
             // Vérification des paramètres
             if (req.body.lastname == null || req.body.firstname == null || req.body.das == null ||
                 req.body.email == null || req.body.mdp == null) {
-                resolve({'code':400, 'erreur':'champs null'});
+                return resolve({ code: 400, result: 'Champs null' });
             }
-            if(req.body.das.length != 7){
-                resolve({'code':400, 'erreur':'das non valide'});
+            if (req.body.das.length != 7) {
+                return resolve({ code: 400, result: 'Das non valide' });
+
             }
-            if(req.body.lastname.length > 45 || req.body.firstname.length > 45 || req.body.mdp.length < 8){
-                resolve({'code':400,'erreur':'longueur des champs'});
+            if (req.body.lastname.length > 45 || req.body.firstname.length > 45 || req.body.mdp.length < 8) {
+                return resolve({ code: 400, result: 'Longueur des champs' });
             }
-            if(!EMAIL_REGEX.test(req.body.email)){
-                resolve({'code':400, 'erreur':'email non valide'});
+            if (!EMAIL_REGEX.test(req.body.email)) {
+                return resolve({ code: 400, result: 'Email non valide' });
             }
             // L'utilisateur existe t'il déjà?
             const existingUser = await userBuilder.findUserByEmailOrByDas(req);
             if (existingUser != null) {
-                resolve({'code':400, 'erreur':'utilisateur déjà présent dans la bdd'});
+                return resolve({ code: 400, result: 'Utilisateur déjà présent dans la bdd' });
             }
             else {
                 // Création de l'utilisateur avec hashage de mdp
                 bcrypt.hash(req.body.mdp, 5, function (err, bcryptedPassword) {
                     const createdUser = userBuilder.createUser(req, bcryptedPassword)
                         .then(function (createdUser) {
-                            resolve(createdUser);
+                            return resolve({ code: 200, result: createdUser });
                         });
                 })
             }
         }
         catch (err) {
-            resolve(err);
+            console.log(err)
+            return resolve({ code: 400, result: err });
         }
     });
 }
@@ -59,18 +61,18 @@ module.exports.connexion = (req) => {
     return new Promise(async (resolve, reject) => {
         // Récupération des paramètres
         let email = req.body.email;
-        
+
         let mdp = req.body.mdp;
         // Vérification des paramètres
         if (email == null || mdp == null) {
-            resolve({'code':400,'erreur':'Email ou mdp non renseigné'});
+            return resolve({ code: 400, result: 'Email ou mdp non renseigné' });
         }
         else {
             // Récupération du user
             let user = await userBuilder.findUserByEmail(req);
             if (user == null) {
                 // Si le user n'existe pas
-                resolve({'code':404,'erreur':'utilisateur non existant'});
+                return resolve({ code: 404, result: 'utilisateur non existant' });
             }
             else {
                 // Comparaison du mot de passe
@@ -80,10 +82,10 @@ module.exports.connexion = (req) => {
                             'idUser': user.idUser,
                             'token': jwt.generateTokenForUser(user.idUser, user.role_id)
                         }
-                        resolve({'code':200,'erreur':toResolve});
+                        return resolve({ code: 200, result: toResolve });
                     }
                     else {
-                        resolve({'code':400,'erreur':'mot de passe incorrect'});
+                        return resolve({ code: 400, result: 'mot de passe incorrect' });
                     }
                 });
             }
