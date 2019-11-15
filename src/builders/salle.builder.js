@@ -1,7 +1,6 @@
 const db = require('../config/db.config');
 const Op = require('Sequelize').Op;
 
-//Trouver toutes les Salles
 module.exports.findSalles = function () {
     return new Promise(async (resolve, reject) => {
         try {
@@ -14,7 +13,6 @@ module.exports.findSalles = function () {
     });
 };
 
-//Trouver 1 Salle par id
 module.exports.findSalle = function (id) {
     return new Promise(async (resolve, reject) => {
         try {
@@ -32,3 +30,9 @@ module.exports.findSalle = function (id) {
         }
     });
 };
+
+module.exports.findSallesAvailable = function (query) {
+    return new Promise(async (resolve, reject) => {
+        return resolve({'res':'resultat'})
+    })
+}

@@ -27,7 +27,6 @@ module.exports.inscription = (req) => {
             }
             if (req.body.das.length != 7) {
                 return resolve({ code: 400, result: 'Das non valide' });
-
             }
             if (req.body.lastname.length > 45 || req.body.firstname.length > 45 || req.body.mdp.length < 8) {
                 return resolve({ code: 400, result: 'Longueur des champs' });
@@ -80,6 +79,8 @@ module.exports.connexion = (req) => {
                     if (res) {
                         toResolve = {
                             'idUser': user.idUser,
+                            'lastname': user.lastname,
+                            'firstname': user.firstname,
                             'token': jwt.generateTokenForUser(user.idUser, user.role_id)
                         }
                         return resolve({ code: 200, result: toResolve });
