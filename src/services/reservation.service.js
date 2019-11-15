@@ -107,7 +107,7 @@ module.exports.create_reservation = (req) => {
 module.exports.get_reservations = () => {
     return new Promise(async (resolve, reject) => {
         const reservations = await reservationBuilder.findReservations();
-        resolve({code:200,result:reservations});
+        return resolve({ code:200, result:reservations });
     });
 };
 //get reservation by id
@@ -117,7 +117,7 @@ module.exports.get_reservation_by_id = (params) => {
             id
         } = params;
         const reservation = await reservationBuilder.findReservationById(id);
-        resolve({code:200,result:reservation});
+        return resolve({ code:200, result:reservation });
     });
 };
 //get les salles occupées entre startDate et endDate
@@ -125,13 +125,13 @@ module.exports.get_salles_booked_between = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
             if (!req.body.startDate || !req.body.endDate) {
-                reject("Il manque une startDate ou une endDate !")
+                return reject({ code:400, result:"Il manque une startDate ou une endDate !"});
             }
             if (DATE_REGEX.test(req.body.startDate) && DATE_REGEX.test(req.body.endDate)) {
                 const sallesBookedBetween = await reservationBuilder.findSallesBookedBetween(req);
-                resolve(sallesBookedBetween);
+                return resolve({ code:200, result:sallesBookedBetween });
             } else {
-                reject("Les dates ne sont pas au bon format ! Utiliser le format TIMESTAMP : YYYY-MM-DD HH:mm:ss");
+                return reject({ code:400, result:"Les dates ne sont pas au bon format ! Utiliser le format TIMESTAMP : YYYY-MM-DD HH:mm:ss" });
             }
         } catch (err) {
             console.log(err);
@@ -144,7 +144,7 @@ module.exports.get_salles_booked_by_day = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
             const sallesBookedByDay = await reservationBuilder.findSallesBookedByDay(req);
-            resolve(sallesBookedByDay);
+            return resolve({ code:200, result:sallesBookedByDay });
         } catch (err) {
             console.log(err);
             reject(err);
@@ -156,7 +156,7 @@ module.exports.get_salles_booked_by_id = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
             const sallesBookedById = await reservationBuilder.findSallesBookedById(req);
-            resolve(sallesBookedById);
+            return resolve({ code:200, result:sallesBookedById });
         } catch (err) {
             console.log(err);
             reject(err);

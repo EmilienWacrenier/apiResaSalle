@@ -20,14 +20,14 @@ exports.getReservationById = async (req, res) => {
 exports.getSallesBooked = async (req, res) => {
     if (!req.body.endDate) {
         let data = await reservationService.get_salles_booked_by_day(req);
-        return res.status(200).json(data);
+        return res.status(data.code).json(data.result);
     } else {
         let data = await reservationService.get_salles_booked_between(req);
-        return res.status(200).json(data);
+        return res.status(data.code).json(data.result);
     }
 }
 //get réservations  by ID_salle
 exports.getSallesBookedById = async (req,res) => {
     let data = await reservationService.get_salles_booked_by_id(req);
-    return res.status(200).json(data);
+    return res.status(data.code).json(data.result);
 }
