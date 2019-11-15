@@ -49,12 +49,15 @@ module.exports.findSallesBookedByDay = function (req) {
     return new Promise(async (resolve, reject) => {
         try {
             var jour = new Date(req.body.startDate);
-
+            var debutJour = jour.setHours(0);
+            var finJour = jour.setHours(23);
             const sallesBookedByDay = await db.models.Salle.findAll({
                 include: [{
                     model: db.models.Reservation,
                     where: {
-                        dateDebut: jour.getDate(),
+                        dateDebut: {
+                            [Op.between] : [debutJour,finJour]
+                        },
                         etat: 1,
                     }
                 }]
