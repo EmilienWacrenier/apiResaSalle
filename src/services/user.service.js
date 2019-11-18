@@ -2,6 +2,8 @@ const userBuilder = require('../builders/user.builder');
 const bcrypt = require('bcrypt');
 const jwt = require('../interceptors/jwt');
 
+const REGEX = require('../tools/validation/regex');
+
 module.exports.get_users = () => {
     return new Promise(async (resolve, reject) => {
         const user = await userBuilder.findUsers();
@@ -23,7 +25,6 @@ module.exports.get_user_by_id = (req) => {
     })
 }
 
-const EMAIL_REGEX = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 module.exports.inscription = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -38,7 +39,7 @@ module.exports.inscription = (req) => {
             if (req.body.lastname.length > 45 || req.body.firstname.length > 45 || req.body.mdp.length < 8) {
                 return resolve({ code: 400, result: 'Longueur des champs' });
             }
-            if (!EMAIL_REGEX.test(req.body.email)) {
+            if (!REGEX.email.test(req.body.email)) {
                 return resolve({ code: 400, result: 'Email non valide' });
             }
             // L'utilisateur existe t'il déjà?
