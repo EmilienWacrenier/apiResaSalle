@@ -17,7 +17,7 @@ getCode = function(code){
 
 exports.getUsers = async (req, res) => {
         let data = await userService.get_users();
-        return res.status(200).json(data);
+        return res.status(data.code).json({result:data.result});
 }
 
 exports.getUser  = async (req, res) => {

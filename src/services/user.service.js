@@ -7,7 +7,7 @@ const REGEX = require('../tools/validation/regex');
 module.exports.get_users = () => {
     return new Promise(async (resolve, reject) => {
         const user = await userBuilder.findUsers();
-        resolve(user);
+        return resolve({code: 200, result: user});
     })
 }
 
