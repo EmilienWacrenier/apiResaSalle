@@ -105,8 +105,13 @@ module.exports.create_reservation = (req) => {
 //get all reservations
 module.exports.get_reservations = () => {
     return new Promise(async (resolve, reject) => {
-        const reservations = await reservationBuilder.findReservations();
-        return resolve({ code:200, result:reservations });
+        try {
+            const reservations = await reservationBuilder.findReservations();
+            return resolve({ code:200, result:reservations });
+        } catch (err) {
+            console.log(err);
+            reject(err);
+        }        
     });
 };
 //get reservation by id

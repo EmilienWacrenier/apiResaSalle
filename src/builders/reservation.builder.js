@@ -26,8 +26,13 @@ module.exports.createReservation = function (dateDebut, dateFin, objet, etat, us
 //Trouver toutes les reservations
 module.exports.findReservations = function () {
     return new Promise(async (resolve, reject) => {
-        const reservations = await db.models.Reservation.findAll();
-        resolve(reservations);
+        try {
+            const reservations = await db.models.Reservation.findAll();
+            resolve(reservations);
+        } catch (err) {
+            console.log(err);
+            reject(err);
+        }
     });
 };
 //Trouver 1 reservation par id
