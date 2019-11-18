@@ -5,8 +5,7 @@ const mailService = require('./mail.service');
 const moment = require('moment');
 const momentTz = require('moment-timezone');
 
-//Regex de la date au format YYYY-MM-DD HH:mm:ss
-const DATE_REGEX = /[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]) (2[0-3]|[01][0-9]):[0-5][0-9]:[0-5][0-9]/;
+const REGEX = require('../tools/validation/regex');
 
 //Créer une réservation
 module.exports.create_reservation = (req) => {
@@ -127,7 +126,7 @@ module.exports.get_salles_booked_between = (req) => {
             if (!req.body.startDate || !req.body.endDate) {
                 return reject({ code:400, result:"Il manque une startDate ou une endDate !"});
             }
-            if (DATE_REGEX.test(req.body.startDate) && DATE_REGEX.test(req.body.endDate)) {
+            if (REGEX.date.test(req.body.startDate) && REGEX.date.test(req.body.endDate)) {
                 const sallesBookedBetween = await reservationBuilder.findSallesBookedBetween(req);
                 return resolve({ code:200, result:sallesBookedBetween });
             } else {
