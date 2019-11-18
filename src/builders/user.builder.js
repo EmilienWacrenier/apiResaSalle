@@ -53,8 +53,8 @@ module.exports.createUser = function (req, bcryptedPassword) {
     return new Promise(async (resolve, reject) => {
         try{
             var createdUser = await db.models.User.create({
-                firstname: req.body.firstname,
-                lastname: req.body.lastname,
+                firstname: req.body.firstName,
+                lastname: req.body.lastName,
                 das: req.body.das,
                 email: req.body.email,
                 mdp: bcryptedPassword,
