@@ -111,16 +111,13 @@ module.exports.get_reservations = () => {
         } catch (err) {
             console.log(err);
             reject(err);
-        }        
+        }
     });
 };
 //get reservation by id
-module.exports.get_reservation_by_id = (params) => {
+module.exports.get_reservation_by_id = (req) => {
     return new Promise(async (resolve, reject) => {
-        const {
-            id
-        } = params;
-        const reservation = await reservationBuilder.findReservationById(id);
+        const reservation = await reservationBuilder.findReservationById(req);
         return resolve({ code:200, result:reservation });
     });
 };

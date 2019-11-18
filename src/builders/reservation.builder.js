@@ -36,12 +36,12 @@ module.exports.findReservations = function () {
     });
 };
 //Trouver 1 reservation par id
-module.exports.findReservationById = function (id) {
+module.exports.findReservationById = function (req) {
     return new Promise(async (resolve, reject) => {
         const reservationById = await db.models.Reservation.findOne(
             {
                 where: {
-                    id: id
+                    idReservation: req.body.reservationId
                 }
             }
         );
