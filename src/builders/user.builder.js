@@ -12,7 +12,7 @@ module.exports.findUserById = function (req) {
     return new Promise(async (resolve, reject) => {
         const user = await db.models.User.findOne({
             where: {
-                idUser: req.body.user_id
+                idUser: req.body.userId
             }
         });
         resolve(user);
