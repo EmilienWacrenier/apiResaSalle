@@ -29,14 +29,14 @@ module.exports.inscription = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
             // Vérification des paramètres
-            if (req.body.lastname == null || req.body.firstname == null || req.body.das == null ||
+            if (req.body.lastName == null || req.body.firstName == null || req.body.das == null ||
                 req.body.email == null || req.body.mdp == null) {
                 return resolve({ code: 400, result: 'Champs null' });
             }
             if (req.body.das.length != 7) {
                 return resolve({ code: 400, result: 'Das non valide' });
             }
-            if (req.body.lastname.length > 45 || req.body.firstname.length > 45 || req.body.mdp.length < 8) {
+            if (req.body.lastName.length > 45 || req.body.firstName.length > 45 || req.body.mdp.length < 8) {
                 return resolve({ code: 400, result: 'Longueur des champs' });
             }
             if (!REGEX.email.test(req.body.email)) {
