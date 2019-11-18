@@ -11,8 +11,15 @@ module.exports.get_users = () => {
 
 module.exports.get_user = (req) => {
     return new Promise(async (resolve, reject) => {
-        const user = await userBuilder.findUser(req);
+        const user = await userBuilder.findUser(req);//findUser à coder ?
         resolve(user);
+    })
+}
+
+module.exports.get_user_by_id = (req) => {
+    return new Promise(async (resolve,reject) => {
+        const user = await userBuilder.findUserById(req);
+        return resolve({code: 200, result: user});
     })
 }
 
@@ -93,4 +100,3 @@ module.exports.connexion = (req) => {
         }
     });
 }
-
