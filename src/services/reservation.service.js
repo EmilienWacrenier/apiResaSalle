@@ -4,6 +4,9 @@ const mailService = require('./mail.service');
 
 const moment = require('moment');
 const momentTz = require('moment-timezone');
+const timeZone = 'Europe/Paris'; //UTC+01:00
+const today = new Date ();
+const todayTz = momentTz.tz(today, 'YYYY-MM-DD HH:mm:ss',timeZone);
 
 const REGEX = require('../tools/validation/regex');
 
