@@ -117,8 +117,13 @@ module.exports.get_reservations = () => {
 //get reservation by id
 module.exports.get_reservation_by_id = (req) => {
     return new Promise(async (resolve, reject) => {
-        const reservation = await reservationBuilder.findReservationById(req);
-        return resolve({ code:200, result:reservation });
+        try {
+            const reservation = await reservationBuilder.findReservationById(req);
+            return resolve({ code:200, result:reservation });
+        } catch (err) {
+            console.log(err);
+            reject(err);
+        }
     });
 };
 //get les salles occupées entre startDate et endDate
