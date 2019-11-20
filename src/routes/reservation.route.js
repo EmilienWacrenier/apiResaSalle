@@ -16,5 +16,11 @@ router.get('/reservationsBySalleId', ReservationController.getSallesBookedById);
 router.post('/createReservation', ReservationController.creerReservation);
 router.post('/reservationsByUserId', ReservationController.getReservationsByUserId);
 
+// PUT
+
+
+// DELETE
+
+
 // Export routes
 module.exports = router;
