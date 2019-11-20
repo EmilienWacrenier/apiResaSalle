@@ -38,14 +38,19 @@ module.exports.findReservations = function () {
 //Trouver 1 reservation par id
 module.exports.findReservationById = function (req) {
     return new Promise(async (resolve, reject) => {
-        const reservationById = await db.models.Reservation.findOne(
-            {
-                where: {
-                    idReservation: req.body.reservationId
+        try {
+            const reservationById = await db.models.Reservation.findOne(
+                {
+                    where: {
+                        idReservation: req.body.reservationId
+                    }
                 }
-            }
-        );
-        resolve(reservationById);
+            );
+            resolve(reservationById);
+        } catch (err) {
+            console.log(err);
+            reject(err);
+        }    
     });
 };
 
