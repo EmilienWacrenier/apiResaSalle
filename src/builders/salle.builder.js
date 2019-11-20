@@ -13,13 +13,13 @@ module.exports.findSalles = function () {
     });
 };
 
-module.exports.findSalle = function (id) {
+module.exports.findSalle = function (req) {
     return new Promise(async (resolve, reject) => {
         try {
             const salle = await db.models.Salle.findOne(
                 {
                     where: {
-                        id_salle: id
+                        id_salle: req.body.salleId
                     }
                 }
             );
