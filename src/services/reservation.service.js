@@ -1,12 +1,7 @@
 const reservationBuilder = require('../builders/reservation.builder');
 const recurrenceBuilder = require('../builders/recurrence.builder');
 const mailService = require('./mail.service');
-
-const moment = require('moment');
-const momentTz = require('moment-timezone');
-const timeZone = 'Europe/Paris'; //UTC+01:00
-const today = new Date ();
-const todayTz = momentTz.tz(today, 'YYYY-MM-DD HH:mm:ss',timeZone);
+const joursFeries = require('../tools/joursFeries.service');
 
 const REGEX = require('../tools/validation/regex');
 
