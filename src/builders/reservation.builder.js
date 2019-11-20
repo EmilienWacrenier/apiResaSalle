@@ -50,7 +50,7 @@ module.exports.findReservationById = function (req) {
         } catch (err) {
             console.log(err);
             reject(err);
-        }    
+        }
     });
 };
 
@@ -108,7 +108,7 @@ module.exports.findSallesBookedById = function (req) {
         try {
             const sallesBookedById = await db.models.Salle.findOne({
                     where: {
-                        id_salle:req.body.id
+                        id_salle:req.body.salleId
                     },
                     include: [{
                         model: db.models.Reservation,
