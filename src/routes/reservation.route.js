@@ -11,10 +11,10 @@ router.get('/reservations', ReservationController.getReservations);
 router.get('/reservationById', ReservationController.getReservationById);
 router.get('/reservationsByDate', ReservationController.getSallesBooked);
 router.get('/reservationsBySalleId', ReservationController.getSallesBookedById);
+router.get('/reservationsByUserId', ReservationController.getReservationsByUserId);
 
 //POST
 router.post('/createReservation', ReservationController.creerReservation);
-router.post('/reservationsByUserId', ReservationController.getReservationsByUserId);
 
 // PUT
 
