@@ -5,6 +5,10 @@ const joursFeries = require('../tools/joursFeries.service');
 
 const REGEX = require('../tools/validation/regex');
 
+const moment = require('moment');
+const momentTz = require('moment-timezone');
+const timeZone = 'Europe/Paris'; //UTC+01:00
+
 //Créer une réservation
 module.exports.create_reservation = (req) => {
     return new Promise(async (resolve, reject) => {
@@ -79,9 +83,10 @@ module.exports.create_reservation = (req) => {
             else {
                 // Résa simple
                 try {
-
+                    const dateDebut = momentTz.tz(req.body.startDate,'YYYY-MM-DD HH:mm:ss',timeZone);
+                    const dateFin = momentTz.tz(req.body.endDate,'YYYY-MM-DD HH:mm:ss',timeZone);
                     var createdReservation = await reservationBuilder.createReservation(
-                        req.body.startDate, req.body.endDate, req.body.objet, 1, req.body.user_id,
+                        dateDebut, dateFin, req.body.objet, 1, req.body.user_id,
                         null, req.body.salle_id
                     )
                     .then(function(createdReservation){

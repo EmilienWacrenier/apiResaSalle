@@ -16,6 +16,7 @@ module.exports.createReservation = function (dateDebut, dateFin, objet, etat, us
                     salle_id: salle_id
                 }
             );
+            console.log(nouvReservation.dateDebut + nouvReservation.dateFin);
             resolve(nouvReservation);
         } catch (err) {
             console.log(err);
