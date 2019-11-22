@@ -166,9 +166,38 @@ const JOURS_FERIES = [
     }
 ];
 
-function isWorkingDay(jour) { // jour=jour à tester
-    const formatJour = moment(jour).format('DD MM YYYY');
+function isFerie(jour) {
+    const dateJour = moment(jour).format('DD MM YYYY');
+    for (date in JOURS_FERIES) { // à voir : comment parcourir les dates das JOURS_FERIES
+        if (date===dateJour) {
+            return true;
+            return console.log('Jour férié : '+ name + ' Date : ' + date);
+        } else {
+            return false;
+            return console.log("Ce jour n'est pas férié !");
+        }
+    };
+};
 
+function isWeekEnd(jour) {
+    const dateJour = moment(jour).format('DD MM YYYY');
+    if (dateJour.day() === 0 || dateJour.day() === 6) {
+        return true;
+        return console.log('week end !')
+    } else {
+        return false;
+        return console.log('jour de la semaine !');
+    }
+};
+
+function isWorkingDay(jour) { // parametre = jour à tester
+    if(!this.isFerie(jour) && !this.isWeekEnd(jour)) {
+        return true;
+        return console.log(jour + ' est un jour ouvré.' );
+    } else {
+        return false;
+        return console.log(jour + ' est un Férié ou un weekend.');
+    }
 };
 
 
