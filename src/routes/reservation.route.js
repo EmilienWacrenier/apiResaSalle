@@ -24,5 +24,7 @@ router.post('/createReservation', ReservationController.creerReservation);
 
 // TEST workingDay
 router.get('/isWorkingDay', ReservationController.isWorkingDay);
+//TEST isWeekEnd
+router.get('/isWeekEnd', ReservationController.isWeekEnd);
 // Export routes
 module.exports = router;

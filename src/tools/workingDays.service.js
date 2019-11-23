@@ -3,9 +3,25 @@ const momentTz = require('moment-timezone');
 const timeZone = 'Europe/Paris'; //UTC+01:00
 const momentE = require('moment-easter');
 
+// Jour de week end
+module.exports.is_week_end = (req) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const testedDate = moment(req.body.startDate).format('YYYY-MM-DD');
+            const testedDay = moment(testedDate).day();
+            if (testedDay===0 || testedDay===6) {
+                return resolve({code:200, result: testedDate + ' est un jour de week-end!'})
+            } else {
+                return resolve({code:200, result: testedDate + ' est un jour de semaine!'})
+            };
+        } catch (err) {
+            console.log(err);
+            reject(err);
+        }
+    });
+};
 // Jours Fériés
-
-module.exports.is_working_day = () => {
+module.exports.liste_jours_feries = () => {
     return new Promise(async (resolve, reject) => {
         try {
             const jourDeLAn = this.jour_de_l_an();
