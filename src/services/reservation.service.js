@@ -1,7 +1,6 @@
 const reservationBuilder = require('../builders/reservation.builder');
 const recurrenceBuilder = require('../builders/recurrence.builder');
 const mailService = require('./mail.service');
-const joursFeries = require('../tools/joursFeries.service');
 
 const REGEX = require('../tools/validation/regex');
 
@@ -13,12 +12,6 @@ const timeZone = 'Europe/Paris'; //UTC+01:00
 module.exports.create_reservation = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            // Vérification jour ouvré
-            // const isWorkDay = joursFeries.isWorkingDay(req.body.startDate);
-            // console.log(isWorkDay);
-            // if (!isWorkDay) {
-            //     return resolve ({ code: 400, result: 'Attention : Jour Férié ou Week-end !'});
-            // }
             // Vérification de la présence des infos sur la réservation
             if (req.body.startDate == null || req.body.endDate == null || req.body.objet == null
                 || req.body.salle_id == null || req.body.user_id == null) {

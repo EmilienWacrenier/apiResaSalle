@@ -1,4 +1,5 @@
 const reservationService = require('../services/reservation.service');
+const workingDaysService = require('../tools/workingDays.service');
 
 exports.creerReservation = async (req, res) => {
     let data = await reservationService.create_reservation(req);
@@ -33,5 +34,10 @@ exports.getSallesBookedById = async (req, res) => {
 
 exports.getReservationsByUserId = async (req, res) => {
     let data = await reservationService.get_reservations_by_user_id(req);
+    return res.status(data.code).json({ result: data.result });
+}
+//test isWorkingDay
+exports.isWorkingDay = async (req, res) => {
+    let data = await workingDaysService.is_working_day();
     return res.status(data.code).json({ result: data.result });
 }

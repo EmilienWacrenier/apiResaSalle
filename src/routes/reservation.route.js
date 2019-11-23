@@ -22,5 +22,7 @@ router.post('/createReservation', ReservationController.creerReservation);
 // DELETE
 
 
+// TEST workingDay
+router.get('/isWorkingDay', ReservationController.isWorkingDay);
 // Export routes
 module.exports = router;
