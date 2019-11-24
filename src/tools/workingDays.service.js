@@ -20,42 +20,43 @@ module.exports.is_week_end = (req) => {
         }
     });
 };
+
 // Jours Fériés
-module.exports.liste_jours_feries = () => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            const jourDeLAn = this.jour_de_l_an();
-            const paques = this.paques();
-            const lundiDePaques = this.lundi_de_paques();
-            const feteDuTravail = this.fete_du_travail();
-            const ascension = this.ascension();
-            const victoireDesAllies = this.victoire_des_allies();
-            const pentecote = this.pentecote();
-            const feteNationale = this.fete_nationale();
-            const assomption = this.assomption();
-            const toussaint = this.toussaint();
-            const armistice = this.armistice();
-            const noel = this.noel();
-            const joursFeries = {
-                "Jour de l'an": jourDeLAn,
-                "Paques": paques,
-                "Lundi de Pâques": lundiDePaques,
-                "Fête du Travail": feteDuTravail,
-                "Victoire des Alliés": victoireDesAllies,
-                "Ascension": ascension,
-                "Lundi de Pentecôte": pentecote,
-                "Fête Nationale": feteNationale,
-                "Assomption": assomption,
-                "Toussaint": toussaint,
-                "Armistice": armistice,
-                "Noël": noel
-            };
-            return resolve({ code: 200, result: joursFeries });
-        } catch (err) {
-            console.log(err);
-            reject(err);
-        }
-    });
+module.exports.is_ferie = (req) => {
+    var listeFeries = this.liste_jours_feries();
+    const testedDate = moment(req.body.startDate).format('YYYY-MM-DD');
+    var result = listeFeries.some(ferie => ferie===testedDate);
+    console.log(result + ' result dans is ferie');
+    return result;
+};
+module.exports.liste_jours_feries = (req) => {
+    const jourDeLAn = this.jour_de_l_an();
+    const paques = this.paques();
+    const lundiDePaques = this.lundi_de_paques();
+    const feteDuTravail = this.fete_du_travail();
+    const ascension = this.ascension();
+    const victoireDesAllies = this.victoire_des_allies();
+    const pentecote = this.pentecote();
+    const feteNationale = this.fete_nationale();
+    const assomption = this.assomption();
+    const toussaint = this.toussaint();
+    const armistice = this.armistice();
+    const noel = this.noel();
+    var joursFeries = [];
+    joursFeries.push(jourDeLAn);
+    joursFeries.push(paques);
+    joursFeries.push(lundiDePaques);
+    joursFeries.push(feteDuTravail);
+    joursFeries.push(victoireDesAllies);
+    joursFeries.push(ascension);
+    joursFeries.push(pentecote);
+    joursFeries.push(feteNationale);
+    joursFeries.push(assomption);
+    joursFeries.push(toussaint);
+    joursFeries.push(armistice);
+    joursFeries.push(noel);
+    console.log(joursFeries + ' jours féries dans liste_jours_feries')
+    return joursFeries;
 };
 //Calcul des jours féries
 module.exports.paques = () => {
