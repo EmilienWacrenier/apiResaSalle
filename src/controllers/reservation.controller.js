@@ -37,14 +37,16 @@ exports.getReservationsByUserId = async (req, res) => {
     return res.status(data.code).json({ result: data.result });
 }
 //test isWorkingDay
-// exports.isWorkingDay = () => {
-//     let data = workingDaysService.liste_jours_feries();
-//     return data;
-// }
+exports.isWorkingDay = (req, res) => {
+    let data = workingDaysService.is_working_day(req);
+    console.log(data);
+    return res.status(data.code).json({ result: data.result });
+}
 //test isWeekEnd
 exports.isWeekEnd = async (req, res) => {
     let data = await workingDaysService.is_week_end(req);
-    return res.status(data.code).json({result: data.result });
+    return console.log(data);
+    return data.toString();
 }
 //test isFerie
 exports.isFerie = (req) => {

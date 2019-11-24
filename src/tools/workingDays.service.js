@@ -3,28 +3,43 @@ const momentTz = require('moment-timezone');
 const timeZone = 'Europe/Paris'; //UTC+01:00
 const momentE = require('moment-easter');
 
+// Jour ouvré
+module.exports.is_working_day = (req) => {
+    var isWeekEnd = this.is_week_end(req.body.startDate);
+    var isFerie = this.is_ferie(req.body.startDate);
+    console.log(isWeekEnd);
+    console.log(isFerie);
+    var result;
+    if (isFerie==false && isWeekEnd==false) {
+        console.log('jour ouvré');
+        result = true;
+    } else {
+        console.log('jour férié ou week end');
+        result = false;
+    }
+    console.log(result + ' result dans is_working_day');
+    return { code:200, result:result };
+}
 // Jour de week end
-module.exports.is_week_end = (req) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            const testedDate = moment(req.body.startDate).format('YYYY-MM-DD');
-            const testedDay = moment(testedDate).day();
-            if (testedDay===0 || testedDay===6) {
-                return resolve({code:200, result: testedDate + ' est un jour de week-end!'})
-            } else {
-                return resolve({code:200, result: testedDate + ' est un jour de semaine!'})
-            };
-        } catch (err) {
-            console.log(err);
-            reject(err);
-        }
-    });
+module.exports.is_week_end = (j) => {
+    const testedDate = moment(j).format('YYYY-MM-DD');
+    const testedDay = moment(testedDate).day();
+    console.log(testedDate);
+    var result;
+    if (testedDay===0 || testedDay===6) {
+        console.log(testedDate + ' est un jour de week end');
+        result = true;
+    } else {
+        console.log(testedDate + ' est un jour de semaine');
+        result = false;
+    };
+    return result;
 };
 
 // Jours Fériés
-module.exports.is_ferie = (req) => {
+module.exports.is_ferie = (j) => {
     var listeFeries = this.liste_jours_feries();
-    const testedDate = moment(req.body.startDate).format('YYYY-MM-DD');
+    const testedDate = moment(j).format('YYYY-MM-DD');
     var result = listeFeries.some(ferie => ferie===testedDate);
     console.log(result + ' result dans is ferie');
     return result;

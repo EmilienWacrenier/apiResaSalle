@@ -23,7 +23,7 @@ router.post('/createReservation', ReservationController.creerReservation);
 
 
 // TEST workingDay
-// router.get('/isWorkingDay', ReservationController.isWorkingDay);
+router.get('/isWorkingDay', ReservationController.isWorkingDay);
 //TEST isWeekEnd
 router.get('/isWeekEnd', ReservationController.isWeekEnd);
 //TEST isFerie
