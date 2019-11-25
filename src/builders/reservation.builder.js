@@ -140,7 +140,7 @@ module.exports.findSallesBookedById = function (salleId, startDate, endDate) {
                 include: [{
                     model: db.models.Reservation,
                     where: {
-                        idSalle: salleId
+                        id_salle: salleId
                     },
                     include: [{
                         model: db.models.Reservation,

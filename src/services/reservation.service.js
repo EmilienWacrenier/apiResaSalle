@@ -216,9 +216,20 @@ module.exports.get_salles_booked_by_id = (params) => {
                 startDate,
                 endDate
             } = params; //params du header
+<<<<<<< HEAD
             const sallesBookedById = await reservationBuilder.findSallesBookedById(salleId, startDate, endDate);
             return resolve({ code:200, result:sallesBookedById });
 >>>>>>> 0083e9566ad2d818cba618d8c5cb4e75525d86a3
+=======
+            if (!salleId) {
+                console.log(salleId);
+                console.log('salleId undefined');
+            }
+            else {
+                const sallesBookedById = await reservationBuilder.findSallesBookedById(salleId, startDate, endDate);
+                return resolve({ code:200, result:sallesBookedById });
+            }
+>>>>>>> 543e04743ef2071fd648bd4b3b8928fd0cd478ef
         } catch (err) {
             console.log(err);
             reject(err);
