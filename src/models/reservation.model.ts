@@ -1,7 +1,7 @@
 module.exports = (sequelize, Sequelize) => {
     const reservation = sequelize.define('reservation', {
         idReservation: {
-            type: Sequelize.INTEGER,
+            type: Sequelize.INTEGER(11),
             allowNull: false,
             primaryKey: true,
             autoIncrement: true,
@@ -23,7 +23,7 @@ module.exports = (sequelize, Sequelize) => {
         },
         user_id: {
             allowNull: false,
-            type: Sequelize.INTEGER(45)
+            type: Sequelize.INTEGER(11)
         },
         recurrence_id:  {
             allowNull: true,
@@ -51,7 +51,10 @@ module.exports = (sequelize, Sequelize) => {
             foreignKey: 'user_id'
         });
         reservation.belongsToMany(models.user, {
-            through: 'user_reservation'
+            through: 'user_reservation',
+            as: 'users',
+            foreignKey: 'idReservation',
+            otherKey: 'idUser'
         })
     }
 

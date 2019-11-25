@@ -12,7 +12,7 @@ router.get('/reservationById', ReservationController.getReservationById);
 router.get('/reservationsByDate', ReservationController.getSallesBooked);
 router.post('/reservationsBySalleId', ReservationController.getSallesBookedById);
 router.get('/reservationsByUserId', ReservationController.getReservationsByUserId);
-
+router.get('/participants', ReservationController.getParticipantsByIdReservation);
 //POST
 router.post('/createReservation', ReservationController.creerReservation);
 

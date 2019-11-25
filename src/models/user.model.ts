@@ -46,7 +46,10 @@ module.exports = (sequelizeModels, Sequelize) => {
             foreignKey: 'role_id'
         });
         user.belongsToMany(models.reservation, {
-            through: 'user_reservation'
+            through: 'user_reservation',
+            as: 'reservations',
+            foreignKey: 'idUser',
+            otherKey: 'idReservation'
         })
         
     }

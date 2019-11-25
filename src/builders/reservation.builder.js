@@ -1,10 +1,12 @@
 const db = require('../config/db.config');
 const Op = require('Sequelize').Op;
 
+
 //Créer une réservation
-module.exports.createReservation = function (dateDebut, dateFin, objet, etat, user_id, recurrence_id, salle_id) {
+module.exports.createReservation = function (dateDebut, dateFin, objet, etat, user_id, recurrence_id, salle_id, req) {
     return new Promise(async (resolve, reject) => {
         try {
+
             const nouvReservation = await db.models.Reservation.create(
                 {
                     dateDebut: dateDebut,
@@ -14,10 +16,34 @@ module.exports.createReservation = function (dateDebut, dateFin, objet, etat, us
                     user_id: user_id,
                     recurrence_id: recurrence_id,
                     salle_id: salle_id
-                }
-            );
+
+                });
             console.log(nouvReservation.dateDebut + nouvReservation.dateFin);
+
+            try {
+                const crea = new Date();
+                // Parcours des idUser de la req
+                req.body.users.forEach(element => {
+                    const raw1 = db.sequelize.query(
+                        'INSERT into user_reservation (created_at, updated_at, id_reservation, id_user)\
+                        VALUES ((:crea), (:crea),(:reservation_id), (:user_id))', {
+                        replacements: {
+                            crea: crea,
+                            reservation_id: nouvReservation.idReservation,
+                            user_id: element
+                        },
+                        type: db.sequelize.QueryTypes.INSERT
+                    }
+                    );
+                });
+
+            } catch (err) {
+                console.log(err)
+                reject(err)
+            }
+
             resolve(nouvReservation);
+
         } catch (err) {
             console.log(err);
             reject(err);
@@ -67,13 +93,13 @@ module.exports.findSallesBookedByDay = function (req) {
                     model: db.models.Reservation,
                     where: {
                         dateDebut: {
-                            [Op.between] : [debutJour,finJour]
+                            [Op.between]: [debutJour, finJour]
                         },
                         etat: 1,
                     }
                 }]
-        });
-        resolve(sallesBookedByDay);
+            });
+            resolve(sallesBookedByDay);
         } catch (err) {
             console.log(err);
             reject(err);
@@ -89,14 +115,14 @@ module.exports.findSallesBookedBetween = function (req) {
                     model: db.models.Reservation,
                     where: {
                         dateDebut: {
-                            [Op.between] : [req.body.startDate,req.body.endDate]
+                            [Op.between]: [req.body.startDate, req.body.endDate]
                         },
                         etat: 1,
                     }
                 }
-            ]
-        });
-        resolve(sallesBookedBetween);
+                ]
+            });
+            resolve(sallesBookedBetween);
         } catch (err) {
             console.log(err);
             reject(err);
@@ -108,20 +134,20 @@ module.exports.findSallesBookedById = function (req) {
     return new Promise(async (resolve, reject) => {
         try {
             const sallesBookedById = await db.models.Salle.findOne({
+                where: {
+                    id_salle: req.body.salleId
+                },
+                include: [{
+                    model: db.models.Reservation,
                     where: {
-                        id_salle:req.body.salleId
-                    },
-                    include: [{
-                        model: db.models.Reservation,
-                        where: {
-                            dateDebut: {
-                                [Op.between] : [req.body.startDate,req.body.endDate]
-                            },
-                            etat: 1,
-                        }
-                    }]
-        });
-        resolve(sallesBookedById);
+                        dateDebut: {
+                            [Op.between]: [req.body.startDate, req.body.endDate]
+                        },
+                        etat: 1,
+                    }
+                }]
+            });
+            resolve(sallesBookedById);
         } catch (err) {
             console.log(err);
             reject(err);
@@ -133,14 +159,27 @@ module.exports.findReservationsByUserId = function (req) {
     return new Promise(async (resolve, reject) => {
         try {
             const reservationsByUserId = await db.models.Reservation.findAll({
-                    where: {
-                        user_id:req.body.user_id
-                    }
+                where: {
+                    user_id: req.body.user_id
+                }
             });
-        resolve(reservationsByUserId);
+            resolve(reservationsByUserId);
         } catch (err) {
             console.log(err);
             reject(err);
         }
     });
 };
+
+module.exports.findParticipantsByReservationId = function (idReservation) {
+    return new Promise(async (resolve, reject) => {
+        const participants = await db.sequelize.query(
+            'select * from user inner join user_reservation on user.id_user = user_reservation.id_user\
+            where user_reservation.id_reservation = (:idReservation)' ,{
+                replacements: {idReservation: idReservation},
+                type: db.sequelize.QueryTypes.SELECT
+            }
+        )
+        resolve(participants);
+    })
+}

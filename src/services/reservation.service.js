@@ -1,6 +1,7 @@
 const reservationBuilder = require('../builders/reservation.builder');
 const recurrenceBuilder = require('../builders/recurrence.builder');
 const mailService = require('./mail.service');
+const userBuilder = require('../builders/user.builder');
 
 const REGEX = require('../tools/validation/regex');
 
@@ -12,6 +13,19 @@ const timeZone = 'Europe/Paris'; //UTC+01:00
 module.exports.create_reservation = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
+            // Vérification des userId 
+            for(const idUser of req.body.users){
+                reqq = {
+                    body: {
+                        userId: idUser
+                    }
+                }
+                var existingUser = await userBuilder.findUserById(reqq)
+                if (existingUser == null) {     
+                    return resolve({ code: 400, result: 'User non trouve' });
+                }
+            }
+
             // Vérification de la présence des infos sur la réservation
             if (req.body.startDate == null || req.body.endDate == null || req.body.objet == null
                 || req.body.objet == ""
@@ -83,15 +97,15 @@ module.exports.create_reservation = (req) => {
             else {
                 // Résa simple
                 try {
-                    const dateDebut = momentTz.tz(req.body.startDate,'YYYY-MM-DD HH:mm:ss',timeZone);
-                    const dateFin = momentTz.tz(req.body.endDate,'YYYY-MM-DD HH:mm:ss',timeZone);
+                    const dateDebut = momentTz.tz(req.body.startDate, 'YYYY-MM-DD HH:mm:ss', timeZone);
+                    const dateFin = momentTz.tz(req.body.endDate, 'YYYY-MM-DD HH:mm:ss', timeZone);
                     var createdReservation = await reservationBuilder.createReservation(
                         dateDebut, dateFin, req.body.objet, 1, req.body.user_id,
-                        null, req.body.salle_id
+                        null, req.body.salle_id, req
                     )
-                    .then(function(createdReservation){
-                        return resolve({ code: 200, result: createdReservation });
-                    })
+                        .then(function (createdReservation) {
+                            return resolve({ code: 200, result: createdReservation });
+                        })
                 }
                 catch (error) {
                     return resolve({ code: 400, result: error })
@@ -110,7 +124,7 @@ module.exports.get_reservations = () => {
     return new Promise(async (resolve, reject) => {
         try {
             const reservations = await reservationBuilder.findReservations();
-            return resolve({ code:200, result:reservations });
+            return resolve({ code: 200, result: reservations });
         } catch (err) {
             console.log(err);
             reject(err);
@@ -122,7 +136,7 @@ module.exports.get_reservation_by_id = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
             const reservation = await reservationBuilder.findReservationById(req);
-            return resolve({ code:200, result:reservation });
+            return resolve({ code: 200, result: reservation });
         } catch (err) {
             console.log(err);
             reject(err);
@@ -134,13 +148,13 @@ module.exports.get_salles_booked_between = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
             if (!req.body.startDate || !req.body.endDate) {
-                return reject({ code:400, result:"Il manque une startDate ou une endDate !"});
+                return reject({ code: 400, result: "Il manque une startDate ou une endDate !" });
             }
             if (REGEX.date.test(req.body.startDate) && REGEX.date.test(req.body.endDate)) {
                 const sallesBookedBetween = await reservationBuilder.findSallesBookedBetween(req);
-                return resolve({ code:200, result:sallesBookedBetween });
+                return resolve({ code: 200, result: sallesBookedBetween });
             } else {
-                return reject({ code:400, result:"Les dates ne sont pas au bon format ! Utiliser le format TIMESTAMP : YYYY-MM-DD HH:mm:ss" });
+                return reject({ code: 400, result: "Les dates ne sont pas au bon format ! Utiliser le format TIMESTAMP : YYYY-MM-DD HH:mm:ss" });
             }
         } catch (err) {
             console.log(err);
@@ -153,7 +167,7 @@ module.exports.get_salles_booked_by_day = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
             const sallesBookedByDay = await reservationBuilder.findSallesBookedByDay(req);
-            return resolve({ code:200, result:sallesBookedByDay });
+            return resolve({ code: 200, result: sallesBookedByDay });
         } catch (err) {
             console.log(err);
             reject(err);
@@ -165,7 +179,7 @@ module.exports.get_salles_booked_by_id = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
             const sallesBookedById = await reservationBuilder.findSallesBookedById(req);
-            return resolve({ code:200, result:sallesBookedById });
+            return resolve({ code: 200, result: sallesBookedById });
         } catch (err) {
             console.log(err);
             reject(err);
@@ -176,10 +190,23 @@ module.exports.get_reservations_by_user_id = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
             const reservationsByUserId = await reservationBuilder.findReservationsByUserId(req);
-            return resolve({ code:200, result:reservationsByUserId });
+            return resolve({ code: 200, result: reservationsByUserId });
         } catch (err) {
             console.log(err);
             reject(err);
         }
     });
 };
+
+module.exports.get_participants_by_reservation_id = (req) =>{
+    return new Promise(async (resolve, reject) => {
+        try {
+            console.log(req.headers['reservation_id']);
+            const participants = await reservationBuilder.findParticipantsByReservationId(req.headers['reservation_id']);
+            return resolve({code: 200, result: participants})
+        } catch (err) {
+            console.log(err);
+            reject(err);
+        }
+    })
+}
