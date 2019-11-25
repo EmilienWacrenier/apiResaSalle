@@ -14,6 +14,7 @@ module.exports.create_reservation = (req) => {
         try {
             // Vérification de la présence des infos sur la réservation
             if (req.body.startDate == null || req.body.endDate == null || req.body.objet == null
+                || req.body.objet == ""
                 || req.body.salle_id == null || req.body.user_id == null) {
                 return resolve({ code: 400, result: 'Un champs de réservation est nul' });
             }
