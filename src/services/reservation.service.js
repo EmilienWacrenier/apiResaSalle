@@ -132,19 +132,11 @@ module.exports.get_reservations = () => {
     });
 };
 //get reservation by id
-module.exports.get_reservation_by_id = (params) => {
+module.exports.get_reservation_by_id = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-<<<<<<< HEAD
             const reservation = await reservationBuilder.findReservationById(req);
             return resolve({ code: 200, result: reservation });
-=======
-            const {
-                id
-            } = params; //params du header
-            const reservation = await reservationBuilder.findReservationById(id);
-            return resolve({ code:200, result:reservation });
->>>>>>> 0083e9566ad2d818cba618d8c5cb4e75525d86a3
         } catch (err) {
             console.log(err);
             reject(err);
@@ -152,28 +144,15 @@ module.exports.get_reservation_by_id = (params) => {
     });
 };
 //get les salles occupées entre startDate et endDate
-module.exports.get_salles_booked_between = (params) => {
+module.exports.get_salles_booked_between = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-<<<<<<< HEAD
             if (!req.body.startDate || !req.body.endDate) {
                 return reject({ code: 400, result: "Il manque une startDate ou une endDate !" });
             }
             if (REGEX.date.test(req.body.startDate) && REGEX.date.test(req.body.endDate)) {
                 const sallesBookedBetween = await reservationBuilder.findSallesBookedBetween(req);
                 return resolve({ code: 200, result: sallesBookedBetween });
-=======
-            const {
-                startDate,
-                endDate
-            } = params; //params du header
-            if (!startDate || !endDate) {
-                return reject({ code:400, result:"Il manque une startDate ou une endDate !"});
-            }
-            if (REGEX.date.test(startDate) && REGEX.date.test(endDate)) {
-                const sallesBookedBetween = await reservationBuilder.findSallesBookedBetween(startDate,endDate);
-                return resolve({ code:200, result:sallesBookedBetween });
->>>>>>> 0083e9566ad2d818cba618d8c5cb4e75525d86a3
             } else {
                 return reject({ code: 400, result: "Les dates ne sont pas au bon format ! Utiliser le format TIMESTAMP : YYYY-MM-DD HH:mm:ss" });
             }
@@ -184,19 +163,11 @@ module.exports.get_salles_booked_between = (params) => {
     });
 };
 // get salles réservées par jour (body: date)
-module.exports.get_salles_booked_by_day = (params) => {
+module.exports.get_salles_booked_by_day = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-<<<<<<< HEAD
             const sallesBookedByDay = await reservationBuilder.findSallesBookedByDay(req);
             return resolve({ code: 200, result: sallesBookedByDay });
-=======
-            const {
-                startDate
-            } = params; //params du header
-            const sallesBookedByDay = await reservationBuilder.findSallesBookedByDay(startDate);
-            return resolve({ code:200, result:sallesBookedByDay });
->>>>>>> 0083e9566ad2d818cba618d8c5cb4e75525d86a3
         } catch (err) {
             console.log(err);
             reject(err);
@@ -204,32 +175,11 @@ module.exports.get_salles_booked_by_day = (params) => {
     });
 };
 //Get une réservation by salle_id between une startDate et une endDate
-module.exports.get_salles_booked_by_id = (params) => {
+module.exports.get_salles_booked_by_id = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-<<<<<<< HEAD
             const sallesBookedById = await reservationBuilder.findSallesBookedById(req);
             return resolve({ code: 200, result: sallesBookedById });
-=======
-            const {
-                salleId,
-                startDate,
-                endDate
-            } = params; //params du header
-<<<<<<< HEAD
-            const sallesBookedById = await reservationBuilder.findSallesBookedById(salleId, startDate, endDate);
-            return resolve({ code:200, result:sallesBookedById });
->>>>>>> 0083e9566ad2d818cba618d8c5cb4e75525d86a3
-=======
-            if (!salleId) {
-                console.log(salleId);
-                console.log('salleId undefined');
-            }
-            else {
-                const sallesBookedById = await reservationBuilder.findSallesBookedById(salleId, startDate, endDate);
-                return resolve({ code:200, result:sallesBookedById });
-            }
->>>>>>> 543e04743ef2071fd648bd4b3b8928fd0cd478ef
         } catch (err) {
             console.log(err);
             reject(err);
