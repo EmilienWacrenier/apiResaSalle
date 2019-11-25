@@ -135,6 +135,7 @@ module.exports.get_reservations = () => {
 module.exports.get_reservation_by_id = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
+            var reservationId = req.query.reservation_id;
             const reservation = await reservationBuilder.findReservationById(req.headers['reservation_id']);
             return resolve({ code: 200, result: reservation });
         } catch (err) {
@@ -178,7 +179,10 @@ module.exports.get_salles_booked_by_day = (req) => {
 module.exports.get_salles_booked_by_id = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sallesBookedById = await reservationBuilder.findSallesBookedById(req);
+            const salleId = req.query.salle_id;
+            const startDate = req.query.start_date;
+            const endDate = req.query.end_date;
+            const sallesBookedById = await reservationBuilder.findSallesBookedById(salleId, startDate, endDate);
             return resolve({ code: 200, result: sallesBookedById });
         } catch (err) {
             console.log(err);
