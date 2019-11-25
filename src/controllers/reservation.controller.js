@@ -27,7 +27,7 @@ exports.getSallesBookedByDay = async (req, res) => {
 }
 
 exports.getSallesBookedById = async (req, res) => {
-    let data = await reservationService.get_salles_booked_by_id(req);
+    let data = await reservationService.get_salles_booked_by_id(req.params);
     return res.status(data.code).json({ result: data.result });
 }
 

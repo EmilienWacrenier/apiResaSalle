@@ -103,19 +103,19 @@ module.exports.findSallesBookedBetween = function (startDate,endDate) {
         }
     });
 };
-//Trouver une salle et afficher les réservations associées between startDate et endDate
-module.exports.findSallesBookedById = function (req) {
+//Trouver une salle et afficher les réservations associées entre startDate et endDate
+module.exports.findSallesBookedById = function (salleId, startDate, endDate) {
     return new Promise(async (resolve, reject) => {
         try {
             const sallesBookedById = await db.models.Salle.findOne({
                     where: {
-                        id_salle:req.body.salleId
+                        idSalle: salleId
                     },
                     include: [{
                         model: db.models.Reservation,
                         where: {
                             dateDebut: {
-                                [Op.between] : [req.body.startDate,req.body.endDate]
+                                [Op.between] : [startDate,endDate]
                             },
                             etat: 1,
                         }

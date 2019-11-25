@@ -170,10 +170,15 @@ module.exports.get_salles_booked_by_day = (params) => {
     });
 };
 //Get une réservation by salle_id between une startDate et une endDate
-module.exports.get_salles_booked_by_id = (req) => {
+module.exports.get_salles_booked_by_id = (params) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sallesBookedById = await reservationBuilder.findSallesBookedById(req);
+            const {
+                salleId,
+                startDate,
+                endDate
+            } = params; //params du header
+            const sallesBookedById = await reservationBuilder.findSallesBookedById(salleId, startDate, endDate);
             return resolve({ code:200, result:sallesBookedById });
         } catch (err) {
             console.log(err);
