@@ -178,8 +178,14 @@ module.exports.get_salles_booked_by_id = (params) => {
                 startDate,
                 endDate
             } = params; //params du header
-            const sallesBookedById = await reservationBuilder.findSallesBookedById(salleId, startDate, endDate);
-            return resolve({ code:200, result:sallesBookedById });
+            if (!salleId) {
+                console.log(salleId);
+                console.log('salleId undefined');
+            }
+            else {
+                const sallesBookedById = await reservationBuilder.findSallesBookedById(salleId, startDate, endDate);
+                return resolve({ code:200, result:sallesBookedById });
+            }
         } catch (err) {
             console.log(err);
             reject(err);

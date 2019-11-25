@@ -109,7 +109,7 @@ module.exports.findSallesBookedById = function (salleId, startDate, endDate) {
         try {
             const sallesBookedById = await db.models.Salle.findOne({
                     where: {
-                        idSalle: salleId
+                        id_salle: salleId
                     },
                     include: [{
                         model: db.models.Reservation,

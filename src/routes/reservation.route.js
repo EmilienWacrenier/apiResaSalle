@@ -11,7 +11,7 @@ router.get('/reservations', ReservationController.getReservations);
 router.get('/reservationById/:id', ReservationController.getReservationById);
 router.get('/reservationsByDate/:startDate/:endDate', ReservationController.getSallesBookedBetween);
 router.get('/reservationsByDay/:startDate', ReservationController.getSallesBookedByDay);
-router.get('/reservationsBySalleId/:idSalle/:startDate/:endDate', ReservationController.getSallesBookedById);
+router.get('/reservationsBySalleId/:salleId/:startDate/:endDate', ReservationController.getSallesBookedById);
 router.get('/reservationsByUserId', ReservationController.getReservationsByUserId);
 
 //POST
