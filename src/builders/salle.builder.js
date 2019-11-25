@@ -13,16 +13,14 @@ module.exports.findSalles = function () {
     });
 };
 
-module.exports.findSalle = function (req) {
+module.exports.findSalle = function (id) {
     return new Promise(async (resolve, reject) => {
         try {
-            const salle = await db.models.Salle.findOne(
-                {
-                    where: {
-                        id_salle: req.body.salleId
-                    }
+            const salle = await db.models.Salle.findOne({
+                where: {
+                    idSalle: id
                 }
-            );
+                });
             resolve(salle);
         } catch (err) {
             console.log(err);
