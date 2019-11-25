@@ -107,7 +107,7 @@ module.exports.findSallesBookedByDay = function (startDate) {
     });
 };
 //Trouver les salles associées à une résa entre startDate et endDate
-module.exports.findSallesBookedBetween = function (startDate,endDate) {
+module.exports.findSallesBookedBetween = function (startDate, endDate) {
     return new Promise(async (resolve, reject) => {
         try {
             const sallesBookedBetween = await db.models.Salle.findAll({
@@ -115,7 +115,7 @@ module.exports.findSallesBookedBetween = function (startDate,endDate) {
                     model: db.models.Reservation,
                     where: {
                         dateDebut: {
-                            [Op.between] : [startDate,endDate]
+                            [Op.between]: [startDate, endDate]
                         },
                         etat: 1,
                     }
@@ -146,13 +146,14 @@ module.exports.findSallesBookedById = function (salleId, startDate, endDate) {
                         model: db.models.Reservation,
                         where: {
                             dateDebut: {
-                                [Op.between] : [startDate,endDate]
+                                [Op.between]: [startDate, endDate]
                             },
                             etat: 1,
                         }
                     }]
-        });
-        resolve(sallesBookedById);
+                }]
+            });
+            resolve(sallesBookedById);
         } catch (err) {
             console.log(err);
             reject(err);
@@ -180,10 +181,10 @@ module.exports.findParticipantsByReservationId = function (idReservation) {
     return new Promise(async (resolve, reject) => {
         const participants = await db.sequelize.query(
             'select * from user inner join user_reservation on user.id_user = user_reservation.id_user\
-            where user_reservation.id_reservation = (:idReservation)' ,{
-                replacements: {idReservation: idReservation},
-                type: db.sequelize.QueryTypes.SELECT
-            }
+            where user_reservation.id_reservation = (:idReservation)' , {
+            replacements: { idReservation: idReservation },
+            type: db.sequelize.QueryTypes.SELECT
+        }
         )
         resolve(participants);
     })
