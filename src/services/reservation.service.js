@@ -132,14 +132,18 @@ module.exports.get_reservation_by_id = (params) => {
     });
 };
 //get les salles occupées entre startDate et endDate
-module.exports.get_salles_booked_between = (req) => {
+module.exports.get_salles_booked_between = (params) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!req.body.startDate || !req.body.endDate) {
+            const {
+                startDate,
+                endDate
+            } = params; //params du header
+            if (!startDate || !endDate) {
                 return reject({ code:400, result:"Il manque une startDate ou une endDate !"});
             }
-            if (REGEX.date.test(req.body.startDate) && REGEX.date.test(req.body.endDate)) {
-                const sallesBookedBetween = await reservationBuilder.findSallesBookedBetween(req);
+            if (REGEX.date.test(startDate) && REGEX.date.test(endDate)) {
+                const sallesBookedBetween = await reservationBuilder.findSallesBookedBetween(startDate,endDate);
                 return resolve({ code:200, result:sallesBookedBetween });
             } else {
                 return reject({ code:400, result:"Les dates ne sont pas au bon format ! Utiliser le format TIMESTAMP : YYYY-MM-DD HH:mm:ss" });

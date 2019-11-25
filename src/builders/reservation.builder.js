@@ -81,7 +81,7 @@ module.exports.findSallesBookedByDay = function (req) {
     });
 };
 //Trouver les salles associées à une résa entre startDate et endDate
-module.exports.findSallesBookedBetween = function (req) {
+module.exports.findSallesBookedBetween = function (startDate,endDate) {
     return new Promise(async (resolve, reject) => {
         try {
             const sallesBookedBetween = await db.models.Salle.findAll({
@@ -89,7 +89,7 @@ module.exports.findSallesBookedBetween = function (req) {
                     model: db.models.Reservation,
                     where: {
                         dateDebut: {
-                            [Op.between] : [req.body.startDate,req.body.endDate]
+                            [Op.between] : [startDate,endDate]
                         },
                         etat: 1,
                     }

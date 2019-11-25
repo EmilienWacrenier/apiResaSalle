@@ -17,14 +17,13 @@ exports.getReservationById = async (req, res) => {
     return res.status(data.code).json({ result: data.result });
 }
 
-exports.getSallesBooked = async (req, res) => {
-    if (!req.body.endDate) {
-        let data = await reservationService.get_salles_booked_by_day(req);
+exports.getSallesBookedBetween = async (req, res) => {
+        let data = await reservationService.get_salles_booked_between(req.params);
         return res.status(data.code).json({ result: data.result });
-    } else {
-        let data = await reservationService.get_salles_booked_between(req);
+}
+exports.getSallesBookedByDay = async (req, res) => {
+        let data = await reservationService.get_salles_booked_by_day(req.params);
         return res.status(data.code).json({ result: data.result });
-    }
 }
 
 exports.getSallesBookedById = async (req, res) => {
