@@ -2,11 +2,11 @@ const reservationBuilder = require('../builders/reservation.builder');
 const recurrenceBuilder = require('../builders/recurrence.builder');
 const mailService = require('./mail.service');
 
+const REGEX = require('../tools/validation/regex');
+
 const moment = require('moment');
 const momentTz = require('moment-timezone');
-
-//Regex de la date au format YYYY-MM-DD HH:mm:ss
-const DATE_REGEX = /[0-9]{4}-(0[1-9]|1[0-2])-(0[1-9]|[1-2][0-9]|3[0-1]) (2[0-3]|[01][0-9]):[0-5][0-9]:[0-5][0-9]/;
+const timeZone = 'Europe/Paris'; //UTC+01:00
 
 //Créer une réservation
 module.exports.create_reservation = (req) => {
@@ -83,9 +83,10 @@ module.exports.create_reservation = (req) => {
             else {
                 // Résa simple
                 try {
-
+                    const dateDebut = momentTz.tz(req.body.startDate,'YYYY-MM-DD HH:mm:ss',timeZone);
+                    const dateFin = momentTz.tz(req.body.endDate,'YYYY-MM-DD HH:mm:ss',timeZone);
                     var createdReservation = await reservationBuilder.createReservation(
-                        req.body.startDate, req.body.endDate, req.body.objet, 1, req.body.user_id,
+                        dateDebut, dateFin, req.body.objet, 1, req.body.user_id,
                         null, req.body.salle_id
                     )
                     .then(function(createdReservation){
@@ -107,18 +108,25 @@ module.exports.create_reservation = (req) => {
 //get all reservations
 module.exports.get_reservations = () => {
     return new Promise(async (resolve, reject) => {
-        const reservations = await reservationBuilder.findReservations();
-        resolve({code:200,result:reservations});
+        try {
+            const reservations = await reservationBuilder.findReservations();
+            return resolve({ code:200, result:reservations });
+        } catch (err) {
+            console.log(err);
+            reject(err);
+        }
     });
 };
 //get reservation by id
-module.exports.get_reservation_by_id = (params) => {
+module.exports.get_reservation_by_id = (req) => {
     return new Promise(async (resolve, reject) => {
-        const {
-            id
-        } = params;
-        const reservation = await reservationBuilder.findReservationById(id);
-        resolve({code:200,result:reservation});
+        try {
+            const reservation = await reservationBuilder.findReservationById(req);
+            return resolve({ code:200, result:reservation });
+        } catch (err) {
+            console.log(err);
+            reject(err);
+        }
     });
 };
 //get les salles occupées entre startDate et endDate
@@ -126,13 +134,13 @@ module.exports.get_salles_booked_between = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
             if (!req.body.startDate || !req.body.endDate) {
-                reject("Il manque une startDate ou une endDate !")
+                return reject({ code:400, result:"Il manque une startDate ou une endDate !"});
             }
-            if (DATE_REGEX.test(req.body.startDate) && DATE_REGEX.test(req.body.endDate)) {
+            if (REGEX.date.test(req.body.startDate) && REGEX.date.test(req.body.endDate)) {
                 const sallesBookedBetween = await reservationBuilder.findSallesBookedBetween(req);
-                resolve(sallesBookedBetween);
+                return resolve({ code:200, result:sallesBookedBetween });
             } else {
-                reject("Les dates ne sont pas au bon format ! Utiliser le format TIMESTAMP : YYYY-MM-DD HH:mm:ss");
+                return reject({ code:400, result:"Les dates ne sont pas au bon format ! Utiliser le format TIMESTAMP : YYYY-MM-DD HH:mm:ss" });
             }
         } catch (err) {
             console.log(err);
@@ -145,7 +153,7 @@ module.exports.get_salles_booked_by_day = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
             const sallesBookedByDay = await reservationBuilder.findSallesBookedByDay(req);
-            resolve(sallesBookedByDay);
+            return resolve({ code:200, result:sallesBookedByDay });
         } catch (err) {
             console.log(err);
             reject(err);
@@ -157,7 +165,18 @@ module.exports.get_salles_booked_by_id = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
             const sallesBookedById = await reservationBuilder.findSallesBookedById(req);
-            resolve(sallesBookedById);
+            return resolve({ code:200, result:sallesBookedById });
+        } catch (err) {
+            console.log(err);
+            reject(err);
+        }
+    });
+};
+module.exports.get_reservations_by_user_id = (req) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const reservationsByUserId = await reservationBuilder.findReservationsByUserId(req);
+            return resolve({ code:200, result:reservationsByUserId });
         } catch (err) {
             console.log(err);
             reject(err);

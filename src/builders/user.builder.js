@@ -1,9 +1,20 @@
 const db = require('../config/db.config');
-const Op = require('Sequelize').Op
+const Op = require('Sequelize').Op;
 
 module.exports.findUsers = function () {
     return new Promise(async (resolve, reject) => {
         const user = await db.models.User.findAll();
+        resolve(user);
+    })
+}
+
+module.exports.findUserById = function (req) {
+    return new Promise(async (resolve, reject) => {
+        const user = await db.models.User.findOne({
+            where: {
+                idUser: req.body.userId
+            }
+        });
         resolve(user);
     })
 }
@@ -42,8 +53,8 @@ module.exports.createUser = function (req, bcryptedPassword) {
     return new Promise(async (resolve, reject) => {
         try{
             var createdUser = await db.models.User.create({
-                firstname: req.body.firstname,
-                lastname: req.body.lastname,
+                firstname: req.body.firstName,
+                lastname: req.body.lastName,
                 das: req.body.das,
                 email: req.body.email,
                 mdp: bcryptedPassword,
@@ -57,4 +68,3 @@ module.exports.createUser = function (req, bcryptedPassword) {
         }
     })
 }
-

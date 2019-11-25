@@ -4,7 +4,7 @@ module.exports.get_salles = () => {
     return new Promise(async (resolve, reject) => {
         try {
             const salles = await salleBuilder.findSalles();
-            resolve(salles);
+            return resolve({ code: 200, result: salles });
         } catch (err) {
             console.log(err);
             reject(err);
@@ -12,14 +12,11 @@ module.exports.get_salles = () => {
     });
 };
 
-module.exports.get_salle = (params) => {
+module.exports.get_salle = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const {
-                id
-            } = params;
-            const salle = await salleBuilder.findSalle(id);
-            resolve(salle);
+            const salle = await salleBuilder.findSalle(req);
+            return resolve({ code: 200, result: salle });
         } catch (err) {
             console.log(err);
             reject(err);

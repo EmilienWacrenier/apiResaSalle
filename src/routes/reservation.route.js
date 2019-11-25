@@ -6,16 +6,27 @@ var router = express.Router();
 // Controller declaration
 const ReservationController = require('../controllers/reservation.controller.js');
 
-//Create 1 reservation
-router.post('/createReservation', ReservationController.creerReservation);
-//GET all reservations
+//GET
 router.get('/reservations', ReservationController.getReservations);
-//GET 1 reservation by id
-router.get('/reservationById/:id', ReservationController.getReservationById);
-// GET les réservations par date, ou entre deux dates
+router.get('/reservationById', ReservationController.getReservationById);
 router.get('/reservationsByDate', ReservationController.getSallesBooked);
-// Get les réservations par salle id
-router.get('/reservationsBySalleId', ReservationController.getSallesBookedById);
+router.post('/reservationsBySalleId', ReservationController.getSallesBookedById);
+router.get('/reservationsByUserId', ReservationController.getReservationsByUserId);
 
+//POST
+router.post('/createReservation', ReservationController.creerReservation);
+
+// PUT
+
+
+// DELETE
+
+
+// TEST workingDay
+router.get('/isWorkingDay', ReservationController.isWorkingDay);
+//TEST isWeekEnd
+router.get('/isWeekEnd', ReservationController.isWeekEnd);
+//TEST isFerie
+router.get('/isFerie', ReservationController.isFerie);
 // Export routes
 module.exports = router;

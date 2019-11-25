@@ -7,7 +7,7 @@ var router = express.Router();
 const SalleController = require('../controllers/salle.controller.js');
 
 router.get('/salles', SalleController.getSalles);
-router.get('/salle/:id', SalleController.getSalle);
+router.get('/salleById', SalleController.getSalle);
 router.get('/sallesAvailable', SalleController.getSallesAvailable);
 
 

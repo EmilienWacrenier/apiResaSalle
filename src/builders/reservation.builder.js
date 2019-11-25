@@ -16,6 +16,7 @@ module.exports.createReservation = function (dateDebut, dateFin, objet, etat, us
                     salle_id: salle_id
                 }
             );
+            console.log(nouvReservation.dateDebut + nouvReservation.dateFin);
             resolve(nouvReservation);
         } catch (err) {
             console.log(err);
@@ -26,21 +27,31 @@ module.exports.createReservation = function (dateDebut, dateFin, objet, etat, us
 //Trouver toutes les reservations
 module.exports.findReservations = function () {
     return new Promise(async (resolve, reject) => {
-        const reservations = await db.models.Reservation.findAll();
-        resolve(reservations);
+        try {
+            const reservations = await db.models.Reservation.findAll();
+            resolve(reservations);
+        } catch (err) {
+            console.log(err);
+            reject(err);
+        }
     });
 };
 //Trouver 1 reservation par id
-module.exports.findReservationById = function (id) {
+module.exports.findReservationById = function (req) {
     return new Promise(async (resolve, reject) => {
-        const reservationById = await db.models.Reservation.findOne(
-            {
-                where: {
-                    id: id
+        try {
+            const reservationById = await db.models.Reservation.findOne(
+                {
+                    where: {
+                        idReservation: req.body.reservationId
+                    }
                 }
-            }
-        );
-        resolve(reservationById);
+            );
+            resolve(reservationById);
+        } catch (err) {
+            console.log(err);
+            reject(err);
+        }
     });
 };
 
@@ -98,7 +109,7 @@ module.exports.findSallesBookedById = function (req) {
         try {
             const sallesBookedById = await db.models.Salle.findOne({
                     where: {
-                        id_salle:req.body.id
+                        id_salle:req.body.salleId
                     },
                     include: [{
                         model: db.models.Reservation,
@@ -111,6 +122,22 @@ module.exports.findSallesBookedById = function (req) {
                     }]
         });
         resolve(sallesBookedById);
+        } catch (err) {
+            console.log(err);
+            reject(err);
+        }
+    });
+};
+
+module.exports.findReservationsByUserId = function (req) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const reservationsByUserId = await db.models.Reservation.findAll({
+                    where: {
+                        user_id:req.body.user_id
+                    }
+            });
+        resolve(reservationsByUserId);
         } catch (err) {
             console.log(err);
             reject(err);
