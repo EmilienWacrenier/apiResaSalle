@@ -6,7 +6,7 @@ exports.getSalles = async (req, res) => {
 };
 
 exports.getSalle = async (req, res) => {
-    let data = await salleService.get_salle(req.params);
+    let data = await salleService.get_salle(req);
     return res.status(data.code).json({result:data.result});
 };
 

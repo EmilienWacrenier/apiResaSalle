@@ -12,13 +12,10 @@ module.exports.get_salles = () => {
     });
 };
 
-module.exports.get_salle = (params) => {
+module.exports.get_salle = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const {
-                id
-            } = params; //params du header
-            const salle = await salleBuilder.findSalle(id);
+            const salle = await salleBuilder.findSalle(req.headers['salle_id']);
             return resolve({ code: 200, result: salle });
         } catch (err) {
             console.log(err);
