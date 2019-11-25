@@ -8,7 +8,7 @@ const ReservationController = require('../controllers/reservation.controller.js'
 
 //GET
 router.get('/reservations', ReservationController.getReservations);
-router.get('/reservationById/:id', ReservationController.getReservationById);
+router.get('/reservationById', ReservationController.getReservationById);
 router.get('/reservationsByDate/:startDate/:endDate', ReservationController.getSallesBookedBetween);
 router.get('/reservationsByDay/:startDate', ReservationController.getSallesBookedByDay);
 router.get('/reservationsBySalleId/:salleId/:startDate/:endDate', ReservationController.getSallesBookedById);

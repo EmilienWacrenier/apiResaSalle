@@ -13,7 +13,7 @@ const timeZone = 'Europe/Paris'; //UTC+01:00
 module.exports.create_reservation = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            // Vérification des userId 
+            // Vérification des userId
             for(const idUser of req.body.users){
                 reqq = {
                     body: {
@@ -21,7 +21,7 @@ module.exports.create_reservation = (req) => {
                     }
                 }
                 var existingUser = await userBuilder.findUserById(reqq)
-                if (existingUser == null) {     
+                if (existingUser == null) {
                     return resolve({ code: 400, result: 'User non trouve' });
                 }
             }
@@ -135,7 +135,7 @@ module.exports.get_reservations = () => {
 module.exports.get_reservation_by_id = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const reservation = await reservationBuilder.findReservationById(req);
+            const reservation = await reservationBuilder.findReservationById(req.headers['reservation_id']);
             return resolve({ code: 200, result: reservation });
         } catch (err) {
             console.log(err);
