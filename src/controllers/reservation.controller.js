@@ -13,7 +13,7 @@ exports.getReservations = async (req, res) => {
 }
 
 exports.getReservationById = async (req, res) => {
-    let data = await reservationService.get_reservation_by_id(req);
+    let data = await reservationService.get_reservation_by_id(req.params);
     return res.status(data.code).json({ result: data.result });
 }
 
