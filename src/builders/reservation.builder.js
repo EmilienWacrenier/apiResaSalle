@@ -63,13 +63,13 @@ module.exports.findReservations = function () {
     });
 };
 //Trouver 1 reservation par id
-module.exports.findReservationById = function (req) {
+module.exports.findReservationById = function (id) {
     return new Promise(async (resolve, reject) => {
         try {
             const reservationById = await db.models.Reservation.findOne(
                 {
                     where: {
-                        idReservation: req.body.reservationId
+                        idReservation: id
                     }
                 }
             );
@@ -82,10 +82,10 @@ module.exports.findReservationById = function (req) {
 };
 
 //Trouver les salles réservées par jour (body: date)
-module.exports.findSallesBookedByDay = function (req) {
+module.exports.findSallesBookedByDay = function (startDate) {
     return new Promise(async (resolve, reject) => {
         try {
-            var jour = new Date(req.body.startDate);
+            var jour = new Date(startDate);
             var debutJour = jour.setHours(0);
             var finJour = jour.setHours(23);
             const sallesBookedByDay = await db.models.Salle.findAll({
@@ -107,7 +107,7 @@ module.exports.findSallesBookedByDay = function (req) {
     });
 };
 //Trouver les salles associées à une résa entre startDate et endDate
-module.exports.findSallesBookedBetween = function (req) {
+module.exports.findSallesBookedBetween = function (startDate,endDate) {
     return new Promise(async (resolve, reject) => {
         try {
             const sallesBookedBetween = await db.models.Salle.findAll({
@@ -115,7 +115,7 @@ module.exports.findSallesBookedBetween = function (req) {
                     model: db.models.Reservation,
                     where: {
                         dateDebut: {
-                            [Op.between]: [req.body.startDate, req.body.endDate]
+                            [Op.between] : [startDate,endDate]
                         },
                         etat: 1,
                     }
@@ -129,8 +129,8 @@ module.exports.findSallesBookedBetween = function (req) {
         }
     });
 };
-//Trouver une salle et afficher les réservations associées between startDate et endDate
-module.exports.findSallesBookedById = function (req) {
+//Trouver une salle et afficher les réservations associées entre startDate et endDate
+module.exports.findSallesBookedById = function (salleId, startDate, endDate) {
     return new Promise(async (resolve, reject) => {
         try {
             const sallesBookedById = await db.models.Salle.findOne({
@@ -140,14 +140,19 @@ module.exports.findSallesBookedById = function (req) {
                 include: [{
                     model: db.models.Reservation,
                     where: {
-                        dateDebut: {
-                            [Op.between]: [req.body.startDate, req.body.endDate]
-                        },
-                        etat: 1,
-                    }
-                }]
-            });
-            resolve(sallesBookedById);
+                        idSalle: salleId
+                    },
+                    include: [{
+                        model: db.models.Reservation,
+                        where: {
+                            dateDebut: {
+                                [Op.between] : [startDate,endDate]
+                            },
+                            etat: 1,
+                        }
+                    }]
+        });
+        resolve(sallesBookedById);
         } catch (err) {
             console.log(err);
             reject(err);
