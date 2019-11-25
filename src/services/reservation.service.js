@@ -155,10 +155,13 @@ module.exports.get_salles_booked_between = (params) => {
     });
 };
 // get salles réservées par jour (body: date)
-module.exports.get_salles_booked_by_day = (req) => {
+module.exports.get_salles_booked_by_day = (params) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sallesBookedByDay = await reservationBuilder.findSallesBookedByDay(req);
+            const {
+                startDate
+            } = params; //params du header
+            const sallesBookedByDay = await reservationBuilder.findSallesBookedByDay(startDate);
             return resolve({ code:200, result:sallesBookedByDay });
         } catch (err) {
             console.log(err);

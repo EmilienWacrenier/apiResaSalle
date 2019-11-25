@@ -56,10 +56,10 @@ module.exports.findReservationById = function (id) {
 };
 
 //Trouver les salles réservées par jour (body: date)
-module.exports.findSallesBookedByDay = function (req) {
+module.exports.findSallesBookedByDay = function (startDate) {
     return new Promise(async (resolve, reject) => {
         try {
-            var jour = new Date(req.body.startDate);
+            var jour = new Date(startDate);
             var debutJour = jour.setHours(0);
             var finJour = jour.setHours(23);
             const sallesBookedByDay = await db.models.Salle.findAll({
