@@ -29,19 +29,19 @@ module.exports.create_reservation = (req) => {
             }
 
             // Vérification de la présence des infos sur la réservation
-            if (req.body.startDate == null || req.body.endDate == null || req.body.objet == null
-                || req.body.objet == ""
-                || req.body.salle_id == null || req.body.user_id == null) {
+            if (req.body.startDate == null || req.body.endDate == null || req.body.object == null
+                || req.body.object == ""
+                || req.body.roomId == null || req.body.userId == null) {
                 return resolve({ code: 400, result: 'Un champs de réservation est nul' });
             }
 
             // Vérification de la présence des infos sur la récurrence
-            if (req.body.libelleRecurrence != null && req.body.startDateRecurrence != null
+            if (req.body.labelRecurrence != null && req.body.startDateRecurrence != null
                 && req.body.endDateRecurrence != null) {
 
-                // Vérification du libelleRecurrence
-                if (req.body.libelleRecurrence == "quotidien" || req.body.libelleRecurrence == "hebdomadaire"
-                    || req.body.libelleRecurrence == "mensuel" /*|| req.body.libelleRecurrence == "annuel"*/) {
+                // Vérification du labelRecurrence
+                if (req.body.labelRecurrence == "quotidien" || req.body.labelRecurrence == "hebdomadaire"
+                    || req.body.labelRecurrence == "mensuel" /*|| req.body.labelRecurrence == "annuel"*/) {
 
                     // Création de la récurrence
                     var createdRecurrence = await recurrenceBuilder.create_recurrence(req)
@@ -60,8 +60,8 @@ module.exports.create_reservation = (req) => {
                             // Ignorer les week-ends
                             if (!(currentstartDate.getDay() == 6 || currentstartDate.getDay() == 0)) {
                                 var currentCreatedReservation = await reservationBuilder.createReservation(
-                                    currentstartDate, currentendDate, req.body.objet, 1, req.body.user_id,
-                                    createdRecurrence.idRecurrence, req.body.salle_id, req
+                                    currentstartDate, currentendDate, req.body.object, 1, req.body.userId,
+                                    createdRecurrence.idRecurrence, req.body.roomId, req
                                 );
                                 nbResa++;
                             }
@@ -102,8 +102,8 @@ module.exports.create_reservation = (req) => {
                     const dateDebut = momentTz.tz(req.body.startDate, 'YYYY-MM-DD HH:mm:ss', timeZone);
                     const dateFin = momentTz.tz(req.body.endDate, 'YYYY-MM-DD HH:mm:ss', timeZone);
                     var createdReservation = await reservationBuilder.createReservation(
-                        dateDebut, dateFin, req.body.objet, 1, req.body.user_id,
-                        null, req.body.salle_id, req
+                        dateDebut, dateFin, req.body.object, 1, req.body.userId,
+                        null, req.body.roomId, req
                     )
                         .then(function (createdReservation) {
                             return resolve({ code: 200, result: createdReservation });
@@ -208,8 +208,7 @@ module.exports.get_reservations_by_user_id = (req) => {
 module.exports.get_participants_by_reservation_id = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            console.log(req.headers['reservation_id']);
-            const participants = await reservationBuilder.findParticipantsByReservationId(req.headers['reservation_id']);
+            const participants = await reservationBuilder.findParticipantsByReservationId(req.query.reservationId);
             return resolve({ code: 200, result: participants })
         } catch (err) {
             console.log(err);

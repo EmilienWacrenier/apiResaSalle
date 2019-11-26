@@ -13,7 +13,6 @@ router.get('/reservationsByDate', ReservationController.getSallesBookedBetween);
 router.get('/reservationsByDay', ReservationController.getSallesBookedByDay);
 router.get('/reservationsByRoomId', ReservationController.getSallesBookedById);
 router.get('/reservationsByUserId', ReservationController.getReservationsByUserId);
-
 router.get('/participants', ReservationController.getParticipantsByIdReservation);
 
 //POST
