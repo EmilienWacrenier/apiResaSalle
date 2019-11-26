@@ -6,10 +6,10 @@ var router = express.Router();
 const SalleController = require('../controllers/salle.controller.js');
 
 // GET
-router.get('/salles', SalleController.getSalles);
-router.get('/salleById', SalleController.getSalle);
+router.get('/rooms', SalleController.getSalles);
+router.get('/roomById', SalleController.getSalle);
 
-router.get('/sallesAvailable', SalleController.getSallesAvailable); //?
+router.get('/availableRooms', SalleController.getSallesAvailable); //?
 
 
 // Export routes

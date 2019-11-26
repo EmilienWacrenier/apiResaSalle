@@ -15,7 +15,7 @@ module.exports.get_salles = () => {
 module.exports.get_salle = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const salle = await salleBuilder.findSalle(req.headers['salle_id']);
+            const salle = await salleBuilder.findSalle(req.query.roomId);
             return resolve({ code: 200, result: salle });
         } catch (err) {
             console.log(err);
@@ -24,12 +24,11 @@ module.exports.get_salle = (req) => {
     });
 };
 
-module.exports.get_salles_available = (query) => {
+module.exports.get_salles_available = (req) => {
     return new Promise(async (resolve, reject) => {
-        const salles = await salleBuilder.findSallesAvailable(query)
+        const salles = await salleBuilder.findSallesAvailable(req)
         .then(function(salles){
-            console.log("dans then")
-            return resolve({ code: 200, result: 'bobo' });
+            return resolve({ code: 200, result: 'Route non fonctionnel' });
         })
     });
 }
