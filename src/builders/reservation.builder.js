@@ -137,22 +137,17 @@ module.exports.findSallesBookedById = function (salleId, startDate, endDate) {
         try {
             const sallesBookedById = await db.models.Salle.findOne({
                 where: {
-                    id_salle: req.body.salleId
+                    id_salle: salleId
                 },
                 include: [{
                     model: db.models.Reservation,
                     where: {
-                        id_salle: salleId
-                    },
-                    include: [{
-                        model: db.models.Reservation,
-                        where: {
-                            dateDebut: {
-                                [Op.between]: [startDate, endDate]
-                            },
-                            etat: 1,
-                        }
-                    }]
+                        salle_id: salleId,
+                        dateDebut: {
+                            [Op.between]: [startDate, endDate]
+                        },
+                        etat: 1
+                    }
                 }]
             });
             resolve(sallesBookedById);

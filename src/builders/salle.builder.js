@@ -18,7 +18,7 @@ module.exports.findSalle = function (id) {
         try {
             const salle = await db.models.Salle.findOne({
                 where: {
-                    idSalle: id
+                    id_salle: id
                 }
                 });
             resolve(salle);
