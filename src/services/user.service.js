@@ -30,13 +30,13 @@ module.exports.inscription = (req) => {
         try {
             // Vérification des paramètres
             if (req.body.lastName == null || req.body.firstName == null || req.body.das == null ||
-                req.body.email == null || req.body.mdp == null) {
+                req.body.email == null || req.body.pwd == null) {
                 return resolve({ code: 400, result: 'Champs null' });
             }
             if (req.body.das.length != 7) {
                 return resolve({ code: 400, result: 'Das non valide' });
             }
-            if (req.body.lastName.length > 45 || req.body.firstName.length > 45 || req.body.mdp.length < 8) {
+            if (req.body.lastName.length > 45 || req.body.firstName.length > 45 || req.body.pwd.length < 8) {
                 return resolve({ code: 400, result: 'Longueur des champs' });
             }
             if (!REGEX.email.test(req.body.email)) {
@@ -49,7 +49,7 @@ module.exports.inscription = (req) => {
             }
             else {
                 // Création de l'utilisateur avec hashage de mdp
-                bcrypt.hash(req.body.mdp, 5, function (err, bcryptedPassword) {
+                bcrypt.hash(req.body.pwd, 5, function (err, bcryptedPassword) {
                     const createdUser = userBuilder.createUser(req, bcryptedPassword)
                         .then(function (createdUser) {
                             return resolve({ code: 200, result: createdUser });
@@ -67,12 +67,12 @@ module.exports.inscription = (req) => {
 module.exports.connexion = (req) => {
     return new Promise(async (resolve, reject) => {
         // Récupération des paramètres
-        let email = req.body.email;
+        let email = req.query.email;
 
-        let mdp = req.body.mdp;
+        let pwd = req.query.pwd;
         // Vérification des paramètres
-        if (email == null || mdp == null) {
-            return resolve({ code: 400, result: 'Email ou mdp non renseigné' });
+        if (email == null || pwd == null) {
+            return resolve({ code: 400, result: 'Email ou pwd non renseigné' });
         }
         else {
             // Récupération du user
@@ -83,7 +83,7 @@ module.exports.connexion = (req) => {
             }
             else {
                 // Comparaison du mot de passe
-                bcrypt.compare(mdp, user.mdp, function (err, res) {
+                bcrypt.compare(pwd, user.mdp, function (err, res) {
                     if (res) {
                         toResolve = {
                             'idUser': user.idUser,

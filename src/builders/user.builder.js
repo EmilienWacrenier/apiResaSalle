@@ -12,7 +12,7 @@ module.exports.findUserById = function (req) {
     return new Promise(async (resolve, reject) => {
         const user = await db.models.User.findOne({
             where: {
-                idUser: req.body.userId
+                idUser: req.query.userId
             }
         });
         resolve(user);
@@ -23,7 +23,7 @@ module.exports.findUserByEmail = function (req) {
     return new Promise(async (resolve, reject) => {
         const user = await db.models.User.findOne({
             where: {
-                email: req.body.email
+                email: req.query.email
             }
         });
         resolve(user);
