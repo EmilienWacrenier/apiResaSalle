@@ -5,7 +5,7 @@ module.exports = {
         return new Promise(async (resolve, reject) => {
             const libellesRecurrence = ['hebdomadaire', 'quotidien', 'mensuel', 'annuel'];
             try {
-                if(!libellesRecurrence.includes(req.body.libelle)){
+                if(!libellesRecurrence.includes(req.body.labelRecurrence)){ 
                     resolve({'error':'Libelle non valide'})
                 }
                 var newRecurrence = recurrenceBuilder.create_recurrence(req);

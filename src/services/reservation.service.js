@@ -17,7 +17,7 @@ module.exports.create_reservation = (req) => {
             if (req.body.users != null) {
                 for (const idUser of req.body.users) {
                     reqq = {
-                        body: {
+                        query: {
                             userId: idUser
                         }
                     }
@@ -59,6 +59,7 @@ module.exports.create_reservation = (req) => {
                         while (currentendDate < endDateRecurrence) {
                             // Ignorer les week-ends
                             if (!(currentstartDate.getDay() == 6 || currentstartDate.getDay() == 0)) {
+                                // resaRecurrence
                                 var currentCreatedReservation = await reservationBuilder.createReservation(
                                     currentstartDate, currentendDate, req.body.object, 1, req.body.userId,
                                     createdRecurrence.idRecurrence, req.body.roomId, req
