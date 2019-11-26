@@ -179,9 +179,9 @@ module.exports.get_salles_booked_by_day = (req) => {
 module.exports.get_salles_booked_by_id = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const salleId = req.query.salle_id;
-            const startDate = req.query.start_date;
-            const endDate = req.query.end_date;
+            const salleId = req.query.salleId;
+            const startDate = req.query.startDate;
+            const endDate = req.query.endDate;
             const sallesBookedById = await reservationBuilder.findSallesBookedById(salleId, startDate, endDate);
             return resolve({ code: 200, result: sallesBookedById });
         } catch (err) {
