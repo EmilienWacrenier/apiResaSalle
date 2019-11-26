@@ -14,6 +14,7 @@ router.get('/reservationsByDay/:startDate', ReservationController.getSallesBooke
 router.get('/reservationsBySalleId/:salleId/:startDate/:endDate', ReservationController.getSallesBookedById);
 router.get('/reservationsByUserId', ReservationController.getReservationsByUserId);
 router.get('/participants', ReservationController.getParticipantsByIdReservation);
+router.get('/montest', ReservationController.montest);
 //POST
 router.post('/createReservation', ReservationController.creerReservation);
 

@@ -14,15 +14,17 @@ module.exports.create_reservation = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
             // Vérification des userId 
-            for(const idUser of req.body.users){
-                reqq = {
-                    body: {
-                        userId: idUser
+            if (req.body.users != null) {
+                for (const idUser of req.body.users) {
+                    reqq = {
+                        body: {
+                            userId: idUser
+                        }
                     }
-                }
-                var existingUser = await userBuilder.findUserById(reqq)
-                if (existingUser == null) {     
-                    return resolve({ code: 400, result: 'User non trouve' });
+                    var existingUser = await userBuilder.findUserById(reqq)
+                    if (existingUser == null) {
+                        return resolve({ code: 400, result: 'User non trouve' });
+                    }
                 }
             }
 
@@ -59,7 +61,7 @@ module.exports.create_reservation = (req) => {
                             if (!(currentstartDate.getDay() == 6 || currentstartDate.getDay() == 0)) {
                                 var currentCreatedReservation = await reservationBuilder.createReservation(
                                     currentstartDate, currentendDate, req.body.objet, 1, req.body.user_id,
-                                    createdRecurrence.idRecurrence, req.body.salle_id
+                                    createdRecurrence.idRecurrence, req.body.salle_id, req
                                 );
                                 nbResa++;
                             }
@@ -198,15 +200,26 @@ module.exports.get_reservations_by_user_id = (req) => {
     });
 };
 
-module.exports.get_participants_by_reservation_id = (req) =>{
+module.exports.get_participants_by_reservation_id = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
             console.log(req.headers['reservation_id']);
             const participants = await reservationBuilder.findParticipantsByReservationId(req.headers['reservation_id']);
-            return resolve({code: 200, result: participants})
+            return resolve({ code: 200, result: participants })
         } catch (err) {
             console.log(err);
             reject(err);
+        }
+    })
+}
+
+module.exports.montest = (req) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const resa = await reservationBuilder.montest(req);
+            return resolve({code: 200, result: resa});
+        } catch (err) {
+            console.log(err)
         }
     })
 }

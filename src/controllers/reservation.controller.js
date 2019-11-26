@@ -58,3 +58,8 @@ exports.getParticipantsByIdReservation = async (req, res) => {
     let data = await reservationService.get_participants_by_reservation_id(req);
     return res.status(data.code).json({result: data.result});
 }
+
+exports.montest = async (req, res) => {
+    let data = await reservationService.montest(req);
+    return res.status(data.code).json({result: data.result});
+}

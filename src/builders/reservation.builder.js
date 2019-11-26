@@ -21,21 +21,23 @@ module.exports.createReservation = function (dateDebut, dateFin, objet, etat, us
             console.log(nouvReservation.dateDebut + nouvReservation.dateFin);
 
             try {
-                const crea = new Date();
-                // Parcours des idUser de la req
-                req.body.users.forEach(element => {
-                    const raw1 = db.sequelize.query(
-                        'INSERT into user_reservation (created_at, updated_at, id_reservation, id_user)\
-                        VALUES ((:crea), (:crea),(:reservation_id), (:user_id))', {
-                        replacements: {
-                            crea: crea,
-                            reservation_id: nouvReservation.idReservation,
-                            user_id: element
-                        },
-                        type: db.sequelize.QueryTypes.INSERT
-                    }
-                    );
-                });
+                if (req.body.users != null) {
+                    const crea = new Date();
+                    // Parcours des idUser de la req
+                    req.body.users.forEach(element => {
+                        const raw1 = db.sequelize.query(
+                            'INSERT into user_reservation (created_at, updated_at, id_reservation, id_user)\
+                            VALUES ((:crea), (:crea),(:reservation_id), (:user_id))', {
+                            replacements: {
+                                crea: crea,
+                                reservation_id: nouvReservation.idReservation,
+                                user_id: element
+                            },
+                            type: db.sequelize.QueryTypes.INSERT
+                        }
+                        );
+                    });
+                }
 
             } catch (err) {
                 console.log(err)
@@ -187,5 +189,27 @@ module.exports.findParticipantsByReservationId = function (idReservation) {
         }
         )
         resolve(participants);
+    })
+}
+
+module.exports.montest = function (req) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            
+            const list = await db.sequelize.query(
+                'select * from (reservation) inner join (salle) on (reservation.salle_id) = (salle.id_salle)\
+                WHERE reservation.salle_id = (:idSalle)\
+                and reservation.date_debut >= (:startDate)\
+                and reservation.date_fin <= (:endDate)', {
+                    replacements: {idSalle: req.query.idSalle, 
+                startDate: req.query.startDate, endDate: req.query.endDate},
+                    type: db.sequelize.QueryTypes.SELECT
+                }
+            )
+            resolve(list);
+        } catch (error) {
+            console.log(error)
+            reject(error)
+        }
     })
 }
