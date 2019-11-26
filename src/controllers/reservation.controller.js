@@ -18,11 +18,11 @@ exports.getReservationById = async (req, res) => {
 }
 
 exports.getSallesBookedBetween = async (req, res) => {
-        let data = await reservationService.get_salles_booked_between(req.params);
+        let data = await reservationService.get_salles_booked_between(req);
         return res.status(data.code).json({ result: data.result });
 }
 exports.getSallesBookedByDay = async (req, res) => {
-        let data = await reservationService.get_salles_booked_by_day(req.params);
+        let data = await reservationService.get_salles_booked_by_day(req);
         return res.status(data.code).json({ result: data.result });
 }
 
@@ -56,10 +56,5 @@ exports.isFerie = (req) => {
 
 exports.getParticipantsByIdReservation = async (req, res) => {
     let data = await reservationService.get_participants_by_reservation_id(req);
-    return res.status(data.code).json({result: data.result});
-}
-
-exports.montest = async (req, res) => {
-    let data = await reservationService.montest(req);
     return res.status(data.code).json({result: data.result});
 }

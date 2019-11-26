@@ -137,8 +137,7 @@ module.exports.get_reservations = () => {
 module.exports.get_reservation_by_id = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            var reservationId = req.query.reservation_id;
-            const reservation = await reservationBuilder.findReservationById(req.headers['reservation_id']);
+            const reservation = await reservationBuilder.findReservationById(req.query.idReservation);
             return resolve({ code: 200, result: reservation });
         } catch (err) {
             console.log(err);
@@ -150,14 +149,16 @@ module.exports.get_reservation_by_id = (req) => {
 module.exports.get_salles_booked_between = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!req.body.startDate || !req.body.endDate) {
+            if (!req.query.startDate || !req.query.endDate) {
                 return reject({ code: 400, result: "Il manque une startDate ou une endDate !" });
             }
-            if (REGEX.date.test(req.body.startDate) && REGEX.date.test(req.body.endDate)) {
-                const sallesBookedBetween = await reservationBuilder.findSallesBookedBetween(req);
+            if (REGEX.date.test(req.query.startDate) && REGEX.date.test(req.query.endDate)) {
+                const sallesBookedBetween = await reservationBuilder.findSallesBookedBetween(
+                    req.query.startDate, req.query.endDate
+                );
                 return resolve({ code: 200, result: sallesBookedBetween });
             } else {
-                return reject({ code: 400, result: "Les dates ne sont pas au bon format ! Utiliser le format TIMESTAMP : YYYY-MM-DD HH:mm:ss" });
+                return resolve({ code: 400, result: "Les dates ne sont pas au bon format ! Utiliser le format TIMESTAMP : YYYY-MM-DD HH:mm:ss" });
             }
         } catch (err) {
             console.log(err);
@@ -169,7 +170,7 @@ module.exports.get_salles_booked_between = (req) => {
 module.exports.get_salles_booked_by_day = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const sallesBookedByDay = await reservationBuilder.findSallesBookedByDay(req);
+            const sallesBookedByDay = await reservationBuilder.findSallesBookedByDay(req.query.startDate);
             return resolve({ code: 200, result: sallesBookedByDay });
         } catch (err) {
             console.log(err);
@@ -181,10 +182,7 @@ module.exports.get_salles_booked_by_day = (req) => {
 module.exports.get_salles_booked_by_id = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const salleId = req.query.salleId;
-            const startDate = req.query.startDate;
-            const endDate = req.query.endDate;
-            const sallesBookedById = await reservationBuilder.findSallesBookedById(salleId, startDate, endDate);
+            const sallesBookedById = await reservationBuilder.findSallesBookedById(req);
             return resolve({ code: 200, result: sallesBookedById });
         } catch (err) {
             console.log(err);
@@ -195,6 +193,9 @@ module.exports.get_salles_booked_by_id = (req) => {
 module.exports.get_reservations_by_user_id = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
+            if(req.query.userId == null){
+                return resolve({code: 400, result: 'userId null'});
+            }
             const reservationsByUserId = await reservationBuilder.findReservationsByUserId(req);
             return resolve({ code: 200, result: reservationsByUserId });
         } catch (err) {
@@ -213,17 +214,6 @@ module.exports.get_participants_by_reservation_id = (req) => {
         } catch (err) {
             console.log(err);
             reject(err);
-        }
-    })
-}
-
-module.exports.montest = (req) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-            const resa = await reservationBuilder.montest(req);
-            return resolve({code: 200, result: resa});
-        } catch (err) {
-            console.log(err)
         }
     })
 }

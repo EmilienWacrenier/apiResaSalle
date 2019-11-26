@@ -131,39 +131,13 @@ module.exports.findSallesBookedBetween = function (startDate, endDate) {
         }
     });
 };
-//Trouver une salle et afficher les réservations associées entre startDate et endDate
-module.exports.findSallesBookedById = function (salleId, startDate, endDate) {
-    return new Promise(async (resolve, reject) => {
-        try {
-            const sallesBookedById = await db.models.Salle.findOne({
-                where: {
-                    id_salle: salleId
-                },
-                include: [{
-                    model: db.models.Reservation,
-                    where: {
-                        salle_id: salleId,
-                        dateDebut: {
-                            [Op.between]: [startDate, endDate]
-                        },
-                        etat: 1
-                    }
-                }]
-            });
-            resolve(sallesBookedById);
-        } catch (err) {
-            console.log(err);
-            reject(err);
-        }
-    });
-};
 
 module.exports.findReservationsByUserId = function (req) {
     return new Promise(async (resolve, reject) => {
         try {
             const reservationsByUserId = await db.models.Reservation.findAll({
                 where: {
-                    user_id: req.body.user_id
+                    user_id: req.query.userId
                 }
             });
             resolve(reservationsByUserId);
@@ -187,7 +161,7 @@ module.exports.findParticipantsByReservationId = function (idReservation) {
     })
 }
 
-module.exports.montest = function (req) {
+module.exports.findSallesBookedById = function (req) {
     return new Promise(async (resolve, reject) => {
         try {
             
@@ -196,7 +170,7 @@ module.exports.montest = function (req) {
                 WHERE reservation.salle_id = (:idSalle)\
                 and reservation.date_debut >= (:startDate)\
                 and reservation.date_fin <= (:endDate)', {
-                    replacements: {idSalle: req.query.idSalle, 
+                    replacements: {idSalle: req.query.roomId, 
                 startDate: req.query.startDate, endDate: req.query.endDate},
                     type: db.sequelize.QueryTypes.SELECT
                 }
