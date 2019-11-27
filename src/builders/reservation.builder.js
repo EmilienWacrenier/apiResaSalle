@@ -135,9 +135,19 @@ module.exports.findReservationsByUserId = function (req) {
     return new Promise(async (resolve, reject) => {
         try {
             const reservationsByUserId = await db.models.Reservation.findAll({
+                attributes: [
+                    'reservationId',
+                    'startDate',
+                    'endDate',
+                    'object'
+                ],
                 where: {
                     user_id: req.query.userId
-                }
+                },
+                include: [{
+                    model: db.models.Room
+                }]
+
             });
             resolve(reservationsByUserId);
         } catch (err) {
@@ -150,7 +160,8 @@ module.exports.findReservationsByUserId = function (req) {
 module.exports.findParticipantsByReservationId = function (idReservation) {
     return new Promise(async (resolve, reject) => {
         const participants = await db.sequelize.query(
-            'select * from user inner join user_reservation on user.userId = user_reservation.userId\
+            'select user.userId, lastName, firstName, email, das \
+            from user inner join user_reservation on user.userId = user_reservation.userId\
             where user_reservation.reservationId = (:idReservation)' , {
             replacements: { idReservation: idReservation },
             type: db.sequelize.QueryTypes.SELECT
@@ -180,6 +191,23 @@ module.exports.findSallesBookedById = function (req) {
         } catch (error) {
             console.log(error)
             reject(error)
+        }
+    })
+}
+
+module.exports.destroyReservation = function (id){
+    return new Promise(async (resolve, reject) => {
+        try {
+            db.models.Reservation.destroy({
+                where : {
+                    reservationId: id
+                }
+            }).then((result) => {
+                resolve(result);
+            });
+        } catch (error) {
+            console.log(error);
+            reject(error);
         }
     })
 }

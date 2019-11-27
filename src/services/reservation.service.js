@@ -194,11 +194,22 @@ module.exports.get_salles_booked_by_id = (req) => {
 module.exports.get_reservations_by_user_id = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if(req.query.userId == null){
-                return resolve({code: 400, result: 'userId null'});
+            if (req.query.userId == null) {
+                return resolve({ code: 400, result: 'userId null' });
             }
+            let listReservationWithParticipants = [];
             const reservationsByUserId = await reservationBuilder.findReservationsByUserId(req);
-            return resolve({ code: 200, result: reservationsByUserId });
+
+            for (var reservation of reservationsByUserId) {
+                const listParticipant = await reservationBuilder.findParticipantsByReservationId(
+                    reservation.reservationId
+                )
+                currentReservation = reservation
+                currentReservation.dataValues["participants"] = listParticipant;
+                listReservationWithParticipants.push(currentReservation);
+            }
+            //console.log(listReservationWithParticipants)
+            return resolve({ code: 200, result: listReservationWithParticipants });
         } catch (err) {
             console.log(err);
             reject(err);
@@ -214,6 +225,26 @@ module.exports.get_participants_by_reservation_id = (req) => {
         } catch (err) {
             console.log(err);
             reject(err);
+        }
+    })
+}
+
+module.exports.delete_reservation = (req) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (req.body.reservationId == null) {
+                return resolve({ code: 400, result: 'reservationId null' });
+            }
+            const deleteRes = await reservationBuilder.destroyReservation(req.body.reservationId);
+            if (deleteRes) {
+                return resolve({ code: 200, result: 'Suppression effectué' });
+            }
+            else {
+                return resolve({ code: 400, result: 'Erreur lors de la suppression' });
+            }
+        } catch (error) {
+            console.log(error);
+            reject(error);
         }
     })
 }
