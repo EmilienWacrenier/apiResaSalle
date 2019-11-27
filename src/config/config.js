@@ -31,16 +31,19 @@ CONFIG.transporter = {
         host: 'smtp.gmail.com',
         port: 465,
         proxy: 'https://proxy-host:193.56.47.20:8080',
-        secure: true,
+        secure: false,
         auth: {
             user: 'paprikaatos@gmail.com',
             pass: 'Paprika123456'
+        },
+        tls: {
+            //do not fail on ivalid certificates
+            rejectUnauthorized: false
         }
 };
 // Envoi du mail de récap: config du message
-CONFIG.message = {
+CONFIG.mail = {
     from: 'paprikaatos@gmail.com',
-    text: 'Plain Text Message',
     html: '<p>HTML Text Message</p>',
     dsn: {
         id: 'not_sent',

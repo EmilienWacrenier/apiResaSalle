@@ -13,7 +13,7 @@ const timeZone = 'Europe/Paris'; //UTC+01:00
 module.exports.create_reservation = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            // Vérification des userId 
+            // Vérification des userId
             if (req.body.users != null) {
                 for (const idUser of req.body.users) {
                     reqq = {
