@@ -83,12 +83,12 @@ module.exports.connexion = (req) => {
             }
             else {
                 // Comparaison du mot de passe
-                bcrypt.compare(pwd, user.mdp, function (err, res) {
+                bcrypt.compare(pwd, user.pwd, function (err, res) {
                     if (res) {
                         toResolve = {
-                            'idUser': user.idUser,
-                            'lastname': user.lastname,
-                            'firstname': user.firstname,
+                            'userId': user.userId,
+                            'lastName': user.lastName,
+                            'firstName': user.firstName,
                             'token': jwt.generateTokenForUser(user.idUser, user.role_id)
                         }
                         return resolve({ code: 200, result: toResolve });

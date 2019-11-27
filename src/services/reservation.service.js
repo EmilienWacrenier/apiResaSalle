@@ -47,7 +47,7 @@ module.exports.create_reservation = (req) => {
                     var createdRecurrence = await recurrenceBuilder.create_recurrence(req)
 
                     // Vérification de la création de la récurrence
-                    if (createdRecurrence.idRecurrence != null) {
+                    if (createdRecurrence.recurrenceId != null) {
                         var currentstartDate = new Date(req.body.startDate);
                         currentstartDate.setHours(currentstartDate.getHours() + 1)
                         var currentendDate = new Date(req.body.endDate);
@@ -62,7 +62,7 @@ module.exports.create_reservation = (req) => {
                                 // resaRecurrence
                                 var currentCreatedReservation = await reservationBuilder.createReservation(
                                     currentstartDate, currentendDate, req.body.object, 1, req.body.userId,
-                                    createdRecurrence.idRecurrence, req.body.roomId, req
+                                    createdRecurrence.recurrenceId, req.body.roomId, req
                                 );
                                 nbResa++;
                             }
@@ -138,7 +138,7 @@ module.exports.get_reservations = () => {
 module.exports.get_reservation_by_id = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const reservation = await reservationBuilder.findReservationById(req.query.idReservation);
+            const reservation = await reservationBuilder.findReservationById(req.query.reservationId);
             return resolve({ code: 200, result: reservation });
         } catch (err) {
             console.log(err);

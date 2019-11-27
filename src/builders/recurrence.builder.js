@@ -6,9 +6,9 @@ module.exports = {
         return new Promise(async(resolve, reject) => {
             try {
                 var createdRecurrence = await db.models.Recurrence.create({
-                    libelle: req.body.labelRecurrence,
-                    dateDebut: req.body.startDateRecurrence,
-                    dateFin: req.body.endDateRecurrence
+                    label: req.body.labelRecurrence,
+                    startDate: req.body.startDateRecurrence,
+                    endDate: req.body.endDateRecurrence
                 }).then(function(createdRecurrence){
                     if(createdRecurrence){
                         resolve(createdRecurrence)

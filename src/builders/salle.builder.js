@@ -4,7 +4,7 @@ const Op = require('Sequelize').Op;
 module.exports.findSalles = function () {
     return new Promise(async (resolve, reject) => {
         try {
-            const salles = await db.models.Salle.findAll();
+            const salles = await db.models.Room.findAll();
             resolve(salles);
         } catch (err) {
             console.log(err);
@@ -16,9 +16,9 @@ module.exports.findSalles = function () {
 module.exports.findSalle = function (id) {
     return new Promise(async (resolve, reject) => {
         try {
-            const salle = await db.models.Salle.findOne({
+            const salle = await db.models.Room.findOne({
                 where: {
-                    id_salle: id
+                    roomId: id
                 }
                 });
             resolve(salle);

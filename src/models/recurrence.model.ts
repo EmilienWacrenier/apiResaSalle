@@ -1,24 +1,23 @@
 module.exports = (sequelize, Sequelize) => {
     const recurrence = sequelize.define('recurrence', {
-        idRecurrence: {
+        recurrenceId: {
             type: Sequelize.INTEGER,
             allowNull: false,
             primaryKey: true,
             autoIncrement: true,
             unique: true,
         },
-        libelle: {
+        label: {
             type: Sequelize.STRING(45)
         },
-        dateDebut: {
+        startDate: {
             type: Sequelize.DATE
         },
-        dateFin: {
+        endDate: {
             type: Sequelize.DATE
         }
     }, {
         tableName: "recurrence",
-        underscored: true,
         timestamps: false,
         freezeTableName: true,
     });
