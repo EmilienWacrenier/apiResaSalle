@@ -143,7 +143,7 @@ module.exports.findReservationsByUserId = function (req) {
                 ],
                 where: {
                     user_id: req.query.userId,
-                    endDate: {[Op.gt]: new Date()}
+                    endDate: { [Op.gt]: new Date() }
                 },
                 include: [{
                     model: db.models.Room
@@ -151,7 +151,6 @@ module.exports.findReservationsByUserId = function (req) {
                 order: [
                     ['startDate', 'ASC']
                 ]
-
             });
             resolve(reservationsByUserId);
         } catch (err) {
@@ -178,9 +177,12 @@ module.exports.findParticipantsByReservationId = function (idReservation) {
 module.exports.findSallesBookedById = function (req) {
     return new Promise(async (resolve, reject) => {
         try {
-
             const list = await db.sequelize.query(
-                'select * from (reservation) inner join (room) on (reservation.room_id) = (room.roomId)\
+                'select reservationId, reservation.startDate, reservation.endDate, object, recurrence_id\
+                user_id, lastName, firstName\
+                room_id, room.name, capacity, area\
+                from user inner join (reservation) on user.userId = reservation.user_id \
+                inner join (room) on (reservation.room_id) = (room.roomId)\
                 WHERE reservation.room_id = (:idSalle)\
                 and reservation.startDate >= (:startDate)\
                 and reservation.endDate <= (:endDate)', {
@@ -199,11 +201,11 @@ module.exports.findSallesBookedById = function (req) {
     })
 }
 
-module.exports.destroyReservation = function (id){
+module.exports.destroyReservation = function (id) {
     return new Promise(async (resolve, reject) => {
         try {
             db.models.Reservation.destroy({
-                where : {
+                where: {
                     reservationId: id
                 }
             }).then((result) => {
