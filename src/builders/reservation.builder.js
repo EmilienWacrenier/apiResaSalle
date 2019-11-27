@@ -142,11 +142,15 @@ module.exports.findReservationsByUserId = function (req) {
                     'object'
                 ],
                 where: {
-                    user_id: req.query.userId
+                    user_id: req.query.userId,
+                    endDate: {[Op.gt]: new Date()}
                 },
                 include: [{
                     model: db.models.Room
-                }]
+                }],
+                order: [
+                    ['startDate', 'ASC']
+                ]
 
             });
             resolve(reservationsByUserId);
