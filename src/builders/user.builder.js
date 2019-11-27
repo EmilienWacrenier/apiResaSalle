@@ -12,7 +12,7 @@ module.exports.findUserById = function (req) {
     return new Promise(async (resolve, reject) => {
         const user = await db.models.User.findOne({
             where: {
-                idUser: req.query.userId
+                userId: req.query.userId
             }
         });
         resolve(user);
@@ -53,11 +53,11 @@ module.exports.createUser = function (req, bcryptedPassword) {
     return new Promise(async (resolve, reject) => {
         try{
             var createdUser = await db.models.User.create({
-                firstname: req.body.firstName,
-                lastname: req.body.lastName,
+                firstName: req.body.firstName,
+                lastName: req.body.lastName,
                 das: req.body.das,
                 email: req.body.email,
-                mdp: bcryptedPassword,
+                pwd: bcryptedPassword,
                 role_id: 1
             }).then(function(createdUser){
                 resolve(createdUser);

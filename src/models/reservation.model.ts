@@ -1,22 +1,22 @@
 module.exports = (sequelize, Sequelize) => {
     const reservation = sequelize.define('reservation', {
-        idReservation: {
+        reservationId: {
             type: Sequelize.INTEGER(11),
             allowNull: false,
             primaryKey: true,
             autoIncrement: true,
             unique: true,
         },
-        dateDebut: {
+        startDate: {
             type: Sequelize.DATE
         },
-        dateFin: {
+        endDate: {
             type: Sequelize.DATE
         },
-        objet: {
+        object: {
             type: Sequelize.STRING(45)
         },
-        etat: {
+        state: {
             type: Sequelize.BOOLEAN,
             allowNull: false,
             defautValue: true
@@ -29,13 +29,12 @@ module.exports = (sequelize, Sequelize) => {
             allowNull: true,
             type: Sequelize.INTEGER(45)
         },
-        salle_id: {
+        room_id: {
             allowNull: false,
             type: Sequelize.INTEGER(45)
         }
     }, {
         tableName: "reservation",
-        underscored: true,
         timestamps: false,
         freezeTableName: true,
     });
@@ -44,8 +43,8 @@ module.exports = (sequelize, Sequelize) => {
         reservation.belongsTo(models.recurrence, {
             foreignKey: 'recurrence_id'
         });
-        reservation.belongsTo(models.salle, {
-            foreignKey: 'salle_id'
+        reservation.belongsTo(models.room, {
+            foreignKey: 'room_id'
         });
         reservation.belongsTo(models.user, {
             foreignKey: 'user_id'
@@ -53,8 +52,8 @@ module.exports = (sequelize, Sequelize) => {
         reservation.belongsToMany(models.user, {
             through: 'user_reservation',
             as: 'users',
-            foreignKey: 'idReservation',
-            otherKey: 'idUser'
+            foreignKey: 'reservationId',
+            otherKey: 'userId'
         })
     }
 

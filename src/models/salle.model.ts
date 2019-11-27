@@ -1,36 +1,35 @@
 module.exports = (sequelize, Sequelize) => {
-    const salle = sequelize.define('salle', {
-        id_salle: {
+    const room = sequelize.define('room', {
+        roomId: {
             type: Sequelize.INTEGER,
             allowNull: false,
             primaryKey: true,
             autoIncrement: true,
             unique: true,
         },
-        nom: {
+        name: {
             allowNull: false,
             type: Sequelize.STRING(45)
         },
-        zone: {
+        area: {
             allowNull: true,
             type: Sequelize.STRING(45)
         },
-        capacite: {
+        capacity: {
             allowNull: false,
             type: Sequelize.INTEGER
         }
     }, {
-        tableName: "salle",
-        underscored: true,
+        tableName: "room",
         timestamps: false,
         freezeTableName: true,
     });
 
-    salle.associate = function(models) {
-      salle.hasMany(models.reservation, {
-        foreignKey: 'salle_id'
+    room.associate = function(models) {
+      room.hasMany(models.reservation, {
+        foreignKey: 'room_id'
       });
     };
 
-    return salle;
+    return room;
 };

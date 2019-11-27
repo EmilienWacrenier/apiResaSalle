@@ -1,0 +1,69 @@
+{
+	"info": {
+		"_postman_id": "54d14b3c-b093-48b3-becb-f9d87d9d2744",
+		"name": "room",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "rooms",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": []
+				},
+				"url": {
+					"raw": "localhost:3000/salle/rooms",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"salle",
+						"rooms"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "roomById",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/salle/roomById?roomId=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"salle",
+						"roomById"
+					],
+					"query": [
+						{
+							"key": "roomId",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"protocolProfileBehavior": {}
+}

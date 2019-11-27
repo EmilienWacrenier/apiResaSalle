@@ -1,18 +1,18 @@
 module.exports = (sequelizeModels, Sequelize) => {
     const user = sequelizeModels.define(
         'user', {
-        idUser: {
+        userId: {
             type: Sequelize.INTEGER(11),
             allowNull: false,
             primaryKey: true,
             autoIncrement: true,
             unique: true,
         },
-        firstname: {
+        firstName: {
             allowNull: false,
             type: Sequelize.STRING(45)
         },
-        lastname: {
+        lastName: {
             allowNull: false,
             type: Sequelize.STRING(45)
         },
@@ -25,7 +25,7 @@ module.exports = (sequelizeModels, Sequelize) => {
             allowNull: false,
             type: Sequelize.STRING(255),
         },
-        mdp: {
+        pwd: {
             allowNull: false,
             type: Sequelize.STRING(255)
         },
@@ -35,7 +35,6 @@ module.exports = (sequelizeModels, Sequelize) => {
         }
     }, {
         tableName: "user",
-        underscored: true,
         timestamps: false,
         freezeTableName: true,
     }
@@ -48,8 +47,8 @@ module.exports = (sequelizeModels, Sequelize) => {
         user.belongsToMany(models.reservation, {
             through: 'user_reservation',
             as: 'reservations',
-            foreignKey: 'idUser',
-            otherKey: 'idReservation'
+            foreignKey: 'userId',
+            otherKey: 'reservationId'
         })
         
     }
