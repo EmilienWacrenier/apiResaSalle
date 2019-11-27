@@ -232,10 +232,10 @@ module.exports.get_participants_by_reservation_id = (req) => {
 module.exports.delete_reservation = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (req.body.reservationId == null) {
+            if (req.query.reservationId == null) {
                 return resolve({ code: 400, result: 'reservationId null' });
             }
-            const deleteRes = await reservationBuilder.destroyReservation(req.body.reservationId);
+            const deleteRes = await reservationBuilder.destroyReservation(req.query.reservationId);
             if (deleteRes) {
                 return resolve({ code: 200, result: 'Suppression effectué' });
             }
