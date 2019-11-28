@@ -178,8 +178,8 @@ module.exports.findSallesBookedById = function (req) {
     return new Promise(async (resolve, reject) => {
         try {
             const list = await db.sequelize.query(
-                'select reservationId, reservation.startDate, reservation.endDate, object, recurrence_id\
-                user_id, lastName, firstName\
+                'select reservationId, reservation.startDate, reservation.endDate, object, recurrence_id,\
+                user_id, lastName, firstName,\
                 room_id, room.name, capacity, area\
                 from user inner join (reservation) on user.userId = reservation.user_id \
                 inner join (room) on (reservation.room_id) = (room.roomId)\
@@ -214,6 +214,34 @@ module.exports.destroyReservation = function (id) {
         } catch (error) {
             console.log(error);
             reject(error);
+        }
+    })
+}
+
+module.exports.findReservationByRoomByDate = function (roomId, startDate, endDate) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const result = await db.models.Reservation.findOne({
+                where:{
+                    [Op.and]: {
+                        room_id: roomId,
+                        [Op.or]: {
+                            [Op.and]: {
+                                startDate: {[Op.gte]: startDate},
+                                startDate: {[Op.lte]: endDate}
+                            },
+                            [Op.and]: {
+                                endDate: {[Op.gte]: startDate},
+                                endDate: {[Op.lte]: endDate}
+                            }
+                        }
+                    }
+                    
+                }
+            })
+            resolve(result)            
+        } catch (error) {
+            return reject(error)
         }
     })
 }

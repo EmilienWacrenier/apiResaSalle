@@ -100,8 +100,17 @@ module.exports.create_reservation = (req) => {
             else {
                 // Résa simple
                 try {
-                    const dateDebut = momentTz.tz(req.body.startDate, 'YYYY-MM-DD HH:mm:ss', timeZone);
-                    const dateFin = momentTz.tz(req.body.endDate, 'YYYY-MM-DD HH:mm:ss', timeZone);
+                    // Présence de réservation entrant en conflit
+                    const a = await reservationBuilder.findReservationByRoomByDate(
+                        req.body.roomId, req.body.startDate, req.body.endDate
+                    )
+                    if(a != null){
+                        console.log("bonjour")
+                        return resolve({ code: 400, result: 'Reservation déjà présente' });
+                    }
+
+                    const dateDebut = momentTz.tz(req.body.startDate, 'YYYY-MM-DD HH:mm:ss');
+                    const dateFin = momentTz.tz(req.body.endDate, 'YYYY-MM-DD HH:mm:ss');
                     var createdReservation = await reservationBuilder.createReservation(
                         dateDebut, dateFin, req.body.object, 1, req.body.userId,
                         null, req.body.roomId, req
