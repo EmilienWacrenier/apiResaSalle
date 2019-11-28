@@ -97,7 +97,8 @@ module.exports.findSallesBookedByDay = function (startDate) {
                             [Op.between]: [debutJour, finJour]
                         },
                         state: 1,
-                    }
+                    },
+                    required: false
                 }]
             });
             resolve(sallesBookedByDay);
