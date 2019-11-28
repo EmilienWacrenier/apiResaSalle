@@ -28,22 +28,20 @@ CONFIG.db_password = process.env.DB_PASSWORD;
 
 // Envoi du mail de récap: config du transporter
 CONFIG.transporter = {
-        host: 'smtp.gmail.com',
-        port: 465,
-        proxy: 'https://proxy-host:193.56.47.20:8080',
-        secure: false,
+        host: 'smtp.office365.com',//'smtp-mail.Outlook.com'
+        secureConnection: false,
+        port: 587,
+        proxy: 'http://proxy-host:193.56.47.20:8080',
         auth: {
-            user: 'paprikaatos@gmail.com',
-            pass: 'Paprika123456'
+            user: 'resa-salle.atos@outlook.com',
+            pass: 'resaSalle123!'
         },
         tls: {
-            //do not fail on ivalid certificates
-            rejectUnauthorized: false
+            ciphers: 'SSLv3'
         }
 };
 // Envoi du mail de récap: config du message
 CONFIG.mail = {
-    from: 'paprikaatos@gmail.com',
     html: '<p>HTML Text Message</p>',
     dsn: {
         id: 'not_sent',

@@ -4,7 +4,7 @@ const mailService = require('../services/mail.service');
 
 exports.creerReservation = async (req, res) => {
     let data = await reservationService.create_reservation(req);
-    if (data.code==200) {
+    if (data.code===200) {
         mailService.send_mail(req);
     }
     return res.status(data.code).json({ result: data.result });
