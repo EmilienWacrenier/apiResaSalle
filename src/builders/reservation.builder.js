@@ -223,7 +223,7 @@ module.exports.findReservationByRoomByDate = function (roomId, startDate, endDat
     return new Promise(async (resolve, reject) => {
         try {
             const result = await db.models.Reservation.findOne({
-                where:{
+                where: {
                     [Op.and]: {
                         room_id: roomId,
                         [Op.or]: {
@@ -239,13 +239,10 @@ module.exports.findReservationByRoomByDate = function (roomId, startDate, endDat
                     }
                 }
             })
-            console.log("----------------------------------------------------")
-            console.log(result);
-            console.log("----------------------------------------------------")
-
-            resolve(result)            
+            resolve(result)
         } catch (error) {
             return reject(error)
         }
     })
 }
+

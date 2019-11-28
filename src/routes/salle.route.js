@@ -8,9 +8,13 @@ const SalleController = require('../controllers/salle.controller.js');
 // GET
 router.get('/rooms', SalleController.getSalles);
 router.get('/roomById', SalleController.getSalle);
+router.get('/availableRooms', SalleController.getSallesAvailable);
 
-router.get('/availableRooms', SalleController.getSallesAvailable); //?
+// POST
+router.post('/createRoom', SalleController.createRoom);
 
+// PUT
+router.put('/modifyRoom', SalleController.modifyRoom);
 
 // Export routes
 module.exports = router;
