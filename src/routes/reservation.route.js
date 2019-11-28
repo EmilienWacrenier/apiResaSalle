@@ -21,7 +21,7 @@ router.post('/createReservation', ReservationController.creerReservation);
 // PUT
 
 // DELETE
-
+router.delete('/deleteReservation', ReservationController.deleteReservation);
 
 // TEST workingDay
 router.get('/isWorkingDay', ReservationController.isWorkingDay);
