@@ -85,6 +85,8 @@ module.exports.modifyRoom = function (name, area, capacity, roomId) {
                 where: {
                     roomId: roomId
                 },
+                returning: true,
+                plain: true,
             }
             ).then(function (updatedRoom) {
                 return resolve(updatedRoom);

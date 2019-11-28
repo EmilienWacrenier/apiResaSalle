@@ -55,7 +55,8 @@ module.exports.create_room = (req) => {
 
 module.exports.modify_room = (req) => {
     return new Promise(async (resolve, reject) => {
-        if (req.body.name == null || req.body.area == null, req.body.capacity == null) {
+        if (req.body.name == null || req.body.area == null, req.body.capacity == null ||
+            req.body.roomId == null) {
             return resolve({ code: 400, result: 'Un champs est null' })
         }
         const updatedRoom = await salleBuilder.modifyRoom(
@@ -65,7 +66,7 @@ module.exports.modify_room = (req) => {
             req.body.roomId
         ).then(function(updatedRoom){
             if(updatedRoom != null){
-                return resolve({code: 200, result: updatedRoom});
+                return resolve({code: 200, result: 'Mise à jour correcte'});
             }
         }).catch(function(err){
             return reject(err);
