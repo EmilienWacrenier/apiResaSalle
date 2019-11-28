@@ -226,19 +226,22 @@ module.exports.findReservationByRoomByDate = function (roomId, startDate, endDat
                     [Op.and]: {
                         room_id: roomId,
                         [Op.or]: {
-                            [Op.and]: {
-                                startDate: {[Op.gte]: startDate},
-                                startDate: {[Op.lte]: endDate}
+                            startDate: {
+                                [Op.gte]: startDate,
+                                [Op.lte]: endDate
                             },
-                            [Op.and]: {
-                                endDate: {[Op.gte]: startDate},
-                                endDate: {[Op.lte]: endDate}
+                            endDate: {
+                                [Op.gte]: startDate,
+                                [Op.lte]: endDate
                             }
                         }
                     }
-                    
                 }
             })
+            console.log("----------------------------------------------------")
+            console.log(result);
+            console.log("----------------------------------------------------")
+
             resolve(result)            
         } catch (error) {
             return reject(error)
