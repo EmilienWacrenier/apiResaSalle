@@ -63,6 +63,139 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "availableRooms",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/salle/availableRooms?capacity=4&startDate=2032-12-12 08:30:00&endDate=2032-12-12 09:30:00",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"salle",
+						"availableRooms"
+					],
+					"query": [
+						{
+							"key": "capacity",
+							"value": "4"
+						},
+						{
+							"key": "startDate",
+							"value": "2032-12-12 08:30:00"
+						},
+						{
+							"key": "endDate",
+							"value": "2032-12-12 09:30:00"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "createRoom",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "Salle5",
+							"type": "text"
+						},
+						{
+							"key": "area",
+							"value": "E",
+							"type": "text"
+						},
+						{
+							"key": "capacity",
+							"value": "14",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/salle/createRoom",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"salle",
+						"createRoom"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "modifyRoom",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "name",
+							"value": "newRoom",
+							"type": "text"
+						},
+						{
+							"key": "capacity",
+							"value": "20",
+							"type": "text"
+						},
+						{
+							"key": "area",
+							"value": "A",
+							"type": "text"
+						},
+						{
+							"key": "roomId",
+							"value": "1",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/salle/modifyRoom",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"salle",
+						"modifyRoom"
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"protocolProfileBehavior": {}
