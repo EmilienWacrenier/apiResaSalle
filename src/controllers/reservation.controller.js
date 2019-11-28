@@ -1,8 +1,12 @@
 const reservationService = require('../services/reservation.service');
 const workingDaysService = require('../tools/workingDays.service');
+const mailService = require('../services/mail.service');
 
 exports.creerReservation = async (req, res) => {
     let data = await reservationService.create_reservation(req);
+    if (data.code===200) {
+        mailService.send_mail(req);
+    }
     return res.status(data.code).json({ result: data.result });
 
 };
@@ -58,8 +62,11 @@ exports.getParticipantsByIdReservation = async (req, res) => {
     let data = await reservationService.get_participants_by_reservation_id(req);
     return res.status(data.code).json({result: data.result});
 }
+<<<<<<< HEAD
+=======
 
 exports.deleteReservation = async (req, res) => {
     let data = await reservationService.delete_reservation(req);
     return res.status(data.code).json({result: data.result});
 }
+>>>>>>> 3088db5e37295a432a2df0e34737bfbfd0842d3a
