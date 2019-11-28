@@ -237,8 +237,6 @@ module.exports.get_participants_by_reservation_id = (req) => {
         }
     })
 }
-<<<<<<< HEAD
-=======
 
 module.exports.delete_reservation = (req) => {
     return new Promise(async (resolve, reject) => {
@@ -259,4 +257,3 @@ module.exports.delete_reservation = (req) => {
         }
     })
 }
->>>>>>> 3088db5e37295a432a2df0e34737bfbfd0842d3a
