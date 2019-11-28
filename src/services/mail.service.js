@@ -27,6 +27,11 @@ module.exports.send_mail = (req) => {
     const startDate = req.body.startDate;
     const startTime = moment(startDate).format('HH:mm');
     const roomId = req.body.roomId;
+    //Vérification des parametres
+    console.log(senderId);
+    console.log(recieversIds);
+    console.log(object);
+    console.log(roomId);
     //Récupération des données
     //sender
     const req2 = {
@@ -35,6 +40,7 @@ module.exports.send_mail = (req) => {
         }
     };
     const sender = userBuilder.findUserById(req2);
+    console.log('sender : ' + sender);
     const senderMail = sender.email;
     //recievers
     const recieversMail = [];
