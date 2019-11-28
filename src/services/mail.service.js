@@ -10,7 +10,7 @@ let transporter = nodemailer.createTransport({
     host: CONFIG.transporter.host,
     secureConnection: CONFIG.transporter.secureConnection,
     port: CONFIG.transporter.port,
-    proxy: CONFIG.transporter.proxy,
+    // proxy: CONFIG.transporter.proxy,
     auth: {
         user: CONFIG.transporter.auth.user,
         pass: CONFIG.transporter.auth.pass
@@ -67,24 +67,26 @@ module.exports.send_mail = (req) => {
             console.log('objet de la réunion : ' + object);
             console.log('date de la réunion : ' + startDate);
             console.log('heure de la réunion : ' + startTime);
-            if (!senderMail||!recieversMail||!object||!startDate||!startTime||!roomName) {
-                return console.log('Il manque un paramètre');
-            };
-            let sendMail = transporter.sendMail(this.mail_config(senderMail, recieversMail, object, startDate, startTime, roomName), function(error,info){
+            // if (!senderMail||!recieversMail||!object||!startDate||!startTime||!roomName) {
+            //     return console.log('Il manque un paramètre');
+            // };
+
+            const mailOptions = await this.mail_config(senderMail, recieversMail, object, startDate, startTime, roomName);
+            console.log('Test mailOptions : ' + mailOptions);
+            console.log('test transporter : ' + transporter);
+            let sendMail = await transporter.sendMail(mailOptions, async (error,info) => {
                 //verification du smtp
-                var verifySMTP = this.verifiy_smtp();
-                if (!verifySMTP) {
-                    console.log('SMTP error !!');
-                };
-                if(error) {
+                // var verifySMTP = await this.verifiy_smtp();
+                // if (!verifySMTP) {
+                //     console.log('SMTP error !!');
+                // };
+                if(!error) {
+                    console.log('Message sent: ' + info.response);
+                } else {
                     console.log(error);
                     return error;
-                } else {
-                    console.log('Message sent: ' + info.response);
-
                 }
-                return sendMail;
-                console.log(sendMail);
+                return resolve({ code: 200, result: sendMail });
             });
         }  catch (err) {
             return resolve({
@@ -98,7 +100,7 @@ module.exports.send_mail = (req) => {
 module.exports.mail_config = (sender, recievers, object, startDate, startTime, room) => {
     let mailOptions = {
         from : sender,
-        to: recieversMail,
+        to: recievers,
         subject: 'Réunion : ' + object,
         text: sender + ' vous invite à la réunion ' + object + ' du : ' + startDate + ' à : ' + startTime + ', dans la salle : ' + room + '.',
         html: CONFIG.mail.html,
@@ -109,6 +111,7 @@ module.exports.mail_config = (sender, recievers, object, startDate, startTime, r
             recipient: sender
         }
     };
+    console.log('Test mailOptions : ' + mailOptions);
     return mailOptions;
 };
 //Verification de la configuration de la Connection
