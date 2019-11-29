@@ -59,6 +59,9 @@ module.exports.create_reservation = (req) => {
                         while (currentendDate < endDateRecurrence) {
                             // Ignorer les week-ends
                             if (!(currentstartDate.getDay() == 6 || currentstartDate.getDay() == 0)) {
+                                // AJOUTER CHECK RESERVATION
+
+
                                 // resaRecurrence
                                 var currentCreatedReservation = await reservationBuilder.createReservation(
                                     currentstartDate, currentendDate, req.body.object, 1, req.body.userId,
