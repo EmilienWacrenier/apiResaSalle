@@ -27,7 +27,8 @@ module.exports = (sequelize, Sequelize) => {
 
     room.associate = function(models) {
       room.hasMany(models.reservation, {
-        foreignKey: 'room_id'
+        foreignKey: 'room_id',
+        onDelete: 'CASCADE'
       });
     };
 

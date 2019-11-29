@@ -96,3 +96,19 @@ module.exports.modifyRoom = function (name, area, capacity, roomId) {
         }
     })
 }
+
+module.exports.destroyRoom = function(roomId){
+    return new Promise(async (resolve, reject) => {
+        try {
+            const deleted = await db.models.Room.destroy({
+                where: {
+                    roomId: roomId
+                }
+            }).then(function(deleted){
+                return resolve(deleted);
+            })
+        } catch (error) {
+            return reject(error);
+        }
+    })
+}

@@ -44,7 +44,8 @@ module.exports = (sequelize, Sequelize) => {
             foreignKey: 'recurrence_id'
         });
         reservation.belongsTo(models.room, {
-            foreignKey: 'room_id'
+            foreignKey: 'room_id',
+            onDelete: 'CASCADE'
         });
         reservation.belongsTo(models.user, {
             foreignKey: 'user_id'

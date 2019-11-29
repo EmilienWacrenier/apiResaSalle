@@ -24,3 +24,8 @@ exports.modifyRoom = async (req, res) => {
     let data = await salleService.modify_room(req);
     return res.status(data.code).json({result: data.result});
 }
+
+exports.deleteRoom = async (req, res) => {
+    let data = await salleService.delete_room(req);
+    return res.status(data.code).json({result: data.result});
+}

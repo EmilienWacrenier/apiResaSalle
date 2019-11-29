@@ -13,6 +13,9 @@ router.get('/availableRooms', SalleController.getSallesAvailable);
 // POST
 router.post('/createRoom', SalleController.createRoom);
 
+// DELETE
+router.delete('/deleteRoom', SalleController.deleteRoom);
+
 // PUT
 router.put('/modifyRoom', SalleController.modifyRoom);
 
