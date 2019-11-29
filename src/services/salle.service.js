@@ -26,7 +26,7 @@ module.exports.get_salle = (req) => {
 
 module.exports.get_salles_available = (req) => {
     return new Promise(async (resolve, reject) => {
-        // Vérification paramètres null
+        // Vérification paramètres 
         if (req.query.capacity == null ||
             req.query.startDate == null ||
             req.query.endDate == null) {
@@ -45,10 +45,11 @@ module.exports.get_salles_available = (req) => {
 
 module.exports.create_room = (req) => {
     return new Promise(async (resolve, reject) => {
-        // Vérification des champs
+        // Vérification des paramètres
         if (req.body.name == null || req.body.area == null, req.body.capacity == null) {
             return resolve({ code: 400, result: 'Un champs est null' })
         }
+
         const newRoom = await salleBuilder.createRoom(
             req.body.name,
             req.body.area,
@@ -65,10 +66,12 @@ module.exports.create_room = (req) => {
 
 module.exports.modify_room = (req) => {
     return new Promise(async (resolve, reject) => {
+        // Vérification des paramètres
         if (req.body.name == null || req.body.area == null, req.body.capacity == null ||
             req.body.roomId == null) {
             return resolve({ code: 400, result: 'Un champs est null' })
         }
+
         const updatedRoom = await salleBuilder.modifyRoom(
             req.body.name,
             req.body.area,
@@ -86,11 +89,14 @@ module.exports.modify_room = (req) => {
 
 module.exports.delete_room = (req) => {
     return new Promise(async (resolve, reject) => {
+        // vérification des paramètres
         if (req.query.roomId == null) {
             return resolve({ code: 400, result: 'roomId null' });
         }
+
         const deleted = await salleBuilder.destroyRoom(req.query.roomId)
             .then(function (deleted) {
+                // Vérification de la suppression
                 if(deleted == 1){
                     return resolve({ code: 200, result: 'Suppression correctement effectue' });
                 }                
