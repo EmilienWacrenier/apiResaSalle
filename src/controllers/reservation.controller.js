@@ -5,10 +5,10 @@ const mailService = require('../services/mail.service');
 exports.creerReservation = async (req, res) => {
     let data = await reservationService.create_reservation(req);
     if (data.code===200) {
-        mailService.send_mail(req);
+        let mail = await mailService.send_mail(req);
+        console.log('mail : ' + mail.result);
     }
-    return res.status(data.code).json({ result: data.result });
-
+    return res.status(data.code).json({ result: data.result }) + mail;
 };
 
 exports.getReservations = async (req, res) => {
@@ -62,7 +62,10 @@ exports.getParticipantsByIdReservation = async (req, res) => {
     let data = await reservationService.get_participants_by_reservation_id(req);
     return res.status(data.code).json({result: data.result});
 }
+<<<<<<< HEAD
 
+=======
+>>>>>>> dev
 exports.deleteReservation = async (req, res) => {
     let data = await reservationService.delete_reservation(req);
     return res.status(data.code).json({result: data.result});
