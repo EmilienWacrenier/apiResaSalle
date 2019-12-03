@@ -241,10 +241,7 @@ module.exports.get_participants_by_reservation_id = (req) => {
         }
     })
 }
-<<<<<<< HEAD
 
-=======
->>>>>>> dev
 module.exports.delete_reservation = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
