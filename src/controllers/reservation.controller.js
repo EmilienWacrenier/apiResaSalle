@@ -6,7 +6,7 @@ exports.creerReservation = async (req, res) => {
     let data = await reservationService.create_reservation(req);
     if (data.code===200) {
         var mail = await mailService.send_mail(req);
-        console.log('mail : ' + mail.result);
+        console.log('mail (controller): ' + mail.result);
     }
     return res.status(data.code).json({ result: data.result }) + mail;
 };
