@@ -73,7 +73,7 @@ module.exports.send_mail = (req) => {
             //     return console.log('Il manque un paramètre');
             // };
 
-            const mailOptions = await this.mail_config(senderFullName, recieversMail, object, startDateLetter, startTime, roomName);
+            const mailOptions = await this.mail_config(senderFullName, senderMail, recieversMail, object, startDateLetter, startTime, roomName);
             console.log('Test mailOptions : ' + mailOptions);
             console.log('test transporter : ' + transporter);
             let sendMail = await transporter.sendMail(mailOptions, async (error,info) => {
@@ -98,19 +98,19 @@ module.exports.send_mail = (req) => {
         }
 });
 };
-//Configuration du message
-module.exports.mail_config = (sender, recievers, object, startDateLetter, startTime, room) => {
+//Configuration du message d'invitation à une réunion
+module.exports.mail_config = (senderName, senderMail, recievers, object, startDateLetter, startTime, room) => {
     let mailOptions = {
         from : CONFIG.transporter.auth.user,
-        to:  recievers, sender,
+        to:  recievers,
         subject: 'Réunion : ' + object,
-        text: sender + ' vous invite à la réunion ' + object + ' du : ' + startDateLetter + ' à : ' + startTime + ', dans la salle : ' + room + '.',
-        // html: CONFIG.mail.html,
+        // text: senderName + ' vous invite à la réunion ' + object + ' du : ' + startDateLetter + ' à : ' + startTime + ', dans la salle : ' + room + '.',
+        html: { path: 'src/tools/mails/invitation.html'},
         dsn: {
             id: CONFIG.mail.dsn.id,
             return: CONFIG.mail.dsn.return,
             notify: CONFIG.mail.dsn.notify,
-            recipient: sender
+            recipient: senderMail
         }
     };
     console.log('Test mailOptions : ' + mailOptions);

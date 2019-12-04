@@ -7,7 +7,7 @@ var jwt = require('../interceptors/jwt');
 const userController = require('../controllers/user.controller.js');
 
 //GET
-router.get('/users', jwt.verifyToken, jwt.verifyRole(1),userController.getUsers);
+router.get('/users', userController.getUsers);
 router.get('/userById', userController.getUserById);
 router.get('/login', userController.connexion);
 

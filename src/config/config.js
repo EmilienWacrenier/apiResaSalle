@@ -29,7 +29,7 @@ CONFIG.db_password = process.env.DB_PASSWORD;
 // Envoi du mail de récap: config du transporter
 CONFIG.transporter = {
         host: 'smtp.office365.com',//'smtp-mail.Outlook.com'
-        secure: false,
+        secureConnection: false,
         port: 587,
         proxy: 'http://193.56.47.20:8080',
         auth: {
@@ -37,7 +37,8 @@ CONFIG.transporter = {
             pass: 'resaSalle123!'
         },
         tls: {
-            ciphers: 'SSLv3'
+            ciphers: 'SSLv3',
+            rejectUnauthorized: false
         }
 };
 // Envoi du mail de récap: config du message
