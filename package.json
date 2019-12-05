@@ -38,6 +38,7 @@
     "fast-xml-parser": "^3.12.20",
     "file-saver": "^2.0.1",
     "fs": "0.0.1-security",
+    "handlebars": "^4.5.3",
     "http-errors": "~1.6.2",
     "https-proxy-agent": "^3.0.0",
     "jsdoc": "^3.6.3",

@@ -3,6 +3,8 @@ const userBuilder = require('../builders/user.builder');
 const salleBuilder = require('../builders/salle.builder');
 const nodemailer = require('nodemailer');
 const moment = require('moment');
+var handlebars = require('handlebars');
+var fs = require('fs');
 
 //Implémentation de Nodemailer pour l'envoi de mails d'invitation à la réunion
 //définition du transporteur
@@ -18,14 +20,25 @@ let transporter = nodemailer.createTransport({
     requireTLS: true,
     tls: CONFIG.transporter.tls
 });
+//Lecture du template du mail
+var readHTMLFile = (path, callback) => {
+    fs.readFile(path, {encoding: 'utf-8'}, function(err, html) {
+        if(err) {
+            throw err;
+            callback(err);
+        } else {
+            callback(null, html);
+        }
+    });
+};
 //configuration du mail (version avec template 2)
-module.exports.mail_config = (senderMail, recieversMail, object, htmlTemplatePath) => {
+module.exports.mail_config = (senderMail, recieversMail, object, htmlToSend) => {
     var mailOptions = {
         from : CONFIG.transporter.auth.user,
         to : CONFIG.transporter.auth.user,
         cc:  recieversMail,
         subject: 'Réunion : ' + object,
-        html: { path: htmlTemplatePath},
+        html: htmlToSend,//remplace {path: htmlTemplatePath}
         attachments: [
             {
                 filename: 'atos-logo.png',
@@ -47,7 +60,7 @@ module.exports.mail_config = (senderMail, recieversMail, object, htmlTemplatePat
     console.log('subject : ' + mailOptions.subject);
     console.log('html path : ' + mailOptions.html.path);
     return mailOptions;
-}
+};
 //Verification de la configuration de la Connection
 module.exports.verifiy_smtp = () => {
     let verifySMTP = transporter.verify(function(error, success) {
@@ -125,23 +138,35 @@ module.exports.send_mail = (req) => {
             // if (!senderMail||!recieversMail||!object||!startDate||!startTime||!roomName) {
             //     return console.log('Il manque un paramètre');
             // };
-            const mailOptions = await this.mail_config(senderMail, recieversMail, object, htmlTemplatePath);
-            var sendMail = await transporter.sendMail(mailOptions, async (error,info) => {
-                //verification du smtp
-                // var verifySMTP = await this.verifiy_smtp();
-                // if (!verifySMTP) {
-                //     console.log('SMTP error !!');
-                // };
-                if(!error) {
-                    console.log('Message sent: ' + info.response);
-                    transporter.close();
-                } else {
-                    console.log(error);
-                    transporter.close();
-                    return error;
-                }
-                // return resolve({ code: 200, result: sendMail });
-                return resolve({ code: 200, result: sendMail });
+            //Test avec template et handlebars
+            readHTMLFile(htmlTemplatePath, (err,html) => {
+                var template = handlebars.compile(html);
+                var replacements = {
+                    object: object,
+                    date: startDateLetter,
+                    startTime: startTime,
+                    endTime: endTime,
+                    senderFullName: senderFullName,
+                };
+                var htmlToSend = template(replacements);
+                const mailOptions = this.mail_config(senderMail, recieversMail, object, htmlToSend);
+                var sendMail = transporter.sendMail(mailOptions, async (error,info) => {
+                    //verification du smtp
+                    // var verifySMTP = await this.verifiy_smtp();
+                    // if (!verifySMTP) {
+                    //     console.log('SMTP error !!');
+                    // };
+                    if(!error) {
+                        console.log('Message sent: ' + info.response);
+                        transporter.close();
+                    } else {
+                        console.log(error);
+                        transporter.close();
+                        return error;
+                    }
+                    // return resolve({ code: 200, result: sendMail });
+                    return resolve({ code: 200, result: sendMail });
+                });
             });
         }  catch (err) {
             return resolve({
