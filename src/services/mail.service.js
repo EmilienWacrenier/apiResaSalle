@@ -22,9 +22,18 @@ let transporter = nodemailer.createTransport({
 module.exports.mail_config = (senderMail, recieversMail, object, htmlTemplatePath) => {
     var mailOptions = {
         from : CONFIG.transporter.auth.user,
-        to:  recieversMail,
+        to : CONFIG.transporter.auth.user,
+        cc:  recieversMail,
         subject: 'Réunion : ' + object,
         html: { path: htmlTemplatePath},
+        attachments: [
+            {
+                filename: 'atos-logo.png',
+                path: './src/tools/mails/atos-logo.png',
+                contentDisposition: 'inline',
+                cid: 'atosLogo'
+            },
+        ],
         dsn: {
             id: CONFIG.mail.dsn.id,
             return: CONFIG.mail.dsn.return,
@@ -62,7 +71,7 @@ module.exports.send_mail = (req) => {
             const startDate = req.body.startDate;
             const endDate = req.body.endDate;
             const roomId = req.body.roomId;
-            const htmlTemplate = req.body.htmlTemplate;
+            const htmlTemplate = 'invitation.html'; //mettre un if param existe alors template =...
             //Vérification des parametres
             console.log('senderId (dans send_mail) : ' + senderId);
             console.log('recieversIds (dans send_mail) : ' + recieversIds);
@@ -125,9 +134,10 @@ module.exports.send_mail = (req) => {
                 // };
                 if(!error) {
                     console.log('Message sent: ' + info.response);
-                    // transporter.close();
+                    transporter.close();
                 } else {
                     console.log(error);
+                    transporter.close();
                     return error;
                 }
                 // return resolve({ code: 200, result: sendMail });

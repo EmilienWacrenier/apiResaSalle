@@ -33,8 +33,10 @@ CONFIG.transporter = {
         port: 587,
         proxy: 'http://193.56.47.20:8080',
         auth: {
-            user: 'resa-salle.atos@outlook.com',
-            pass: 'resaSalle123!'
+            // user: 'resa-salle.atos@outlook.com',
+            // pass: 'resaSalle123!'
+            user: 'atos-ekla.resa-salle@outlook.com',
+            pass: 'ChaudeRiviere78!etage-5!'
         },
         tls: {
             ciphers: 'SSLv3',
