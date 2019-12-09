@@ -4,7 +4,6 @@ const recurrenceService = require('../services/recurrence.service');
 const jwt = require('../interceptors/jwt');
 const db = require('../config/db.config');
 const Op = require('Sequelize').Op;
-const bcrypt = require('bcrypt');
 
 exports.getUsers = async (req, res) => {
     let data = await userService.get_users();
