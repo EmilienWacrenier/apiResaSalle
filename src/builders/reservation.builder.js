@@ -40,7 +40,7 @@ module.exports.createReservation = function (dateDebut, dateFin, objet, etat, us
 
             } catch (err) {
                 console.log(err)
-                reject(err)
+                resolve(err)
             }
 
             resolve(nouvReservation);
