@@ -22,8 +22,10 @@ let transporter = nodemailer.createTransport({
 });
 //Lecture du template du mail
 var readHTMLFile = (path, callback) => {
-    fs.readFile(path, {encoding: 'utf-8'}, function(err, html) {
-        if(err) {
+    fs.readFile(path, {
+        encoding: 'utf-8'
+    }, function (err, html) {
+        if (err) {
             throw err;
             callback(err);
         } else {
@@ -34,19 +36,17 @@ var readHTMLFile = (path, callback) => {
 //configuration du mail (version avec template 2)
 module.exports.mail_config = (senderMail, recieversMail, object, htmlToSend) => {
     var mailOptions = {
-        from : CONFIG.transporter.auth.user,
-        to : CONFIG.transporter.auth.user,
-        cc:  recieversMail,
+        from: CONFIG.transporter.auth.user,
+        to: CONFIG.transporter.auth.user,
+        cc: recieversMail,
         subject: 'Réunion : ' + object,
-        html: htmlToSend,//remplace {path: htmlTemplatePath}
-        attachments: [
-            {
-                filename: 'atos-logo.png',
-                path: './src/tools/mails/atos-logo.png',
-                contentDisposition: 'inline',
-                cid: 'atosLogo'
-            },
-        ],
+        html: htmlToSend, //remplace {path: htmlTemplatePath}
+        attachments: [{
+            filename: 'atos-logo.png',
+            path: './src/tools/mails/atos-logo.png',
+            contentDisposition: 'inline',
+            cid: 'atosLogo'
+        }, ],
         dsn: {
             id: CONFIG.mail.dsn.id,
             return: CONFIG.mail.dsn.return,
@@ -63,7 +63,7 @@ module.exports.mail_config = (senderMail, recieversMail, object, htmlToSend) => 
 };
 //Verification de la configuration de la Connection
 module.exports.verifiy_smtp = () => {
-    let verifySMTP = transporter.verify(function(error, success) {
+    let verifySMTP = transporter.verify(function (error, success) {
         if (error) {
             console.log(error);
             return error;
@@ -139,7 +139,7 @@ module.exports.send_mail = (req) => {
             //     return console.log('Il manque un paramètre');
             // };
             //Test avec template et handlebars
-            readHTMLFile(htmlTemplatePath, (err,html) => {
+            readHTMLFile(htmlTemplatePath, (err, html) => {
                 var template = handlebars.compile(html);
                 var replacements = {
                     object: object,
@@ -150,13 +150,13 @@ module.exports.send_mail = (req) => {
                 };
                 var htmlToSend = template(replacements);
                 const mailOptions = this.mail_config(senderMail, recieversMail, object, htmlToSend);
-                var sendMail = transporter.sendMail(mailOptions, async (error,info) => {
+                var sendMail = transporter.sendMail(mailOptions, async (error, info) => {
                     //verification du smtp
                     // var verifySMTP = await this.verifiy_smtp();
                     // if (!verifySMTP) {
                     //     console.log('SMTP error !!');
                     // };
-                    if(!error) {
+                    if (!error) {
                         console.log('Message sent: ' + info.response);
                         transporter.close();
                     } else {
@@ -165,14 +165,71 @@ module.exports.send_mail = (req) => {
                         return error;
                     }
                     // return resolve({ code: 200, result: sendMail });
-                    return resolve({ code: 200, result: sendMail });
+                    return resolve({
+                        code: 200,
+                        result: sendMail
+                    });
                 });
             });
-        }  catch (err) {
+        } catch (err) {
             return resolve({
                 code: 500,
                 result: err
             });
         }
-});
+    });
+};
+
+
+// Envoie un mail pour confirmer l'inscription 
+module.exports.send_mail_inscription = (req) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            let mailConfig = {
+                target: req.body.email,
+                subject: 'Confirmation de création de compte EKLA',
+                html: `<b>Hello ${req.body.firstName}</b>` + `<br> <br> Bienvenue, et merci pour ton inscription, vous pouvez dès à présent vous connecter`
+            };
+
+            var transporter = nodemailer.createTransport({
+                host: CONFIG.transporter.host,
+                secureConnection: CONFIG.transporter.secureConnection,
+                port: CONFIG.transporter.port,
+                auth: {
+                    user: CONFIG.transporter.auth.user,
+                    pass: CONFIG.transporter.auth.pass
+                },
+                requireTLS: true,
+                tls: CONFIG.transporter.tls
+            });
+
+            var mailOptions = {
+                from: CONFIG.transporter.auth.user,
+                to: mailConfig.target,
+                subject: mailConfig.subject,
+                html: mailConfig.html
+            };
+
+            var sendMail = transporter.sendMail(mailOptions, (error, info) => {
+                if (error) {
+                    console.log(error);
+                    transporter.close();
+                    return error, 'L\'envoi de mail pour la confirmation de création de compte n\'a pas pu aboutir';
+                }
+                console.log('Message sent: ' + info.response)
+                console.log('Envoi du mail avec succès');
+            });
+            
+            return resolve({
+                code: 200,
+                result : sendMail
+            });
+
+        } catch (err) {
+            return resolve({
+                code: 500,
+                result: err
+            });
+        }
+    });
 };
