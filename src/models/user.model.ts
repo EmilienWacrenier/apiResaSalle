@@ -24,10 +24,16 @@ module.exports = (sequelizeModels, Sequelize) => {
         email: {
             allowNull: false,
             type: Sequelize.STRING(255),
+            unique: true
         },
         pwd: {
             allowNull: false,
             type: Sequelize.STRING(255)
+        },
+        isActive: {
+            type: Sequelize.BOOLEAN,
+            allowNull: false,
+            defautValue: false
         },
         role_id: {
             allowNull: false,
