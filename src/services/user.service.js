@@ -1,5 +1,5 @@
 const userBuilder = require('../builders/user.builder');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 const jwt = require('../interceptors/jwt');
 
 const REGEX = require('../tools/validation/regex');

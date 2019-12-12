@@ -53,21 +53,26 @@ module.exports.create_reservation = (req) => {
                         var currentendDate = new Date(req.body.endDate);
                         currentendDate.setHours(currentendDate.getHours() + 1)
                         var endDateRecurrence = new Date(req.body.endDateRecurrence);
-                        var nbResa = 0;
+
+                        var listExistingResa = [];
 
                         // Création des réservations associées à la récurrence
                         while (currentendDate < endDateRecurrence) {
                             // Ignorer les week-ends
                             if (!(currentstartDate.getDay() == 6 || currentstartDate.getDay() == 0)) {
-                                // AJOUTER CHECK RESERVATION
-
-
-                                // resaRecurrence
-                                var currentCreatedReservation = await reservationBuilder.createReservation(
-                                    currentstartDate, currentendDate, req.body.object, 1, req.body.userId,
-                                    createdRecurrence.recurrenceId, req.body.roomId, req
-                                );
-                                nbResa++;
+                                // Vérification de l'existance d'une reservation pour l'itération
+                                const currentExistingResa = await reservationBuilder.findReservationByRoomByDate(
+                                    req.body.roomId, currentstartDate, currentendDate
+                                )
+                                if(currentExistingResa != null){
+                                    listExistingResa.push(currentExistingResa);
+                                }
+                                else{
+                                    var currentCreatedReservation = await reservationBuilder.createReservation(
+                                        currentstartDate, currentendDate, req.body.object, 1, req.body.userId,
+                                        createdRecurrence.recurrenceId, req.body.roomId, req
+                                    );
+                                }
                             }
 
                             // Test du type de récurrence + incrémentation de la date
@@ -93,7 +98,7 @@ module.exports.create_reservation = (req) => {
                                     break;
                             }
                         }
-                        return resolve({ code: 200, result: nbResa });
+                        return resolve({ code: 200, result: listExistingResa });
                     }
                 }
                 else {
@@ -106,10 +111,10 @@ module.exports.create_reservation = (req) => {
                     const dateDebut = momentTz.tz(req.body.startDate, 'YYYY-MM-DD HH:mm:ss');
                     const dateFin = momentTz.tz(req.body.endDate, 'YYYY-MM-DD HH:mm:ss');
                     // Présence de réservation entrant en conflit
-                    const a = await reservationBuilder.findReservationByRoomByDate(
+                    const existingResa = await reservationBuilder.findReservationByRoomByDate(
                         req.body.roomId, dateDebut, dateFin
                     )
-                    if(a != null){
+                    if(existingResa != null){
                         console.log("bonjour")
                         return resolve({ code: 400, result: 'Reservation déjà présente' });
                     }
