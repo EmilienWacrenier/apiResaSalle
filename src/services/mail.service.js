@@ -182,13 +182,13 @@ module.exports.send_mail = (req) => {
 
 
 // Envoie un mail pour confirmer l'inscription 
-module.exports.send_mail_inscription = (req) => {
+module.exports.send_mail_inscription = (req, token) => {
     return new Promise(async (resolve, reject) => {
         try {
             let mailConfig = {
                 target: req.body.email,
                 subject: 'Confirmation de création de compte EKLA',
-                html: `<b>Hello ${req.body.firstName}</b>` + `<br> <br> Bienvenue, et merci pour ton inscription, vous pouvez dès à présent vous connecter`
+                html: `<b>Hello ${req.body.firstName}</b>` + `<br> <br> Bienvenue, et merci pour ton inscription, vous pouvez dès à présent vous connecter en cliquant sur ce lien : http://localhost:4200/accountConfirmation?token=${token}`
             };
 
             var transporter = nodemailer.createTransport({

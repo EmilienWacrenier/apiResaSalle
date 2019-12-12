@@ -19,7 +19,7 @@ exports.getUserById = async (req, res) => {
 exports.inscription = async (req, res) => {
     let data = await userService.inscription(req);
     if (data.code===200) {
-        var mail = await mailService.send_mail_inscription(req);
+        var mail = await mailService.send_mail_inscription(req, data.token);
     };
     return res.status(data.code).json({ result: data.result }) + mail;
 }
