@@ -4,9 +4,9 @@ const timeZone = 'Europe/Paris'; //UTC+01:00
 const momentE = require('moment-easter');
 
 // Jour ouvré
-module.exports.is_working_day = (req) => {
-    var isWeekEnd = this.is_week_end(req.body.startDate);
-    var isFerie = this.is_ferie(req.body.startDate);
+module.exports.is_working_day = (startDate) => {
+    var isWeekEnd = this.is_week_end(startDate);
+    var isFerie = this.is_ferie(startDate);
     console.log(isWeekEnd);
     console.log(isFerie);
     var result;

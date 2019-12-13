@@ -23,6 +23,8 @@ router.post('/createReservation', ReservationController.creerReservation);
 // DELETE
 router.delete('/deleteReservation', ReservationController.deleteReservation);
 
+// TEST isFreeDate
+router.get('/isFreeDate', ReservationController.isFreeDate);
 // TEST workingDay
 router.get('/isWorkingDay', ReservationController.isWorkingDay);
 //TEST isWeekEnd

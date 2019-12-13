@@ -39,6 +39,30 @@ exports.getReservationsByUserId = async (req, res) => {
     let data = await reservationService.get_reservations_by_user_id(req);
     return res.status(data.code).json({ result: data.result });
 }
+//test isFreeDate
+exports.isFreeDate = async (req, res) => {
+    try {
+        let data1 = await reservationService.get_salles_booked_between(req);
+        if (!data1.result) {
+            console.log('la salle est libre (controller: get_salles_booked_between) : ' + data1.result);
+            return res.status(data1.code).json({result: data1.result});
+        } else {
+            console.log('la salle est occupée (controller: get_salles_booked_between) : ' + data1.result);
+            let data2 = await reservationService.is_free_date(req);
+            if (!!data2) {
+                console.log('la salle est libre (controller: is_free_date) : ' + data2.result);
+                return res.status(data2.code).json({result: data2.result});
+            } else {
+                console.log('erreur à gérer');
+                return res.status(data2.code).json({result: data2.result});
+            }
+        }
+        return res.status(data2.code).json({result: data2.result});
+    } catch (error) {
+        console.log(error);
+        reject(error);
+    }
+}
 //test isWorkingDay
 exports.isWorkingDay = (req, res) => {
     let data = workingDaysService.is_working_day(req);
