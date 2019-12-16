@@ -23,6 +23,10 @@ router.post('/createReservation', ReservationController.creerReservation);
 // DELETE
 router.delete('/deleteReservation', ReservationController.deleteReservation);
 
+//Attention : les routes de test de sont pas forcément opérationnelles
+//Voir la branche "max" pour le redécoupage des fonctions et du rôle du controller  
+// TEST isFreeDate
+router.get('/isFreeDate', ReservationController.isFreeDate);
 // TEST workingDay
 router.get('/isWorkingDay', ReservationController.isWorkingDay);
 //TEST isWeekEnd

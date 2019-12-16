@@ -2,6 +2,7 @@ const reservationBuilder = require('../builders/reservation.builder');
 const recurrenceBuilder = require('../builders/recurrence.builder');
 const mailService = require('./mail.service');
 const userBuilder = require('../builders/user.builder');
+const workingDaysService = require('../tools/workingDays.service');
 
 const REGEX = require('../tools/validation/regex');
 
