@@ -2,7 +2,7 @@ const moment = require('moment');
 const momentTz = require('moment-timezone');
 const timeZone = 'Europe/Paris'; //UTC+01:00
 const momentE = require('moment-easter');
-
+const reservationService = require('../services/reservation.service');
 
 // TEST isFreeDate
 module.exports.is_free_date = (req) => {
@@ -25,7 +25,7 @@ module.exports.is_free_date = (req) => {
                     endDate: endDate
                 }
             };
-            const getRoomsBooked = this.get_salles_booked_between(reqq);
+            const getRoomsBooked = reservationService.get_salles_booked_between(reqq);
             console.log('getRoomsBooked : ' + getRoomsBooked);
             var roomsBooked = getRoomsBooked.result;
             console.log('roomsBooked : ' + roomsBooked);

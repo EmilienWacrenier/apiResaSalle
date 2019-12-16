@@ -48,7 +48,7 @@ exports.isFreeDate = async (req, res) => {
             return res.status(data1.code).json({result: data1.result});
         } else {
             console.log('la salle est occupée (controller: get_salles_booked_between) : ' + data1.result);
-            let data2 = await reservationService.is_free_date(req);
+            let data2 = await workingDaysService.is_free_date(req);
             if (!!data2) {
                 console.log('la salle est libre (controller: is_free_date) : ' + data2.result);
                 return res.status(data2.code).json({result: data2.result});
