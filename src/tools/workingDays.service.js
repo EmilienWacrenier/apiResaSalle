@@ -14,9 +14,10 @@ module.exports.is_free_date = (req) => {
             const roomIdReq = req.query.roomId;
             //jour ouvré
             const isWorkingDay = await this.is_working_day(startDate);
-            if (isWorkingDay == false) {
-                console.log('isWorkingDay : ' + isWorkingDay);
-                return resolve({ code: 400, result: 'Cette date est un jour férié ou un jour de week-end' });
+            console.log('isWorkingDay : ' + isWorkingDay.result);
+            if (isWorkingDay.result == false) {
+                console.log('isWorkingDay : ' + isWorkingDay.result + ' Cette date est un jour férié ou un jour de week-end' );
+                return resolve({ code: 400, result: false });
             }
             //salle déjà réservée
             var reqq = {
