@@ -27,31 +27,31 @@ CONFIG.db_password = process.env.DB_PASSWORD;
 //CONFIG.db_timezone = process.env.DB_TIMEZONE;
 
 // Envoi du mail de récap: config du transporter
-CONFIG.transporter = {
-        host: 'smtp.office365.com',//'smtp-mail.Outlook.com'
-        secureConnection: false,
-        port: 587,
-        proxy: 'http://193.56.47.20:8080',
-        auth: {
-            // user: 'resa-salle.atos@outlook.com',
-            // pass: 'resaSalle123!'
-            user: 'atos-ekla.resa-salle@outlook.com',
-            pass: 'ChaudeRiviere78!etage-5!'
-        },
-        tls: {
-            ciphers: 'SSLv3',
-            rejectUnauthorized: false
-        }
-};
+// CONFIG.transporter = {
+//         host: 'smtp.office365.com',//'smtp-mail.Outlook.com'
+//         secureConnection: false,
+//         port: 587,
+//         proxy: 'http://193.56.47.20:8080',
+//         auth: {
+//             // user: 'resa-salle.atos@outlook.com',
+//             // pass: 'resaSalle123!'
+//             user: 'atos-ekla.resa-salle@outlook.com',
+//             pass: 'ChaudeRiviere78!etage-5!'
+//         },
+//         tls: {
+//             ciphers: 'SSLv3',
+//             rejectUnauthorized: false
+//         }
+// };
 // Envoi du mail de récap: config du message
-CONFIG.mail = {
-    html: '<p>HTML Text Message</p>',
-    dsn: {
-        id: 'not_sent',
-        return: 'headers',
-        notify:['failure', 'delay']
-    }
-};
+// CONFIG.mail = {
+//     html: '<p>HTML Text Message</p>',
+//     dsn: {
+//         id: 'not_sent',
+//         return: 'headers',
+//         notify:['failure', 'delay']
+//     }
+// };
 
 // Timezone
 CONFIG.timezone = util.getTimezone();
