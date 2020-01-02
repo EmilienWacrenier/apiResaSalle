@@ -1,5 +1,5 @@
 const dotenv = require('dotenv');
-const util = require('../tools/util.service');
+const util = require('../tools/services/util.service');
 
 // ENVIRONMENT = local || dev || prod || recette
 const envFile = process.env.ENVIRONMENT ?
