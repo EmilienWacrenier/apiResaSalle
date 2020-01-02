@@ -6,7 +6,7 @@ Front ---(requêtes HTTP)---> Routes ----> Controllers ----> Services ----> [Bui
 
 - Routes : définit le chemin à utiliser pour appeler les différents Controllers
 - Controllers : (Rôle de manager) récupère, organise et traite les résultats fournies par les services
-- Services : (Rôle de collaborateur) récupère, organise et traite les données fournies par les builders (idéalement : 1 service = 1 action)
+- Services : (Rôle de collaborateur) travaille les données fournies par les builders (idéalement : 1 service = 1 action)
 - Builders : Récupère ou écrit en base de données à l'aide des models (sequelize)
 
 - Config : contient les fichiers de configuration (bdd, mail, etc)
