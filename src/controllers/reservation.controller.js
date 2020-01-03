@@ -1,5 +1,5 @@
 const reservationService = require('../services/reservation.service');
-const workingDaysService = require('../tools/workingDays.service');
+const workingDaysService = require('src/tools/services/workingDays.service');
 const mailService = require('../services/mail.service');
 const testParamService = require('../tools/services/test_params.service');
 const recurrenceService = require('../services/recurrence.service');
