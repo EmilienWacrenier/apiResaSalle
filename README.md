@@ -21,11 +21,11 @@ Front ---(requêtes HTTP)---> Routes ----> Controllers ----> Services ----> [Bui
 
 ### Exemple fonctionnel : création d'une réservation (createBooking)
 
-- Route : localhost:3000/reservation/createBooking
+1. Route : localhost:3000/reservation/createBooking
 
-'''
+```
 router.post('/createBooking', ReservationController.createBooking);
-'''
+```
 
 * Utilisation de express.Router()
 * post : écriture dans la base (requiert des paramètres en body)
@@ -33,7 +33,9 @@ router.post('/createBooking', ReservationController.createBooking);
 
 - Controller : rôle de "manager", organise les tâches effectuées dans les services
 
+```
 
+```
 
 
 
