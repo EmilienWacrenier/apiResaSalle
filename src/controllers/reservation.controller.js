@@ -3,12 +3,13 @@ const workingDaysService = require('../tools/workingDays.service');
 const mailService = require('../services/mail.service');
 
 exports.creerReservation = async (req, res) => {
+    //Vérifier la validité des paramètres
+    let testParam = await reservationService.test_params(req);
+    //Vérifier l'existence de conflits (date, salle)
+    //Si c'est bon, on appelle la création de la réservation
     let data = await reservationService.create_reservation(req);
-    if (data.code===200) {
-        //var mail = await mailService.send_mail(req);
-        //console.log('mail (controller): ' + mail.result);
-    };
-    return res.status(data.code).json({ result: data.result }) + mail;
+
+    return res.status(data.code).json({ result: data.result });
 };
 
 exports.getReservations = async (req, res) => {
