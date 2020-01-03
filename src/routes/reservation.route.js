@@ -17,6 +17,7 @@ router.get('/participants', ReservationController.getParticipantsByIdReservation
 
 //POST
 router.post('/createReservation', ReservationController.creerReservation);
+router.post('/createBooking', ReservationController.createBooking);
 
 // PUT
 
@@ -31,5 +32,7 @@ router.get('/isWorkingDay', ReservationController.isWorkingDay);
 router.get('/isWeekEnd', ReservationController.isWeekEnd);
 //TEST isFerie
 router.get('/isFerie', ReservationController.isFerie);
+//TEST testParamsBooking
+router.post('/testParamsBooking', ReservationController.testParamsBooking);
 // Export routes
 module.exports = router;

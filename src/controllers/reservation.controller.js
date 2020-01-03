@@ -1,6 +1,6 @@
 const reservationService = require('../services/reservation.service');
-const workingDaysService = require('src/tools/services/workingDays.service');
-const mailService = require('../services/mail.service');
+const workingDaysService = require('../tools/services/workingDays.service');
+// const mailService = require('../services/mail.service');
 const testParamService = require('../tools/services/test_params.service');
 const recurrenceService = require('../services/recurrence.service');
 
@@ -95,8 +95,9 @@ exports.deleteReservation = async (req, res) => {
 exports.createBooking = async (req, res) => {
     //Vérifier la validité des paramètres
     let testParam = await testParamService.test_params_booking(req);
+    console.log('testParam code (controller) :' + testParam.code);
     if (testParam.code == 400) {
-        return resolve({code:400, result:'paramètre réservation invalide'});
+        return res.status(testParam.code).json({ result: testParam.result });
     }
     let testParamRecurrence = await testParamService.test_params_recurrence(req);
     //Créer la réservation avec récurrence
@@ -114,3 +115,8 @@ exports.createBooking = async (req, res) => {
         return res.status(data1.code).json({ result: data1.result });
     }
 };
+exports.testParamsBooking = async (req,res) => {
+    let testParam = await testParamService.test_params_booking(req);
+    console.log('testParam.result (controller) : ' + testParam.result);
+    return res.status(testParam.code).json({result: testParam.result});
+}
