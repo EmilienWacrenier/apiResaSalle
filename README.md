@@ -19,9 +19,24 @@ Front ---(requêtes HTTP)---> Routes ----> Controllers ----> Services ----> [Bui
 - Interceptors : gestion des tokens
 - Tools : regroupe différents services utiles ponctuellement (ex : test jour ouvré/férié)
 
-### Exemple fonctionnel : création d'une réservation
+### Exemple fonctionnel : création d'une réservation (createBooking)
 
-Création d'une réservation
+- Route : localhost:3000/reservation/createBooking
+'''bash
+router.post('/createBooking', ReservationController.createBooking);
+'''
+-> Utilisation de express.Router()
+-> post : écriture dans la base (requiert des paramètres en body)
+-> Appelle la fonction createBooking définie dans src/controllers/reservation.controller.js via la route /createBooking
+
+- Controller : rôle de "manager", organise les tâches effectuées dans les services
+
+
+
+
+
+
+
 
 ## Documentation technique
 
