@@ -21,7 +21,7 @@ Front ---(requêtes HTTP)---> Routes ----> Controllers ----> Services ----> [Bui
 
 ### Exemple fonctionnel : création d'une réservation (createBooking)
 
-1. Route : localhost:3000/reservation/createBooking
+**1. Route :** localhost:3000/reservation/createBooking
 
 ```
 router.post('/createBooking', ReservationController.createBooking);
@@ -31,14 +31,166 @@ router.post('/createBooking', ReservationController.createBooking);
 * post : écriture dans la base (requiert des paramètres en body)
 * Appelle la fonction createBooking définie dans src/controllers/reservation.controller.js via la route /createBooking
 
-- Controller : rôle de "manager", organise les tâches effectuées dans les services
+**2. Controller :**
 
 ```
+const reservationService = require('../services/reservation.service');
+const testParamService = require('../tools/services/test_params.service');
+const recurrenceService = require('../services/recurrence.service');
+
+exports.createBooking = async (req, res) => {
+    //Vérifier la validité des paramètres
+    let testParam = await testParamService.test_params_booking(req);
+    console.log('testParam code (controller) :' + testParam.code);
+    if (testParam.code == 400) {
+        return res.status(testParam.code).json({ result: testParam.result });
+    }
+    let testParamRecurrence = await testParamService.test_params_recurrence(req);
+    //Créer la réservation avec récurrence
+    if (testParamRecurrence.code == 200) {
+        //Vérif des conflits (date, salle, ...) pour les dates récurrentes
+            //TODO avec working days service
+        //créer de la réservation avec récurrence
+        let data = await recurrenceService.create_recurrence(req);
+        return res.status(data.code).json({ result: data.result });
+    } else if (testParamRecurrence.code == 400) {
+        // création d'une résa sans récurrence
+        let data1 = await reservationService.create_booking(req);
+        return res.status(data1.code).json({ result: data1.result });
+    }
+};
+```
+* Rôle de "manager", organise les tâches effectuées dans les services
+* Appel des services utilisés avec require()
+
+**3. Services :**
+
+* Dans services/reservation.service.js :
 
 ```
+module.exports.create_booking = (req) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            //Récupération des paramètres de requête
+            var startDate = req.body.startDate; // date de début
+            var endDate = req.body.endDate; //date de fin
+            var object = req.body.object; // objet de la réunion
+            var roomId = req.body.roomId; //id de la salle réservée
+            var userId = req.body.userId; // id du créateur de la réunion
+            var users = req.body.users; // id des participants
+            const dateDebut = momentTz.tz(startDate, 'YYYY-MM-DD HH:mm:ss');
+            const dateFin = momentTz.tz(endDate, 'YYYY-MM-DD HH:mm:ss');
+            // Présence de réservation entrant en conflit
+            const existingResa = await reservationBuilder.findReservationByRoomByDate(
+                roomId, dateDebut, dateFin
+            )
+            if(existingResa != null){
+                console.log("bonjour")
+                return resolve({ code: 400, result: 'Reservation déjà présente' });
+            }
+            var createdReservation = await reservationBuilder.createReservation(
+                dateDebut, dateFin, object, 1, userId,
+                null, roomId, req
+            )
+                .then(function (createdReservation) {
+                    return resolve({ code: 200, result: createdReservation });
+                })
+            } catch (error) {
+                    return resolve({ code: 400, result: error })
+            }
+    });
+}
+```
 
+* Dans tools/services/test_params.service.js :
 
+```
+//Params de reservation.service
+module.exports.test_params_booking = (req) => {
+    return new Promise (async (resolve, reject) => {
+        try {
+            //Récupération des paramètres de requête
+            var startDate = req.body.startDate; // date de début
+            var endDate = req.body.endDate; //date de fin
+            var object = req.body.object; // objet de la réunion
+            var roomId = req.body.roomId; //id de la salle réservée
+            var userId = req.body.userId; // id du créateur de la réunion
+            var users = req.body.users; // id des participants
+            //Vérification de l'existence des participants
+            var testUsers = await this.test_users(users);
+            // Vérification de l'existence des params sur la réservation
+            if (startDate == null || endDate == null || object == null || object == "" || roomId == null || userId == null || users == null) {
+                return resolve({ code: 400, result: 'Un champs de réservation est nul' });
+            } else if (testUsers.code==400) {
+                return resolve({ code:400, result:'Au moins 1 User non trouve'});
+            } else if (testUsers.code==200) {
+                return resolve({ code:200, result:'Tous les paramètres sont OK'});
+            }
+        } catch (error) {
+            console.log(error);
+            reject(error);
+        }
+    })
+}
+//Existence des participants (req.body.users)
+module.exports.test_users = (users) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            if (users != null) {
+                var existingUsers = [];
+                for (const idUser of users) {
+                    req1 = {
+                        query: {
+                            userId: idUser
+                        }
+                    }
+                    var existingUser = await userBuilder.findUserById(req1);
+                    if (existingUser!=null) {
+                        existingUsers.push(existingUser.userId);
+                    }
+                }
+                if (existingUsers.length==users.length) {
+                    return resolve({ code: 200, result: 'Tous les participants existent en BDD'});
+                } else {
+                    return resolve({ code: 400, result: 'Il manque au moins 1 participant'});
+                }
+            }
+        } catch (error) {
+            console.log(error);
+            reject(error);
+        }
+    })
+};
+//RECURRENCE
+//Params de récurrence.service
+module.exports.test_params_recurrence = (req) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            //Récupération des paramètres de requête
+            var label = req.body.labelRecurrence;
+            var startDateRecurrence = req.body.startDateRecurrence;
+            var endDateRecurrence = req.body.endDateRecurrence;
+            const libellesRecurrence = ['hebdomadaire', 'quotidien', 'mensuel', 'annuel'];
+            // Vérification de l'existence des params sur la récurrence
+            if (startDateRecurrence == null || endDateRecurrence == null || label == "" || label== null) {
+                return resolve({ code: 400, result: 'Un champs de récurrence est null' });
+            }
+            if(!libellesRecurrence.includes(label)){
+                return resolve({code:400, result:'Libelle non valide'});
+            }
+            return resolve({ code:200, result:'Tous les paramètres sont OK'});
+        } catch (error) {
+            console.log(error);
+            reject(error);
+        }
+    })
+}
+```
 
+* Rôle de "l'employé", effectue les taches avec les paramètres de requêtes
+* Utilise les fonctions des builders, pour chercher ou inscrire des données en base, ou d'autres fonctions du même service
+
+**4. Builders :**
 
 
 
