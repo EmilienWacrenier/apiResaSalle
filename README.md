@@ -1,8 +1,14 @@
 # apiResaSalle
 
+API REST node.js, express et sequelize
+
 ## Fonctionnement général
 
+### Arborescence
+
 Front ---(requêtes HTTP)---> Routes ----> Controllers ----> Services ----> [Builders ----> Models] --(requêtes sequelize)--> DataBase
+
+### Rôles des différentes couches
 
 - Routes : définit le chemin à utiliser pour appeler les différents Controllers
 - Controllers : (Rôle de manager) récupère, organise et traite les résultats fournies par les services
@@ -13,6 +19,23 @@ Front ---(requêtes HTTP)---> Routes ----> Controllers ----> Services ----> [Bui
 - Interceptors : gestion des tokens
 - Tools : regroupe différents services utiles ponctuellement (ex : test jour ouvré/férié)
 
-## Exemple fonctionnel : création d'une réservation
+### Exemple fonctionnel : création d'une réservation
 
 Création d'une réservation
+
+## Documentation technique
+
+### Inventaire des Services
+
+#### Dans src/services
+
+#### Dans src/tools
+
+
+###Logique de développement
+
+#### Best practices
+
+#### Git
+
+### Inventaire des entry points
