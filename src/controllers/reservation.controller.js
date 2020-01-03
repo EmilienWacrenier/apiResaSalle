@@ -1,14 +1,11 @@
 const reservationService = require('../services/reservation.service');
 const workingDaysService = require('../tools/workingDays.service');
 const mailService = require('../services/mail.service');
+const testParamService = require('../tools/services/test_params.service');
+const recurrenceService = require('../services/recurrence.service');
 
 exports.creerReservation = async (req, res) => {
-    //Vérifier la validité des paramètres
-    let testParam = await reservationService.test_params(req);
-    //Vérifier l'existence de conflits (date, salle)
-    //Si c'est bon, on appelle la création de la réservation
     let data = await reservationService.create_reservation(req);
-
     return res.status(data.code).json({ result: data.result });
 };
 
@@ -92,3 +89,28 @@ exports.deleteReservation = async (req, res) => {
     let data = await reservationService.delete_reservation(req);
     return res.status(data.code).json({result: data.result});
 }
+//******************************************************************************
+// TEST DECOUPE DES FONCTIONS
+//******************************************************************************
+exports.createBooking = async (req, res) => {
+    //Vérifier la validité des paramètres
+    let testParam = await testParamService.test_params_booking(req);
+    if (testParam.code == 400) {
+        return resolve({code:400, result:'paramètre réservation invalide'});
+    }
+    let testParamRecurrence = await testParamService.test_params_recurrence(req);
+    //Créer la réservation avec récurrence
+    if (testParamRecurrence.code == 200) {
+        //Vérif des conflits (date, salle, ...) pour les dates récurrentes
+            //TODO avec working days service
+        //créer de la réservation avec récurrence
+        let data = await recurrenceService.create_recurrence(req);
+        return res.status(data.code).json({ result: data.result });
+    } else if (testParamRecurrence.code == 400) { // création d'une résa sans récurrence
+        //Verif des conflits
+            //TODO avec working days service
+        //créer la réservation
+        let data1 = await reservationService.create_booking(req);
+        return res.status(data1.code).json({ result: data1.result });
+    }
+};

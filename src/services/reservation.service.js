@@ -271,145 +271,36 @@ module.exports.delete_reservation = (req) => {
 // TEST DECOUPE DES FONCTIONS
 //******************************************************************************
 
-//Test les parametres 
-module.exports.test_params = (req) => {
-    return new Promise(async (resolve, reject) => {
-        try {
-
-        } catch (error) {
-            console.log(error);
-            reject(error);
-        }
-    })
-};
 //Créer une réservation
 module.exports.create_booking = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            // Vérification des userId
-            if (req.body.users != null) {
-                for (const idUser of req.body.users) {
-                    reqq = {
-                        query: {
-                            userId: idUser
-                        }
-                    }
-                    var existingUser = await userBuilder.findUserById(reqq)
-                    if (existingUser == null) {
-                        return resolve({ code: 400, result: 'User non trouve' });
-                    }
-                }
+            //Récupération des paramètres de requête
+            var startDate = req.body.startDate; // date de début
+            var endDate = req.body.endDate; //date de fin
+            var object = req.body.object; // objet de la réunion
+            var roomId = req.body.roomId; //id de la salle réservée
+            var userId = req.body.userId; // id du créateur de la réunion
+            var users = req.body.users; // id des participants
+            const dateDebut = momentTz.tz(startDate, 'YYYY-MM-DD HH:mm:ss');
+            const dateFin = momentTz.tz(endDate, 'YYYY-MM-DD HH:mm:ss');
+            // Présence de réservation entrant en conflit
+            const existingResa = await reservationBuilder.findReservationByRoomByDate(
+                roomId, dateDebut, dateFin
+            )
+            if(existingResa != null){
+                console.log("bonjour")
+                return resolve({ code: 400, result: 'Reservation déjà présente' });
             }
-
-            // Vérification de la présence des infos sur la réservation
-            if (req.body.startDate == null || req.body.endDate == null || req.body.object == null
-                || req.body.object == ""
-                || req.body.roomId == null || req.body.userId == null) {
-                return resolve({ code: 400, result: 'Un champs de réservation est nul' });
-            }
-
-            // Vérification de la présence des infos sur la récurrence
-            if (req.body.labelRecurrence != null && req.body.startDateRecurrence != null
-                && req.body.endDateRecurrence != null) {
-
-                // Vérification du labelRecurrence
-                if (req.body.labelRecurrence == "quotidien" || req.body.labelRecurrence == "hebdomadaire"
-                    || req.body.labelRecurrence == "mensuel" /*|| req.body.labelRecurrence == "annuel"*/) {
-
-                    // Création de la récurrence
-                    var createdRecurrence = await recurrenceBuilder.create_recurrence(req)
-
-                    // Vérification de la création de la récurrence
-                    if (createdRecurrence.recurrenceId != null) {
-                        var currentstartDate = new Date(req.body.startDate);
-                        currentstartDate.setHours(currentstartDate.getHours() + 1)
-                        var currentendDate = new Date(req.body.endDate);
-                        currentendDate.setHours(currentendDate.getHours() + 1)
-                        var endDateRecurrence = new Date(req.body.endDateRecurrence);
-
-                        var listExistingResa = [];
-
-                        // Création des réservations associées à la récurrence
-                        while (currentendDate < endDateRecurrence) {
-                            // Ignorer les week-ends
-                            if (!(currentstartDate.getDay() == 6 || currentstartDate.getDay() == 0)) {
-                                // Vérification de l'existance d'une reservation pour l'itération
-                                const currentExistingResa = await reservationBuilder.findReservationByRoomByDate(
-                                    req.body.roomId, currentstartDate, currentendDate
-                                )
-                                if(currentExistingResa != null){
-                                    listExistingResa.push(currentExistingResa);
-                                }
-                                else{
-                                    var currentCreatedReservation = await reservationBuilder.createReservation(
-                                        currentstartDate, currentendDate, req.body.object, 1, req.body.userId,
-                                        createdRecurrence.recurrenceId, req.body.roomId, req
-                                    );
-                                }
-                            }
-
-                            // Test du type de récurrence + incrémentation de la date
-                            switch (createdRecurrence.libelle) {
-                                case "quotidien":
-                                    currentstartDate.setDate(currentstartDate.getDate() + 1);
-                                    currentendDate.setDate(currentendDate.getDate() + 1);
-                                    break;
-
-                                case "hebdomadaire":
-                                    currentstartDate.setDate(currentstartDate.getDate() + 7);
-                                    currentendDate.setDate(currentendDate.getDate() + 7);
-                                    break;
-
-                                case "mensuel":
-                                    currentstartDate.setMonth(currentstartDate.getMonth() + 1);
-                                    currentendDate.setMonth(currentendDate.getMonth() + 1);
-                                    break;
-
-                                default:
-                                    currentstartDate.setDate(currentstartDate.getDate() + 1);
-                                    currentendDate.setDate(currentendDate.getDate() + 1);
-                                    break;
-                            }
-                        }
-                        return resolve({ code: 200, result: listExistingResa });
-                    }
-                }
-                else {
-                    return resolve({ code: 400, result: 'Libelle récurrence incorrect' });
-                }
-            }
-            else {
-                // Résa simple
-                try {
-                    const dateDebut = momentTz.tz(req.body.startDate, 'YYYY-MM-DD HH:mm:ss');
-                    const dateFin = momentTz.tz(req.body.endDate, 'YYYY-MM-DD HH:mm:ss');
-                    // Présence de réservation entrant en conflit
-                    const existingResa = await reservationBuilder.findReservationByRoomByDate(
-                        req.body.roomId, dateDebut, dateFin
-                    )
-                    if(existingResa != null){
-                        console.log("bonjour")
-                        return resolve({ code: 400, result: 'Reservation déjà présente' });
-                    }
-
-
-                    var createdReservation = await reservationBuilder.createReservation(
-                        dateDebut, dateFin, req.body.object, 1, req.body.userId,
-                        null, req.body.roomId, req
-                    )
-                        .then(function (createdReservation) {
-                            return resolve({ code: 200, result: createdReservation });
-                        })
-                }
-                catch (error) {
+            var createdReservation = await reservationBuilder.createReservation(
+                dateDebut, dateFin, object, 1, userId,
+                null, roomId, req
+            )
+                .then(function (createdReservation) {
+                    return resolve({ code: 200, result: createdReservation });
+                })
+            } catch (error) {
                     return resolve({ code: 400, result: error })
-                }
             }
-        } catch (err) {
-            return resolve({
-                code: 500,
-                result: err
-            });
-        };
-    })
-};
+    });
+}
