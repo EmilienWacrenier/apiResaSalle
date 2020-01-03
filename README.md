@@ -29,8 +29,11 @@ Création d'une réservation
 
 #### Dans src/services
 
+Services liés aux entité de la bdd
+
 #### Dans src/tools
 
+Services annexes utilisés pour tester différents paramètres
 
 ### Logique de développement
 
