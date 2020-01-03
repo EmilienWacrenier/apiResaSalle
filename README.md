@@ -22,12 +22,12 @@ Front ---(requêtes HTTP)---> Routes ----> Controllers ----> Services ----> [Bui
 ### Exemple fonctionnel : création d'une réservation (createBooking)
 
 - Route : localhost:3000/reservation/createBooking
-'''bash
+'''
 router.post('/createBooking', ReservationController.createBooking);
 '''
--> Utilisation de express.Router()
--> post : écriture dans la base (requiert des paramètres en body)
--> Appelle la fonction createBooking définie dans src/controllers/reservation.controller.js via la route /createBooking
+-- Utilisation de express.Router()
+-- post : écriture dans la base (requiert des paramètres en body)
+-- Appelle la fonction createBooking définie dans src/controllers/reservation.controller.js via la route /createBooking
 
 - Controller : rôle de "manager", organise les tâches effectuées dans les services
 
