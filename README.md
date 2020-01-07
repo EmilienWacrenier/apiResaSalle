@@ -253,14 +253,25 @@ Services liés aux entitées de la base de données
 
 | Fichier                | Explication du service            |
 | :--------------------: | :-------------------------------: |
-| recurrence.service.js  | Vérification de la récurrence (Savoir si les réservations associées à la récurrence ont bien été créé, avec le bon type de récurrence et la bonne incrémentation de date )  |
-| reservation.service.js | Création de une ou plusieurs réservations en vérifiant les informations (Utilisateurs, dates, objets, salle,...) en récurrence ou non |
-| salle.service.js       | Obtenir une ou plusieurs salles, disponibles ou non ; Création/Modification/Suppression d'une salle avec vérification à chaque fois |
-| user.service.js        | Obtenir un ou plusieurs utilisateurs par son ID ou non ; Inscription (vérification de chaque paramètres, si l'utilisateur existe déjà et création du hashage du mot de passe) ; Connection (Vérification de l'utilisateur et du mot de passe) |
+| recurrence.service.js  | Vérification de la récurrence (Savoir si les réservations associées à la récurrence ont bien                            été créé, avec le bon type de récurrence et la bonne incrémentation de date )     |
+| reservation.service.js | Création de une ou plusieurs réservations en vérifiant les informations (Utilisateurs, dates,                           objets, salle,...) en récurrence ou non |
+| salle.service.js       | Obtenir une ou plusieurs salles, disponibles ou non ; Création/Modification/Suppression                                 d'une salle avec vérification à chaque fois |
+| user.service.js        | Obtenir un ou plusieurs utilisateurs par son ID ou non ; Inscription (vérification de chaque                            paramètres, si l'utilisateur existe déjà et création du hashage du mot de passe) ;                                      Connection (Vérification de l'utilisateur et du mot de passe) |
 
 #### Dans src/tools
 
 Services annexes utilisés pour tester différents paramètres
+
+- Services
+    
+| Fichier                | Explication du service            |
+| :--------------------: | :----------------------: |
+| test_params.service.js |  |
+| util.service.js        |  |
+| workingDays.service.js |  |
+
+
+- Validation
 
 ### Logique de développement
 
