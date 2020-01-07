@@ -254,8 +254,7 @@ Services liés aux entitées de la base de données
 | Fichier                | Explication du service            |
 | :--------------------: | :-------------------------------: |
 | recurrence.service.js  | Création d'une récurrence         |
-| reservation.service.js | - Création d'une réservation      
-                           - Trouver toutes les réservations |
+| reservation.service.js | - Création d'une réservation &nbsp; - Trouver toutes les réservations &nbsp; |
 | salle.service.js       |                                   |
 | user.service.js        |                                   |
 
