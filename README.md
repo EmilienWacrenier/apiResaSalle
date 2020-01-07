@@ -288,3 +288,13 @@ Services annexes utilisés pour tester différents paramètres
 https://github.com/EmilienWacrenier/apiResaSalle
 
 ### Inventaire des entry points
+
+### Système de versionning
+
+Les différentes branches présentes :
+
+- master : Branche par defaut
+- dev : Branche utilisée principalement au debut du projet
+- max2 : Branche utilisée par 'Brocel' pour l'organisation de son code
+- api_outlook : Branche utilisée pour tester la synchronisation Outlook (dead)
+- newDev : Branche principale utilisée actuellement, l'evolution de la branche dev 
