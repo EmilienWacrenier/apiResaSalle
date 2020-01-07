@@ -251,9 +251,11 @@ module.exports.createReservation = function (dateDebut, dateFin, objet, etat, us
 
 Services liés aux entitées de la base de données
 
-| Fichier      |     Explication du service   |
-|: ---------- :| :-------------------------- :|
-| Test         |        Test                  |
+| Titre 1       |     Titre 2     |        Titre 3 |
+| :------------ | :-------------: | -------------: |
+| Colonne       |     Colonne     |        Colonne |
+| Alignée à     |   Alignée au    |      Alignée à |
+| Gauche        |     Centre      |         Droite |
 
 #### Dans src/tools
 
