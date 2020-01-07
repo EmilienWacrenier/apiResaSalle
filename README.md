@@ -192,7 +192,56 @@ module.exports.test_params_recurrence = (req) => {
 
 **4. Builders :**
 
+```
+module.exports.createReservation = function (dateDebut, dateFin, objet, etat, user_id, recurrence_id, salle_id, req) {
+    return new Promise(async (resolve, reject) => {
+        try {
 
+            const nouvReservation = await db.models.Reservation.create(
+                {
+                    startDate: dateDebut,
+                    endDate: dateFin,
+                    object: objet,
+                    state: etat,
+                    user_id: user_id,
+                    recurrence_id: recurrence_id,
+                    room_id: salle_id
+
+                });
+
+            try {
+                if (req.body.users != null) {
+                    const crea = new Date();
+                    // Parcours des idUser de la req
+                    req.body.users.forEach(element => {
+                        const raw1 = db.sequelize.query(
+                            'INSERT into user_reservation (createdAt, updatedAt, reservationId, userId)\
+                            VALUES ((:crea), (:crea),(:reservation_id), (:user_id))', {
+                            replacements: {
+                                crea: crea,
+                                reservation_id: nouvReservation.reservationId,
+                                user_id: element
+                            },
+                            type: db.sequelize.QueryTypes.INSERT
+                        }
+                        );
+                    });
+                }
+
+            } catch (err) {
+                console.log(err)
+                resolve(err)
+            }
+
+            resolve(nouvReservation);
+
+        } catch (err) {
+            console.log(err);
+            reject(err);
+        }
+    });
+};
+```
 
 ## Documentation technique
 
@@ -200,7 +249,11 @@ module.exports.test_params_recurrence = (req) => {
 
 #### Dans src/services
 
-Services liés aux entité de la bdd
+Services liés aux entitées de la base de données
+
+| Fichier      |     Explication du service   |
+|: ---------- :| :-------------------------- :|
+| Test         |        Test                  |
 
 #### Dans src/tools
 
