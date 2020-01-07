@@ -266,12 +266,18 @@ Services annexes utilisés pour tester différents paramètres
     
 | Fichier                | Explication du service            |
 | :--------------------: | :----------------------: |
-| test_params.service.js | Pour la réservation, vérification des paramètres avec l'existence des participants et des paramètres. Pour la Récurrence, vérification de l'existance des paramètres |
-| util.service.js        | Vérifie la validité de chaque valeur d'un objet json et qu'une ou plusieurs valeurs d'un objet ne sont pas pas "null" ou "undefined" ; obtenir l'heure de la zone définie (Europe/Paris) |
-| workingDays.service.js | Calcul des dates disponibles sur les jours de travail (on retient les jours fériés et les week-ends) |
+| test_params.service.js | Pour la réservation, vérification des paramètres avec l'existence des participants et des                               paramètres. Pour la Récurrence, vérification de l'existance des paramètres |
+| util.service.js        | Vérifie la validité de chaque valeur d'un objet json et qu'une ou plusieurs valeurs d'un                                objet ne sont pas pas "null" ou "undefined" ; obtenir l'heure de la zone définie (Europe/                               Paris) |
+| workingDays.service.js | Calcul des dates disponibles sur les jours de travail (on retient les jours fériés et les                               week-ends) |
 
+&nbsp;
 
 - Validation
+
+| Fichier                | Explication du service            |
+| :--------------------: | :----------------------: |
+| regex.js               | Ajout des expressions rationnelles pour email et les dates |
+| resa-controle.js       | Ca sert a rien :) |
 
 ### Logique de développement
 
