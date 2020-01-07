@@ -251,11 +251,13 @@ module.exports.createReservation = function (dateDebut, dateFin, objet, etat, us
 
 Services liés aux entitées de la base de données
 
-| Titre 1       |     Titre 2     |
-| :-----------: | :-------------: |
-| Colonne       |     Colonne     |
-| Alignée à     |   Alignée au    |
-| Gauche        |     Centre      |
+| Fichier                | Explication du service            |
+| :--------------------: | :-------------------------------: |
+| recurrence.service.js  | Création d'une récurrence         |
+| reservation.service.js | - Création d'une réservation      |
+|                        | - Trouver toutes les réservations |
+| salle.service.js       |                                   |
+| user.service.js        |                                   |
 
 #### Dans src/tools
 
