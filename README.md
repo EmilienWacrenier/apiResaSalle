@@ -254,7 +254,7 @@ Services liés aux entitées de la base de données
 | Fichier                | Explication du service            |
 | :--------------------: | :-------------------------------: |
 | recurrence.service.js  | Création d'une récurrence         |
-| reservation.service.js | Création d'une réservation                                                                   Trouver toutes les réservations                             Trouver 1 réservation par ID                                                                 Trouver les salles réservées par jour                                                        Trouver les salles associées à une réservation entre une date de début et de fin / Trouver des réservations par ID  |
+| reservation.service.js | Création d'une réservation ; Trouver toutes les réservations ; Trouver 1 réservation ; Trouver les salles réservées par jour ; Trouver les salles occupées entre une date de début et de fin ; Trouver des réservations par utilisateurs ; Trouver les participants à une réservation ; Trouver des salles occupées par ID ; supprimer une réservation ; Trouver des réservations par salle et par date définie|
 | salle.service.js       |                                   |
 | user.service.js        |                                   |
 

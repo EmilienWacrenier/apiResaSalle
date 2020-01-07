@@ -51,6 +51,7 @@ module.exports.createReservation = function (dateDebut, dateFin, objet, etat, us
         }
     });
 };
+
 //Trouver toutes les reservations
 module.exports.findReservations = function () {
     return new Promise(async (resolve, reject) => {
@@ -63,6 +64,7 @@ module.exports.findReservations = function () {
         }
     });
 };
+
 //Trouver 1 reservation
 module.exports.findReservationById = function (id) {
     return new Promise(async (resolve, reject) => {
@@ -109,7 +111,7 @@ module.exports.findSallesBookedByDay = function (startDate) {
     });
 };
 
-//Trouver les salles associées à une résa entre startDate et endDate
+//Trouver les salles occupées entre startDate et endDate
 module.exports.findSallesBookedBetween = function (startDate, endDate) {
     return new Promise(async (resolve, reject) => {
         try {
@@ -163,7 +165,7 @@ module.exports.findReservationsByUserId = function (req) {
     });
 };
 
-//Trouver des participants à une réservation
+//Trouver les participants à une réservation
 module.exports.findParticipantsByReservationId = function (idReservation) {
     return new Promise(async (resolve, reject) => {
         const participants = await db.sequelize.query(
@@ -224,7 +226,7 @@ module.exports.destroyReservation = function (id) {
     })
 }
 
-//Trouver des réseravtion par salle et par Date défini
+//Trouver des réservations par salle et par Date définie
 module.exports.findReservationByRoomByDate = function (roomId, startDate, endDate) {
     return new Promise(async (resolve, reject) => {
         try {
