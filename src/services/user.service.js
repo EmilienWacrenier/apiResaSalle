@@ -4,6 +4,7 @@ const jwt = require('../interceptors/jwt');
 
 const REGEX = require('../tools/validation/regex');
 
+//Obtenir les utilisateurs
 module.exports.get_users = () => {
     return new Promise(async (resolve, reject) => {
         const user = await userBuilder.findUsers();
@@ -14,6 +15,7 @@ module.exports.get_users = () => {
     })
 }
 
+//obtenir 1 utilisateur
 module.exports.get_user = (req) => {
     return new Promise(async (resolve, reject) => {
         const user = await userBuilder.findUser(req); //findUser à coder ?
@@ -21,6 +23,7 @@ module.exports.get_user = (req) => {
     })
 }
 
+//Obtenir un utilisateur par son ID
 module.exports.get_user_by_id = (req) => {
     return new Promise(async (resolve, reject) => {
         if(req.query.userId == null){
@@ -37,6 +40,7 @@ module.exports.get_user_by_id = (req) => {
     })
 }
 
+//Inscription
 module.exports.inscription = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -97,6 +101,7 @@ module.exports.inscription = (req) => {
     });
 }
 
+//Connection
 module.exports.connexion = (req) => {
     return new Promise(async (resolve, reject) => {
         // Récupération des paramètres

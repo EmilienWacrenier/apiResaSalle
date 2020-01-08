@@ -51,6 +51,7 @@ module.exports.createReservation = function (dateDebut, dateFin, objet, etat, us
         }
     });
 };
+
 //Trouver toutes les reservations
 module.exports.findReservations = function () {
     return new Promise(async (resolve, reject) => {
@@ -63,7 +64,8 @@ module.exports.findReservations = function () {
         }
     });
 };
-//Trouver 1 reservation par id
+
+//Trouver 1 reservation
 module.exports.findReservationById = function (id) {
     return new Promise(async (resolve, reject) => {
         try {
@@ -108,7 +110,8 @@ module.exports.findSallesBookedByDay = function (startDate) {
         }
     });
 };
-//Trouver les salles associées à une résa entre startDate et endDate
+
+//Trouver les salles occupées entre startDate et endDate
 module.exports.findSallesBookedBetween = function (startDate, endDate) {
     return new Promise(async (resolve, reject) => {
         try {
@@ -132,6 +135,7 @@ module.exports.findSallesBookedBetween = function (startDate, endDate) {
     });
 };
 
+//Trouver plusieurs réservations par utilisateurs
 module.exports.findReservationsByUserId = function (req) {
     return new Promise(async (resolve, reject) => {
         try {
@@ -161,6 +165,7 @@ module.exports.findReservationsByUserId = function (req) {
     });
 };
 
+//Trouver les participants à une réservation
 module.exports.findParticipantsByReservationId = function (idReservation) {
     return new Promise(async (resolve, reject) => {
         const participants = await db.sequelize.query(
@@ -175,6 +180,7 @@ module.exports.findParticipantsByReservationId = function (idReservation) {
     })
 }
 
+//Trouver des salles occupées par ID
 module.exports.findSallesBookedById = function (req) {
     return new Promise(async (resolve, reject) => {
         try {
@@ -202,6 +208,7 @@ module.exports.findSallesBookedById = function (req) {
     })
 }
 
+//supprimer une réservation
 module.exports.destroyReservation = function (id) {
     return new Promise(async (resolve, reject) => {
         try {
@@ -219,6 +226,7 @@ module.exports.destroyReservation = function (id) {
     })
 }
 
+//Trouver des réservations par salle et par Date définie
 module.exports.findReservationByRoomByDate = function (roomId, startDate, endDate) {
     return new Promise(async (resolve, reject) => {
         try {

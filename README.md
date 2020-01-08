@@ -192,7 +192,56 @@ module.exports.test_params_recurrence = (req) => {
 
 **4. Builders :**
 
+```
+module.exports.createReservation = function (dateDebut, dateFin, objet, etat, user_id, recurrence_id, salle_id, req) {
+    return new Promise(async (resolve, reject) => {
+        try {
 
+            const nouvReservation = await db.models.Reservation.create(
+                {
+                    startDate: dateDebut,
+                    endDate: dateFin,
+                    object: objet,
+                    state: etat,
+                    user_id: user_id,
+                    recurrence_id: recurrence_id,
+                    room_id: salle_id
+
+                });
+
+            try {
+                if (req.body.users != null) {
+                    const crea = new Date();
+                    // Parcours des idUser de la req
+                    req.body.users.forEach(element => {
+                        const raw1 = db.sequelize.query(
+                            'INSERT into user_reservation (createdAt, updatedAt, reservationId, userId)\
+                            VALUES ((:crea), (:crea),(:reservation_id), (:user_id))', {
+                            replacements: {
+                                crea: crea,
+                                reservation_id: nouvReservation.reservationId,
+                                user_id: element
+                            },
+                            type: db.sequelize.QueryTypes.INSERT
+                        }
+                        );
+                    });
+                }
+
+            } catch (err) {
+                console.log(err)
+                resolve(err)
+            }
+
+            resolve(nouvReservation);
+
+        } catch (err) {
+            console.log(err);
+            reject(err);
+        }
+    });
+};
+```
 
 ## Documentation technique
 
@@ -200,11 +249,35 @@ module.exports.test_params_recurrence = (req) => {
 
 #### Dans src/services
 
-Services liés aux entité de la bdd
+Services liés aux entitées de la base de données
+
+| Fichier                | Explication du service            |
+| :--------------------: | :-------------------------------: |
+| recurrence.service.js  | Vérification de la récurrence (Savoir si les réservations associées à la récurrence ont bien                            été créé, avec le bon type de récurrence et la bonne incrémentation de date )     |
+| reservation.service.js | Création de une ou plusieurs réservations en vérifiant les informations (Utilisateurs, dates,                           objets, salle,...) en récurrence ou non |
+| salle.service.js       | Obtenir une ou plusieurs salles, disponibles ou non ; Création/Modification/Suppression                                 d'une salle avec vérification à chaque fois |
+| user.service.js        | Obtenir un ou plusieurs utilisateurs par son ID ou non ; Inscription (vérification de chaque                            paramètres, si l'utilisateur existe déjà et création du hashage du mot de passe) ;                                      Connection (Vérification de l'utilisateur et du mot de passe) |
 
 #### Dans src/tools
 
 Services annexes utilisés pour tester différents paramètres
+
+- Services
+    
+| Fichier                | Explication du service            |
+| :--------------------: | :----------------------: |
+| test_params.service.js | Pour la réservation, vérification des paramètres avec l'existence des participants et des                               paramètres. Pour la Récurrence, vérification de l'existance des paramètres |
+| util.service.js        | Vérifie la validité de chaque valeur d'un objet json et qu'une ou plusieurs valeurs d'un                                objet ne sont pas pas "null" ou "undefined" ; obtenir l'heure de la zone définie (Europe/                               Paris) |
+| workingDays.service.js | Calcul des dates disponibles sur les jours de travail (on retient les jours fériés et les                               week-ends) |
+
+&nbsp;
+
+- Validation
+
+| Fichier                | Explication du service            |
+| :--------------------: | :----------------------: |
+| regex.js               | Ajout des expressions rationnelles pour email et les dates |
+| resa-controle.js       | Ca sert a rien :) |
 
 ### Logique de développement
 
@@ -212,4 +285,16 @@ Services annexes utilisés pour tester différents paramètres
 
 #### Git
 
+https://github.com/EmilienWacrenier/apiResaSalle
+
 ### Inventaire des entry points
+
+### Système de versionning
+
+Les différentes branches présentes :
+
+- master : Branche par defaut
+- dev : Branche utilisée principalement au debut du projet
+- max2 : Branche utilisée par 'Brocel' pour l'organisation de son code
+- api_outlook : Branche utilisée pour tester la synchronisation Outlook (dead)
+- newDev : Branche principale utilisée actuellement, l'evolution de la branche dev 

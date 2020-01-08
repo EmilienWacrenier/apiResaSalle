@@ -52,8 +52,6 @@ module.exports.isNotNullOrUndefined = (constraints, object) => {
 };
 
 
-
-
 module.exports.getTimezone = () => {
   return momentz.tz(new Date(), "Europe/Paris").format().slice(-6);
 };

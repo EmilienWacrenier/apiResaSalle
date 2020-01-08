@@ -1,6 +1,7 @@
 const salleBuilder = require('../builders/salle.builder');
 const reservationBuilder = require('../builders/reservation.builder');
 
+//obtenir les salles
 module.exports.get_salles = () => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -13,6 +14,7 @@ module.exports.get_salles = () => {
     });
 };
 
+//obtenir 1 salle
 module.exports.get_salle = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -31,6 +33,7 @@ module.exports.get_salle = (req) => {
     });
 };
 
+//obtenir les salles disponibles
 module.exports.get_salles_available = (req) => {
     return new Promise(async (resolve, reject) => {
         // Vérification paramètres 
@@ -82,6 +85,7 @@ module.exports.get_salles_available = (req) => {
     });
 }
 
+//creation d'une salle
 module.exports.create_room = (req) => {
     return new Promise(async (resolve, reject) => {
         // Vérification des paramètres
@@ -119,6 +123,7 @@ module.exports.create_room = (req) => {
     })
 }
 
+//modification d'une salle
 module.exports.modify_room = (req) => {
     return new Promise(async (resolve, reject) => {
         // Vérification des paramètres
@@ -163,6 +168,7 @@ module.exports.modify_room = (req) => {
     })
 }
 
+//suppression d'une salle
 module.exports.delete_room = (req) => {
     return new Promise(async (resolve, reject) => {
         // vérification des paramètres
