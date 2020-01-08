@@ -157,6 +157,12 @@ module.exports.get_reservations = () => {
 module.exports.get_reservation_by_id = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
+            if(req.query.reservationId == null){
+                return resolve({
+                    code: 400,
+                    result: "Un paramètre est null"
+                })
+            }
             const reservation = await reservationBuilder.findReservationById(req.query.reservationId);
             return resolve({ code: 200, result: reservation });
         } catch (err) {
@@ -170,7 +176,7 @@ module.exports.get_salles_booked_between = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
             if (!req.query.startDate || !req.query.endDate) {
-                return reject({ code: 400, result: "Il manque une startDate ou une endDate !" });
+                return resolve({ code: 400, result: "Il manque une startDate ou une endDate !" });
             }
             if (REGEX.date.test(req.query.startDate) && REGEX.date.test(req.query.endDate)) {
                 const sallesBookedBetween = await reservationBuilder.findSallesBookedBetween(
@@ -202,6 +208,12 @@ module.exports.get_salles_booked_by_day = (req) => {
 module.exports.get_salles_booked_by_id = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
+            if(req.query.roomId == null || req.query.startDate == null || req.query.endDate == null){
+                return resolve({
+                    code: 400,
+                    result: "un paramètre est null"
+                })
+            }
             const sallesBookedById = await reservationBuilder.findSallesBookedById(req);
             return resolve({ code: 200, result: sallesBookedById });
         } catch (err) {
@@ -228,7 +240,7 @@ module.exports.get_reservations_by_user_id = (req) => {
                 listReservationWithParticipants.push(currentReservation);
             }
             //console.log(listReservationWithParticipants)
-            return resolve({ code: 200, result: listReservationWithParticipants });
+            return resolve({ code: 200, result: reservationsByUserId });
         } catch (err) {
             console.log(err);
             reject(err);
@@ -239,6 +251,9 @@ module.exports.get_reservations_by_user_id = (req) => {
 module.exports.get_participants_by_reservation_id = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
+            if (req.query.reservationId == null) {
+                return resolve({ code: 400, result: 'reservationId null' });
+            }
             const participants = await reservationBuilder.findParticipantsByReservationId(req.query.reservationId);
             return resolve({ code: 200, result: participants })
         } catch (err) {

@@ -1,4 +1,5 @@
 const salleBuilder = require('../builders/salle.builder');
+const reservationBuilder = require('../builders/reservation.builder');
 
 module.exports.get_salles = () => {
     return new Promise(async (resolve, reject) => {
@@ -15,6 +16,12 @@ module.exports.get_salles = () => {
 module.exports.get_salle = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
+            if (req.query.roomId == null) {
+                return resolve({
+                    code: 400,
+                    result: "roomId manquant dans la requête"
+                });
+            }
             const salle = await salleBuilder.findSalle(req.query.roomId);
             return resolve({ code: 200, result: salle });
         } catch (err) {
@@ -35,20 +42,68 @@ module.exports.get_salles_available = (req) => {
         if (isNaN(req.query.capacity)) {
             return resolve({ code: 400, result: 'Capacity n\'est pas un nombre' })
         }
+        if (req.query.label == null ||
+            req.query.endDateRecurrence == null) {
+            const salles = await salleBuilder.findSallesAvailable(req)
+                .then(function (salles) {
+                    return resolve({ code: 200, result: salles });
+                })
+        }
+        else {
+            /*const sallesByCapacity = await salleBuilder.findSalleByCapacity(req.query.capacity);
+            var listReservationConflict = [];
+            const endDateRecurrence = new Date(req.query.endDateRecurrence)
+            sallesByCapacity.forEach(async salle => {
+                let currentId = sallesByCapacity.roomId;
+                let currentStartDate = new Date(req.query.startDate);
+                let currentEndDate = new Date(req.query.endDate);
+                let conflictReservation = []
+                while (currentEndDate < endDateRecurrence) {
+                    let currentResa = await reservationBuilder.findReservationByRoomByDate(salle.dataValues.roomId,
+                        currentStartDate, currentEndDate)
+                    if (currentResa != null) {
+                        conflictReservation.push(currentResa)
+                        console.log(conflictReservation)
+                    }
+                    
+                    currentStartDate.setDate(currentStartDate.getDate() + 1)
+                    currentEndDate.setDate(currentEndDate.getDate() + 1)
+                }
+                salle.dataValues.conflict = "conflictReservation";
+            });*/
+            const sallesByCapacity = await reservationBuilder.findReservationByRoomByDate(
+                4,
+                new Date("2019-12-09 08:30:00"),
+                new Date("2019-12-11 10:10:00")
+            )
+            return resolve({ code: 200, result: sallesByCapacity })
+        }
 
-        const salles = await salleBuilder.findSallesAvailable(req)
-            .then(function (salles) {
-                return resolve({ code: 200, result: salles });
-            })
     });
 }
 
 module.exports.create_room = (req) => {
     return new Promise(async (resolve, reject) => {
         // Vérification des paramètres
-        if (req.body.name == null || req.body.area == null, req.body.capacity == null) {
+        if (req.body.name == null || req.body.area == null || req.body.capacity == null) {
             return resolve({ code: 400, result: 'Un champs est null' })
         }
+        if (isNaN(req.body.capacity)) {
+            return resolve({
+                code: 400,
+                result: "capacity n'est pas un nombre"
+            })
+        }
+
+        // Contrôler l'existance du nom pour éviter les doublons
+        const existingRoom = await salleBuilder.findSalleByName(req.body.name)
+        if (existingRoom != null) {
+            return resolve({
+                code: 400,
+                result: "Ce nom de salle est déjà utilisé"
+            })
+        }
+
 
         const newRoom = await salleBuilder.createRoom(
             req.body.name,
@@ -67,9 +122,30 @@ module.exports.create_room = (req) => {
 module.exports.modify_room = (req) => {
     return new Promise(async (resolve, reject) => {
         // Vérification des paramètres
-        if (req.body.name == null || req.body.area == null, req.body.capacity == null ||
+        if (req.body.name == null || req.body.area == null || req.body.capacity == null ||
             req.body.roomId == null) {
             return resolve({ code: 400, result: 'Un champs est null' })
+        }
+        if (isNaN(req.body.capacity)) {
+            return resolve({
+                code: 400,
+                result: "Capacité n'est pas un nombre"
+            })
+        }
+        // Contrôler l'existance du nom pour éviter les doublons
+        const existingRoomByName = await salleBuilder.findSalleByName(req.body.name)
+        if (existingRoomByName != null) {
+            return resolve({
+                code: 400,
+                result: "Ce nom de salle est déjà utilisé"
+            })
+        }
+        const existingRoomById = await salleBuilder.findSalle(req.body.roomId);
+        if(existingRoomById == null){
+            return resolve({
+                code: 400,
+                result: "La salle n'existe pas"
+            })
         }
 
         const updatedRoom = await salleBuilder.modifyRoom(
@@ -97,10 +173,10 @@ module.exports.delete_room = (req) => {
         const deleted = await salleBuilder.destroyRoom(req.query.roomId)
             .then(function (deleted) {
                 // Vérification de la suppression
-                if(deleted == 1){
+                if (deleted == 1) {
                     return resolve({ code: 200, result: 'Suppression correctement effectue' });
-                }                
-                return resolve({code: 400, result:'Une erreur est survenue lors de la suppression'})
+                }
+                return resolve({ code: 400, result: 'Une erreur est survenue lors de la suppression' })
             }).catch(function (err) {
                 return reject(err)
             })

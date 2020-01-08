@@ -20,12 +20,12 @@ exports.getReservationById = async (req, res) => {
 }
 
 exports.getSallesBookedBetween = async (req, res) => {
-        let data = await reservationService.get_salles_booked_between(req);
-        return res.status(data.code).json({ result: data.result });
+    let data = await reservationService.get_salles_booked_between(req);
+    return res.status(data.code).json({ result: data.result });
 }
 exports.getSallesBookedByDay = async (req, res) => {
-        let data = await reservationService.get_salles_booked_by_day(req);
-        return res.status(data.code).json({ result: data.result });
+    let data = await reservationService.get_salles_booked_by_day(req);
+    return res.status(data.code).json({ result: data.result });
 }
 
 exports.getReservationByRoomId = async (req, res) => {
@@ -43,19 +43,19 @@ exports.isFreeDate = async (req, res) => {
         let data1 = await reservationService.get_salles_booked_between(req);
         if (!data1.result) {
             console.log('la salle est libre (controller: get_salles_booked_between) : ' + data1.result);
-            return res.status(data1.code).json({result: data1.result});
+            return res.status(data1.code).json({ result: data1.result });
         } else {
             console.log('la salle est occupée (controller: get_salles_booked_between) : ' + data1.result);
             let data2 = await workingDaysService.is_free_date(req);
             if (!!data2) {
                 console.log('la salle est libre (controller: is_free_date) : ' + data2.result);
-                return res.status(data2.code).json({result: data2.result});
+                return res.status(data2.code).json({ result: data2.result });
             } else {
                 console.log('erreur à gérer');
-                return res.status(data2.code).json({result: data2.result});
+                return res.status(data2.code).json({ result: data2.result });
             }
         }
-        return res.status(data2.code).json({result: data2.result});
+        return res.status(data2.code).json({ result: data2.result });
     } catch (error) {
         console.log(error);
         reject(error);
@@ -82,12 +82,12 @@ exports.isFerie = (req) => {
 
 exports.getParticipantsByIdReservation = async (req, res) => {
     let data = await reservationService.get_participants_by_reservation_id(req);
-    return res.status(data.code).json({result: data.result});
+    return res.status(data.code).json({ result: data.result });
 }
 
 exports.deleteReservation = async (req, res) => {
     let data = await reservationService.delete_reservation(req);
-    return res.status(data.code).json({result: data.result});
+    return res.status(data.code).json({ result: data.result });
 }
 //******************************************************************************
 // TEST DECOUPE DES FONCTIONS
@@ -103,20 +103,20 @@ exports.createBooking = async (req, res) => {
     //Créer la réservation avec récurrence
     if (testParamRecurrence.code == 200) {
         //Vérif des conflits (date, salle, ...) pour les dates récurrentes
-            //TODO avec working days service
+        //TODO avec working days service
         //créer de la réservation avec récurrence
         let data = await recurrenceService.create_recurrence(req);
         return res.status(data.code).json({ result: data.result });
     } else if (testParamRecurrence.code == 400) { // création d'une résa sans récurrence
         //Verif des conflits
-            //TODO avec working days service
+        //TODO avec working days service
         //créer la réservation
         let data1 = await reservationService.create_booking(req);
         return res.status(data1.code).json({ result: data1.result });
     }
 };
-exports.testParamsBooking = async (req,res) => {
+exports.testParamsBooking = async (req, res) => {
     let testParam = await testParamService.test_params_booking(req);
     console.log('testParam.result (controller) : ' + testParam.result);
-    return res.status(testParam.code).json({result: testParam.result});
+    return res.status(testParam.code).json({ result: testParam.result });
 }

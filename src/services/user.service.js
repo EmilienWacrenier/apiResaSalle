@@ -23,6 +23,12 @@ module.exports.get_user = (req) => {
 
 module.exports.get_user_by_id = (req) => {
     return new Promise(async (resolve, reject) => {
+        if(req.query.userId == null){
+            return resolve({
+                code: 400,
+                result: "userId manquant dans la requête"
+            })
+        }
         const user = await userBuilder.findUserById(req);
         return resolve({
             code: 200,

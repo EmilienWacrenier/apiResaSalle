@@ -2,6 +2,7 @@
 	"info": {
 		"_postman_id": "54d14b3c-b093-48b3-becb-f9d87d9d2744",
 		"name": "room",
+		"description": "# Introduction\nLes routes de /room se distinguent en 2 groupes, des requêtes GET disponible pour les utilisateur permettant de récupérer des informations sur les salles occupées ou non et des CUD utilisable par un administrateur pour mettre à jour la base de donnée des salles",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -34,7 +35,8 @@
 						"salle",
 						"rooms"
 					]
-				}
+				},
+				"description": "Récupère les différentes salles de l'application sans critère de disponibilités"
 			},
 			"response": []
 		},
@@ -60,9 +62,252 @@
 							"value": "2"
 						}
 					]
-				}
+				},
+				"description": "Récupère une salle en fonction de son id sans critère de disponibilités"
 			},
-			"response": []
+			"response": [
+				{
+					"name": "roomById id manquant",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/salle/roomById?",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"salle",
+								"roomById"
+							],
+							"query": [
+								{
+									"key": "roomId",
+									"value": "18",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "45"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"2d-PdA9pntPknPVAOADZCDIT+Uz52g\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 Jan 2020 10:05:55 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": \"roomId manquant dans la requête\"\n}"
+				},
+				{
+					"name": "roomById id format incorrect",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/salle/roomById?roomId=aa",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"salle",
+								"roomById"
+							],
+							"query": [
+								{
+									"key": "roomId",
+									"value": "aa"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "15"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"f-0TSleP8O7o+ir9OWbTSM/93SxlI\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 Jan 2020 10:06:12 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": null\n}"
+				},
+				{
+					"name": "roomById id non existant",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/salle/roomById?roomId=18",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"salle",
+								"roomById"
+							],
+							"query": [
+								{
+									"key": "roomId",
+									"value": "18"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "15"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"f-0TSleP8O7o+ir9OWbTSM/93SxlI\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 Jan 2020 09:57:44 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": null\n}"
+				},
+				{
+					"name": "roomById correctement",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/salle/roomById?roomId=1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"salle",
+								"roomById"
+							],
+							"query": [
+								{
+									"key": "roomId",
+									"value": "1"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "64"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"40-RI331yHzt3BnMnmnpP/NRdWmic0\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 Jan 2020 09:57:29 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": {\n        \"roomId\": 1,\n        \"name\": \"salleA\",\n        \"area\": \"A\",\n        \"capacity\": 10\n    }\n}"
+				}
+			]
 		},
 		{
 			"name": "availableRooms",
@@ -70,7 +315,7 @@
 				"method": "GET",
 				"header": [],
 				"url": {
-					"raw": "http://localhost:3000/salle/availableRooms?capacity=4&startDate=2032-12-12 08:30:00&endDate=2032-12-12 09:30:00",
+					"raw": "http://localhost:3000/salle/availableRooms?capacity=2&startDate=aaa&endDate=aaa",
 					"protocol": "http",
 					"host": [
 						"localhost"
@@ -83,20 +328,296 @@
 					"query": [
 						{
 							"key": "capacity",
-							"value": "4"
+							"value": "2"
 						},
 						{
 							"key": "startDate",
-							"value": "2032-12-12 08:30:00"
+							"value": "aaa"
 						},
 						{
 							"key": "endDate",
-							"value": "2032-12-12 09:30:00"
+							"value": "aaa"
 						}
 					]
-				}
+				},
+				"description": "Récupère les salles disponible en fonction d'une capacité et de 2 dates"
 			},
-			"response": []
+			"response": [
+				{
+					"name": "availableRooms correctement mais sans correspondance",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/salle/availableRooms?capacity=20&startDate=2032-12-12 08:30:00&endDate=2032-12-12 09:30:00",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"salle",
+								"availableRooms"
+							],
+							"query": [
+								{
+									"key": "capacity",
+									"value": "20"
+								},
+								{
+									"key": "startDate",
+									"value": "2032-12-12 08:30:00"
+								},
+								{
+									"key": "endDate",
+									"value": "2032-12-12 09:30:00"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "13"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"d-JN9XGbx1zII1nUa2X6sNBTA9YGY\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 Jan 2020 10:17:28 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": []\n}"
+				},
+				{
+					"name": "availableRooms capacity au mauvais format",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/salle/availableRooms?capacity=aa&startDate=2032-12-12 08:30:00&endDate=2032-12-12 09:30:00",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"salle",
+								"availableRooms"
+							],
+							"query": [
+								{
+									"key": "capacity",
+									"value": "aa"
+								},
+								{
+									"key": "startDate",
+									"value": "2032-12-12 08:30:00"
+								},
+								{
+									"key": "endDate",
+									"value": "2032-12-12 09:30:00"
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "41"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"29-qQDp81wQ0D2sJbccmi0cakkFSTY\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 Jan 2020 10:17:55 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": \"Capacity n'est pas un nombre\"\n}"
+				},
+				{
+					"name": "availableRooms paramètres manquant",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/salle/availableRooms?capacity=4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"salle",
+								"availableRooms"
+							],
+							"query": [
+								{
+									"key": "capacity",
+									"value": "4"
+								},
+								{
+									"key": "startDate",
+									"value": "2032-12-12 08:30:00",
+									"disabled": true
+								},
+								{
+									"key": "endDate",
+									"value": "2032-12-12 09:30:00",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "24"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"18-tkptq7eV06K6YbUI2RvvhFaSsfo\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 Jan 2020 10:16:50 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": \"Params null\"\n}"
+				},
+				{
+					"name": "availableRooms correctement",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/salle/availableRooms?capacity=4&startDate=2032-12-12 08:30:00&endDate=2032-12-12 09:30:00",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"salle",
+								"availableRooms"
+							],
+							"query": [
+								{
+									"key": "capacity",
+									"value": "4"
+								},
+								{
+									"key": "startDate",
+									"value": "2032-12-12 08:30:00"
+								},
+								{
+									"key": "endDate",
+									"value": "2032-12-12 09:30:00"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "98"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"62-RUV9Kd6AJ1QZMu7ZFVIK8oSSFYQ\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 Jan 2020 10:08:46 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": [\n        {\n            \"name\": \"salleA\",\n            \"area\": \"A\",\n            \"capacity\": 10\n        },\n        {\n            \"name\": \"Salle5\",\n            \"area\": \"E\",\n            \"capacity\": 14\n        }\n    ]\n}"
+				}
+			]
 		},
 		{
 			"name": "createRoom",
@@ -141,9 +662,336 @@
 						"salle",
 						"createRoom"
 					]
-				}
+				},
+				"description": "Permet la création d'une salle par un administrateur"
 			},
-			"response": []
+			"response": [
+				{
+					"name": "createRoom correctement",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Salle10",
+									"type": "text"
+								},
+								{
+									"key": "area",
+									"value": "Z",
+									"type": "text"
+								},
+								{
+									"key": "capacity",
+									"value": "10",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/salle/createRoom",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"salle",
+								"createRoom"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "67"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"43-iZivhGqukNU8ifwyr5BmJ1Ma3VY\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 Jan 2020 10:20:36 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": {\n        \"roomId\": 3,\n        \"name\": \"Salle10\",\n        \"area\": \"Z\",\n        \"capacity\": \"10\"\n    }\n}"
+				},
+				{
+					"name": "createRoom capacity format incorrect",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Salle",
+									"type": "text"
+								},
+								{
+									"key": "area",
+									"value": "E",
+									"type": "text"
+								},
+								{
+									"key": "capacity",
+									"value": "aa",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/salle/createRoom",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"salle",
+								"createRoom"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "41"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"29-sD3GPGPCW7CkNS7h6HSSmVQTtjE\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 Jan 2020 12:12:00 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": \"capacity n'est pas un nombre\"\n}"
+				},
+				{
+					"name": "createRoom nom déjà utilisé",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Salle5hhh",
+									"type": "text"
+								},
+								{
+									"key": "area",
+									"value": "E",
+									"type": "text"
+								},
+								{
+									"key": "capacity",
+									"value": "14",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/salle/createRoom",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"salle",
+								"createRoom"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "48"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"30-6DjuRad2dZQClE1sJFeRwg6q5+Q\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 Jan 2020 12:09:31 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": \"Ce nom de salle est déjà utilisé\"\n}"
+				},
+				{
+					"name": "createRoom paramètres manquant",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "Salle5aeaz",
+									"type": "text"
+								},
+								{
+									"key": "area",
+									"value": "E",
+									"type": "text"
+								},
+								{
+									"key": "capacity",
+									"value": "14",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/salle/createRoom",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"salle",
+								"createRoom"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "31"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"1f-hu/HZBINQp2ZsYkgoS4WCm7sCCU\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 Jan 2020 12:14:11 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": \"Un champs est null\"\n}"
+				}
+			]
 		},
 		{
 			"name": "modifyRoom",
@@ -193,9 +1041,444 @@
 						"salle",
 						"modifyRoom"
 					]
-				}
+				},
+				"description": "Permet la modification d'une salle par un administrateur"
 			},
-			"response": []
+			"response": [
+				{
+					"name": "modifyRoom pas de roomId",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "newRoom",
+									"type": "text"
+								},
+								{
+									"key": "capacity",
+									"value": "20",
+									"type": "text"
+								},
+								{
+									"key": "area",
+									"value": "A",
+									"type": "text"
+								},
+								{
+									"key": "roomId",
+									"value": "1",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/salle/modifyRoom",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"salle",
+								"modifyRoom"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "31"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"1f-hu/HZBINQp2ZsYkgoS4WCm7sCCU\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 Jan 2020 10:43:30 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": \"Un champs est null\"\n}"
+				},
+				{
+					"name": "modifyRoom paramètre de maj manquant",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "newRoom",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "capacity",
+									"value": "20",
+									"type": "text"
+								},
+								{
+									"key": "area",
+									"value": "A",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "roomId",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/salle/modifyRoom",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"salle",
+								"modifyRoom"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "34"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"22-cduwWOmQF9vhYTwjvPo9Ej6DT9Q\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 Jan 2020 10:44:04 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": \"Mise à jour correcte\"\n}"
+				},
+				{
+					"name": "modifyRoom correctement",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "newRoom",
+									"type": "text"
+								},
+								{
+									"key": "capacity",
+									"value": "20",
+									"type": "text"
+								},
+								{
+									"key": "area",
+									"value": "A",
+									"type": "text"
+								},
+								{
+									"key": "roomId",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/salle/modifyRoom",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"salle",
+								"modifyRoom"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "34"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"22-cduwWOmQF9vhYTwjvPo9Ej6DT9Q\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 Jan 2020 10:40:58 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": \"Mise à jour correcte\"\n}"
+				},
+				{
+					"name": "modifyRoom mauvais format de capacité",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "newRoom",
+									"type": "text"
+								},
+								{
+									"key": "capacity",
+									"value": "aa",
+									"type": "text"
+								},
+								{
+									"key": "area",
+									"value": "A",
+									"type": "text"
+								},
+								{
+									"key": "roomId",
+									"value": "1",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/salle/modifyRoom",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"salle",
+								"modifyRoom"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "42"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"2a-jAi42lPLoRqE8J4qWzOtV0YL40c\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 Jan 2020 12:19:02 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": \"Capacité n'est pas un nombre\"\n}"
+				},
+				{
+					"name": "modifyRoom roomId non existant",
+					"originalRequest": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "name",
+									"value": "newRoomaaass",
+									"type": "text"
+								},
+								{
+									"key": "capacity",
+									"value": "11",
+									"type": "text"
+								},
+								{
+									"key": "area",
+									"value": "A",
+									"type": "text"
+								},
+								{
+									"key": "roomId",
+									"value": "111",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/salle/modifyRoom",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"salle",
+								"modifyRoom"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "34"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"22-I9a+b4ndRvbHAu7zvHlg5VtvbQY\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 Jan 2020 12:35:41 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": \"La salle n'existe pas\"\n}"
+				}
+			]
 		},
 		{
 			"name": "deleteRoom",
@@ -219,9 +1502,252 @@
 							"value": "1"
 						}
 					]
-				}
+				},
+				"description": "Permet la supression d'une salle par un administrateur"
 			},
-			"response": []
+			"response": [
+				{
+					"name": "deleteRoom correctement",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/salle/deleteRoom?roomId=12",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"salle",
+								"deleteRoom"
+							],
+							"query": [
+								{
+									"key": "roomId",
+									"value": "12"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "46"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"2e-sB9q9GWxPcpDY4Pfj5Qq3r/6akY\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 Jan 2020 12:36:24 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": \"Suppression correctement effectue\"\n}"
+				},
+				{
+					"name": "deleteRoom roomId non existant",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/salle/deleteRoom?roomId=12",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"salle",
+								"deleteRoom"
+							],
+							"query": [
+								{
+									"key": "roomId",
+									"value": "12"
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "59"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"3b-dUSYnkEaNBYdflgJWFx7Zu87JIY\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 Jan 2020 12:36:37 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": \"Une erreur est survenue lors de la suppression\"\n}"
+				},
+				{
+					"name": "deleteRoom format de roomId",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/salle/deleteRoom?roomId=a",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"salle",
+								"deleteRoom"
+							],
+							"query": [
+								{
+									"key": "roomId",
+									"value": "a"
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "59"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"3b-dUSYnkEaNBYdflgJWFx7Zu87JIY\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 Jan 2020 12:38:30 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": \"Une erreur est survenue lors de la suppression\"\n}"
+				},
+				{
+					"name": "deleteRoom roomId null",
+					"originalRequest": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/salle/deleteRoom?",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"salle",
+								"deleteRoom"
+							],
+							"query": [
+								{
+									"key": "roomId",
+									"value": "12",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "24"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"18-adih46fX3GAVvYwcH8hG7ybQhzk\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 Jan 2020 12:37:08 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": \"roomId null\"\n}"
+				}
+			]
 		}
 	],
 	"protocolProfileBehavior": {}

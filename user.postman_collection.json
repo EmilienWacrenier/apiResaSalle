@@ -2,6 +2,7 @@
 	"info": {
 		"_postman_id": "df2b50b0-9b54-4cdb-9096-dcf3edb58bb3",
 		"name": "user",
+		"description": "# Introduction\nLa collection User permet de s'authentifier, créer un compte et récupérer un utilisateur en fonction de ses informations.",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
 	},
 	"item": [
@@ -57,9 +58,462 @@
 						"user",
 						"register"
 					]
-				}
+				},
+				"description": "Permet de créer un compte"
 			},
-			"response": []
+			"response": [
+				{
+					"name": "register format email non valide",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "firstName",
+									"value": "Emilien",
+									"type": "text"
+								},
+								{
+									"key": "lastName",
+									"value": "Wacrenier",
+									"type": "text"
+								},
+								{
+									"key": "das",
+									"value": "a111111",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "emiliengmail.com",
+									"type": "text"
+								},
+								{
+									"key": "pwd",
+									"value": "emilienmdp",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/user/register",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"register"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "29"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"1d-/Kg6gVDQE2KPL50Uw84kq+Yf4xc\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 06 Jan 2020 13:05:13 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": \"Email non valide\"\n}"
+				},
+				{
+					"name": "register email ou das déjà existant",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "firstName",
+									"value": "Emilien",
+									"type": "text"
+								},
+								{
+									"key": "lastName",
+									"value": "Wacrenier",
+									"type": "text"
+								},
+								{
+									"key": "das",
+									"value": "a111111",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "emilien@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "pwd",
+									"value": "emilienmdp",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/user/register",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"register"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "52"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"34-WZoQbVSUlOjCyUXswNpJpG+kOjM\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 06 Jan 2020 13:04:44 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": \"Utilisateur déjà présent dans la bdd\"\n}"
+				},
+				{
+					"name": "register un champ manquant",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "firstName",
+									"value": "Emilien",
+									"type": "text"
+								},
+								{
+									"key": "lastName",
+									"value": "Wacrenier",
+									"type": "text"
+								},
+								{
+									"key": "das",
+									"value": "a111111",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "emilien@gmail.com",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "pwd",
+									"value": "emilienmdp",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/user/register",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"register"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "24"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"18-t49tbjHvxHbPst0WoR4dR7T2F8M\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 06 Jan 2020 13:04:10 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": \"Champs null\"\n}"
+				},
+				{
+					"name": "register correctement",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "firstName",
+									"value": "Emilien",
+									"type": "text"
+								},
+								{
+									"key": "lastName",
+									"value": "Wacrenier",
+									"type": "text"
+								},
+								{
+									"key": "das",
+									"value": "a111111",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "emilien@gmail.com",
+									"type": "text"
+								},
+								{
+									"key": "pwd",
+									"value": "emilienmdp",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/user/register",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"register"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "210"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"d2-INvKCCHCLrhcb7hFoOi+HmfX1Qs\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 06 Jan 2020 13:03:18 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": {\n        \"userId\": 3,\n        \"firstName\": \"Emilien\",\n        \"lastName\": \"Wacrenier\",\n        \"das\": \"a111111\",\n        \"email\": \"emilien@gmail.com\",\n        \"pwd\": \"$2a$05$EXx3.2tWYaAE7McGOSGtseTXvf6pZgoKgXN0uu5pjnwi9/L0MJ/R2\",\n        \"isActive\": false,\n        \"role_id\": 1\n    }\n}"
+				},
+				{
+					"name": "register format das non valide",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "firstName",
+									"value": "Emilien",
+									"type": "text"
+								},
+								{
+									"key": "lastName",
+									"value": "Wacrenier",
+									"type": "text"
+								},
+								{
+									"key": "das",
+									"value": "a1111111",
+									"type": "text"
+								},
+								{
+									"key": "email",
+									"value": "emiliengmail.com",
+									"type": "text"
+								},
+								{
+									"key": "pwd",
+									"value": "emilienmdp",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/user/register",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"register"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "27"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"1b-G2X+96Ky+yd75S1+8SvZAueTttA\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 06 Jan 2020 13:06:29 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": \"Das non valide\"\n}"
+				}
+			]
 		},
 		{
 			"name": "login",
@@ -113,9 +567,535 @@
 							"value": "emilienmdp"
 						}
 					]
-				}
+				},
+				"description": "Permet à l'utilisateur de se connecter à l'application"
 			},
-			"response": []
+			"response": [
+				{
+					"name": "login email mauvais format",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "emilien@gmail.com",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "mdp",
+									"value": "emilienmdp",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/user/login?email=mauvais format d'email&pwd=emilienmdp",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"login"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "mauvais format d'email"
+								},
+								{
+									"key": "pwd",
+									"value": "emilienmdp"
+								}
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "37"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"25-mIuVIsmy9u52eYYHlOngb/Q7Bwo\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 06 Jan 2020 12:57:40 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": \"utilisateur non existant\"\n}"
+				},
+				{
+					"name": "login email non existant",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "emilien@gmail.com",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "mdp",
+									"value": "emilienmdp",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/user/login?email=mauvais.email@gmail.com&pwd=emilienmdp",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"login"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "mauvais.email@gmail.com"
+								},
+								{
+									"key": "pwd",
+									"value": "emilienmdp"
+								}
+							]
+						}
+					},
+					"status": "Not Found",
+					"code": 404,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "37"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"25-mIuVIsmy9u52eYYHlOngb/Q7Bwo\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 06 Jan 2020 12:56:54 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": \"utilisateur non existant\"\n}"
+				},
+				{
+					"name": "login mauvais mot de passe",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "emilien@gmail.com",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "mdp",
+									"value": "emilienmdp",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/user/login?email=emilien@gmail.com&pwd=mauvais mdp",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"login"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "emilien@gmail.com"
+								},
+								{
+									"key": "pwd",
+									"value": "mauvais mdp"
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "35"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"23-K9QGMRasc2YLqxV3GbyW1xs2+Sw\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 06 Jan 2020 12:56:08 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": \"mot de passe incorrect\"\n}"
+				},
+				{
+					"name": "login sans mot de passe",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "emilien@gmail.com",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "mdp",
+									"value": "emilienmdp",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/user/login?email=emilien@gmail.com",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"login"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "emilien@gmail.com"
+								},
+								{
+									"key": "pwd",
+									"value": "emilienmdp",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "40"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"28-LznhYsXglhhtOuLd2ASfuWASJcA\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 06 Jan 2020 12:50:19 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": \"Email ou pwd non renseigné\"\n}"
+				},
+				{
+					"name": "login sans email",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "emilien@gmail.com",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "mdp",
+									"value": "emilienmdp",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/user/login?pwd=emilienmdp",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"login"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "emilien@gmail.com",
+									"disabled": true
+								},
+								{
+									"key": "pwd",
+									"value": "emilienmdp"
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "40"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"28-LznhYsXglhhtOuLd2ASfuWASJcA\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 06 Jan 2020 12:50:37 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": \"Email ou pwd non renseigné\"\n}"
+				},
+				{
+					"name": "login correctement",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "email",
+									"value": "emilien@gmail.com",
+									"type": "text",
+									"disabled": true
+								},
+								{
+									"key": "mdp",
+									"value": "emilienmdp",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "localhost:3000/user/login?email=emilien@gmail.com&pwd=emilienmdp",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"login"
+							],
+							"query": [
+								{
+									"key": "email",
+									"value": "emilien@gmail.com"
+								},
+								{
+									"key": "pwd",
+									"value": "emilienmdp"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "219"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"db-bMDcGchKGhZTpvh0oBSnMtAYkDk\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 06 Jan 2020 12:49:47 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": {\n        \"userId\": 2,\n        \"lastName\": \"Wacrenier\",\n        \"firstName\": \"Emilien\",\n        \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJyb2xlIjoxLCJpYXQiOjE1NzgzMTQ5ODcsImV4cCI6MTU3ODMxNzM4N30.78Ui9j1oSSVgcaalAU1uYiro74YmT-foxC84YN_Edho\"\n    }\n}"
+				}
+			]
 		},
 		{
 			"name": "users",
@@ -138,9 +1118,70 @@
 						"user",
 						"users"
 					]
-				}
+				},
+				"description": "Récupère la liste des utilisateurs enregistrés"
 			},
-			"response": []
+			"response": [
+				{
+					"name": "users correctement",
+					"originalRequest": {
+						"method": "GET",
+						"header": [
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjIsInJvbGUiOjEsImlhdCI6MTU3MzY0ODQ1NiwiZXhwIjoxNTczNjUwODU2fQ.CyshYTshR_wb8z2BcIgnIrbTAUqEvA3iW076NMRuoYg",
+								"type": "text"
+							}
+						],
+						"url": {
+							"raw": "localhost:3000/user/users",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"users"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "410"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"19a-O/+bIZyOy+J8Bn9/vtm9FjHORjc\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 06 Jan 2020 13:07:41 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": [\n        {\n            \"userId\": 3,\n            \"firstName\": \"Emilien\",\n            \"lastName\": \"Wacrenier\",\n            \"das\": \"a111111\",\n            \"email\": \"emilien@gmail.com\",\n            \"pwd\": \"$2a$05$EXx3.2tWYaAE7McGOSGtseTXvf6pZgoKgXN0uu5pjnwi9/L0MJ/R2\",\n            \"isActive\": false,\n            \"role_id\": 1\n        },\n        {\n            \"userId\": 4,\n            \"firstName\": \"Adrien\",\n            \"lastName\": \"Wacrenier\",\n            \"das\": \"a222222\",\n            \"email\": \"adrien@gmail.com\",\n            \"pwd\": \"$2a$05$MZOsuA9fUK3cHtpdYL6UZOFt99Crii8PYJ.FdTpj2exfl14zC7Ut2\",\n            \"isActive\": false,\n            \"role_id\": 1\n        }\n    ]\n}"
+				}
+			]
 		},
 		{
 			"name": "userById",
@@ -164,9 +1205,252 @@
 							"value": "3"
 						}
 					]
-				}
+				},
+				"description": "Récupère un utilisateur à partir de son id"
 			},
-			"response": []
+			"response": [
+				{
+					"name": "userById correctement",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/user/userById?userId=3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"userById"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "3"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "210"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"d2-INvKCCHCLrhcb7hFoOi+HmfX1Qs\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 06 Jan 2020 13:08:47 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": {\n        \"userId\": 3,\n        \"firstName\": \"Emilien\",\n        \"lastName\": \"Wacrenier\",\n        \"das\": \"a111111\",\n        \"email\": \"emilien@gmail.com\",\n        \"pwd\": \"$2a$05$EXx3.2tWYaAE7McGOSGtseTXvf6pZgoKgXN0uu5pjnwi9/L0MJ/R2\",\n        \"isActive\": false,\n        \"role_id\": 1\n    }\n}"
+				},
+				{
+					"name": "userById userId manquant",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/user/userById?",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"userById"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "3",
+									"disabled": true
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "45"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"2d-J5Et4eo/8c9gEcv1bJOfTOwl5lU\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 Jan 2020 09:51:14 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": \"userId manquant dans la requête\"\n}"
+				},
+				{
+					"name": "userById id non existant",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/user/userById?userId=300",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"userById"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "300"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "15"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"f-0TSleP8O7o+ir9OWbTSM/93SxlI\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 Jan 2020 09:47:43 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": null\n}"
+				},
+				{
+					"name": "userById format userId incorrect",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/user/userById?userId=a3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"user",
+								"userById"
+							],
+							"query": [
+								{
+									"key": "userId",
+									"value": "a3"
+								}
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "15"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"f-0TSleP8O7o+ir9OWbTSM/93SxlI\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 07 Jan 2020 09:52:34 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": null\n}"
+				}
+			]
 		}
 	],
 	"protocolProfileBehavior": {}

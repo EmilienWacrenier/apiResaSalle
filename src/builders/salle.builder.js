@@ -29,6 +29,38 @@ module.exports.findSalle = function (id) {
     });
 };
 
+module.exports.findSalleByName = function(name) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const salle = await db.models.Room.findOne({
+                where: {
+                    name: name
+                }
+            });
+            resolve(salle);
+        } catch (err) {
+            console.log(err);
+            reject(err);
+        }
+    })
+}
+
+module.exports.findSalleByCapacity = function(capacity){
+    return new Promise(async (resolve, reject) => {
+        try {
+            const salle = await db.models.Room.findAll({
+                where: {
+                    capacity: {[Op.gte]: capacity}
+                }
+            })
+            return resolve(salle)
+        } catch (err) {
+            console.log(err)
+            reject(err)
+        }
+    })
+}
+
 module.exports.findSallesAvailable = function (req) {
     return new Promise(async (resolve, reject) => {
         try {

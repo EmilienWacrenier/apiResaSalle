@@ -2,7 +2,6 @@
 var express = require('express');
 var router = express.Router();
 
-
 // Controller declaration
 const ReservationController = require('../controllers/reservation.controller.js');
 

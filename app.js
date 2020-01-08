@@ -7,6 +7,7 @@ const db = require('./src/config/db.config');
 
 const PORT = CONFIG.port;
 
+
 // winston logger
 const {
   logger,
@@ -18,6 +19,8 @@ app.use(express.json());
 app.use(express.urlencoded({ limit: '10mb', extended: true }));
 app.use(cookieParser());
 app.use(cors());
+
+
 
 require('./src/modules/router.module')(app);
 
