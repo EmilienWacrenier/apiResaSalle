@@ -3,6 +3,7 @@ const recurrenceBuilder = require('../builders/recurrence.builder');
 // const mailService = require('./mail.service');
 const userBuilder = require('../builders/user.builder');
 const workingDaysService = require('../tools/services/workingDays.service');
+const general = require('./general.service');
 
 const REGEX = require('../tools/validation/regex');
 
@@ -10,35 +11,43 @@ const moment = require('moment');
 const momentTz = require('moment-timezone');
 const timeZone = 'Europe/Paris'; //UTC+01:00
 
-//Créer une réservation
+// A partir d'un tableau de userId envoyé dans la requête, retourne si certains id n'existent pas dans la BDD
+module.exports.checkUsers = async (req) => {
+    let toReturn = null
+    if (req.body.users != null) {
+        for (const idUser of req.body.users) {
+            reqq = {
+                query: {
+                    userId: idUser
+                }
+            }
+            var existingUser = await userBuilder.findUserById(reqq)
+            console.log(existingUser)
+            if (existingUser == null) {
+                toReturn = { code: 400, result: 'User non trouve' };
+            }
+        }
+    }
+    return toReturn;
+}
+
 module.exports.create_reservation = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            // Vérification des userId
-            if (req.body.users != null) {
-                for (const idUser of req.body.users) {
-                    reqq = {
-                        query: {
-                            userId: idUser
-                        }
-                    }
-                    var existingUser = await userBuilder.findUserById(reqq)
-                    if (existingUser == null) {
-                        return resolve({ code: 400, result: 'User non trouve' });
-                    }
-                }
-            }
+            const checkedUsers = await this.checkUsers(req)
+            if(checkedUsers != null){return resolve (checkedUsers)}
 
-            // Vérification de la présence des infos sur la réservation
-            if (req.body.startDate == null || req.body.endDate == null || req.body.object == null
-                || req.body.object == ""
-                || req.body.roomId == null || req.body.userId == null) {
-                return resolve({ code: 400, result: 'Un champs de réservation est nul' });
+            const checkedBody = general.checkBody(req, ["startDate", "endDate", "object", "roomId", "userId"])            
+            if (checkedBody != null) {
+                return resolve(checkedBody);
+            }
+            else if(req.body.object == ""){
+                return resolve({code:400, result:"Le champs object est vide"})
             }
 
             // Vérification de la présence des infos sur la récurrence
-            if (req.body.labelRecurrence != null && req.body.startDateRecurrence != null
-                && req.body.endDateRecurrence != null) {
+            const checkedBodyRecurrence = general.checkBody(req, ["labelRecurrence", "startDateRecurrence", "endDateRecurrence"])
+            if (checkedBodyRecurrence == null) {
 
                 // Vérification du labelRecurrence
                 if (req.body.labelRecurrence == "quotidien" || req.body.labelRecurrence == "hebdomadaire"
@@ -65,10 +74,10 @@ module.exports.create_reservation = (req) => {
                                 const currentExistingResa = await reservationBuilder.findReservationByRoomByDate(
                                     req.body.roomId, currentstartDate, currentendDate
                                 )
-                                if(currentExistingResa != null){
+                                if (currentExistingResa != null) {
                                     listExistingResa.push(currentExistingResa);
                                 }
-                                else{
+                                else {
                                     var currentCreatedReservation = await reservationBuilder.createReservation(
                                         currentstartDate, currentendDate, req.body.object, 1, req.body.userId,
                                         createdRecurrence.recurrenceId, req.body.roomId, req
@@ -115,7 +124,7 @@ module.exports.create_reservation = (req) => {
                     const existingResa = await reservationBuilder.findReservationByRoomByDate(
                         req.body.roomId, dateDebut, dateFin
                     )
-                    if(existingResa != null){
+                    if (existingResa != null) {
                         console.log("bonjour")
                         return resolve({ code: 400, result: 'Reservation déjà présente' });
                     }
@@ -157,7 +166,7 @@ module.exports.get_reservations = () => {
 module.exports.get_reservation_by_id = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if(req.query.reservationId == null){
+            if (req.query.reservationId == null) {
                 return resolve({
                     code: 400,
                     result: "Un paramètre est null"
@@ -208,7 +217,7 @@ module.exports.get_salles_booked_by_day = (req) => {
 module.exports.get_salles_booked_by_id = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if(req.query.roomId == null || req.query.startDate == null || req.query.endDate == null){
+            if (req.query.roomId == null || req.query.startDate == null || req.query.endDate == null) {
                 return resolve({
                     code: 400,
                     result: "un paramètre est null"
@@ -303,7 +312,7 @@ module.exports.create_booking = (req) => {
             const existingResa = await reservationBuilder.findReservationByRoomByDate(
                 roomId, dateDebut, dateFin
             )
-            if(existingResa != null){
+            if (existingResa != null) {
                 console.log("bonjour")
                 return resolve({ code: 400, result: 'Reservation déjà présente' });
             }
@@ -314,8 +323,8 @@ module.exports.create_booking = (req) => {
                 .then(function (createdReservation) {
                     return resolve({ code: 200, result: createdReservation });
                 })
-            } catch (error) {
-                    return resolve({ code: 400, result: error })
-            }
+        } catch (error) {
+            return resolve({ code: 400, result: error })
+        }
     });
 }

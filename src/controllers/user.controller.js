@@ -7,6 +7,7 @@ const db = require('../config/db.config');
 const Op = require('Sequelize').Op;
 
 exports.getUsers = async (req, res) => {
+
     let data = await userService.get_users();
     return res.status(data.code).json({ result: data.result });
 }

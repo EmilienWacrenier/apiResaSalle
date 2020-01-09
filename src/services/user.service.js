@@ -1,6 +1,7 @@
 const userBuilder = require('../builders/user.builder');
 const bcrypt = require('bcryptjs');
 const jwt = require('../interceptors/jwt');
+const general = require('./general.service');
 
 const REGEX = require('../tools/validation/regex');
 
@@ -26,7 +27,7 @@ module.exports.get_user = (req) => {
 //Obtenir un utilisateur par son ID
 module.exports.get_user_by_id = (req) => {
     return new Promise(async (resolve, reject) => {
-        if(req.query.userId == null){
+        if (req.query.userId == null) {
             return resolve({
                 code: 400,
                 result: "userId manquant dans la requête"
@@ -40,36 +41,46 @@ module.exports.get_user_by_id = (req) => {
     })
 }
 
+function verifParamRegister(req) {
+    if (req.body.lastName == null || req.body.firstName == null || req.body.das == null ||
+        req.body.email == null || req.body.pwd == null) {
+        return ({
+            code: 400,
+            result: 'Champs null'
+        });
+    }
+    if (req.body.das.length != 7) {
+        return ({
+            code: 400,
+            result: 'Das non valide'
+        });
+    }
+    if (req.body.lastName.length > 45 || req.body.firstName.length > 45 || req.body.pwd.length < 8) {
+        return ({
+            code: 400,
+            result: 'Longueur des champs'
+        });
+    }
+    if (!REGEX.email.test(req.body.email)) {
+        return ({
+            code: 400,
+            result: 'Email non valide'
+        });
+    }
+    return null;
+}
+
+
 //Inscription
 module.exports.inscription = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
             // Vérification des paramètres
-            if (req.body.lastName == null || req.body.firstName == null || req.body.das == null ||
-                req.body.email == null || req.body.pwd == null) {
-                return resolve({
-                    code: 400,
-                    result: 'Champs null'
-                });
+            const checkParam = verifParamRegister(req);
+            if (checkParam != null) {
+                return resolve(checkParam);
             }
-            if (req.body.das.length != 7) {
-                return resolve({
-                    code: 400,
-                    result: 'Das non valide'
-                });
-            }
-            if (req.body.lastName.length > 45 || req.body.firstName.length > 45 || req.body.pwd.length < 8) {
-                return resolve({
-                    code: 400,
-                    result: 'Longueur des champs'
-                });
-            }
-            if (!REGEX.email.test(req.body.email)) {
-                return resolve({
-                    code: 400,
-                    result: 'Email non valide'
-                });
-            }
+
             // L'utilisateur existe t'il déjà?
             const existingUser = await userBuilder.findUserByEmailOrByDas(req);
             if (existingUser != null) {
@@ -101,19 +112,14 @@ module.exports.inscription = (req) => {
     });
 }
 
+
+
 //Connection
 module.exports.connexion = (req) => {
     return new Promise(async (resolve, reject) => {
-        // Récupération des paramètres
-        let email = req.query.email;
-
-        let pwd = req.query.pwd;
-        // Vérification des paramètres
-        if (email == null || pwd == null) {
-            return resolve({
-                code: 400,
-                result: 'Email ou pwd non renseigné'
-            });
+        const checkedParams = general.checkParam(req, ["email", "pwd"]);
+        if (checkedParams != null) {
+            return resolve(checkedParams);
         } else {
             // Récupération du user
             let user = await userBuilder.findUserByEmail(req);
@@ -125,7 +131,7 @@ module.exports.connexion = (req) => {
                 });
             } else {
                 // Comparaison du mot de passe
-                bcrypt.compare(pwd, user.pwd, function (err, res) {
+                bcrypt.compare(req.query.pwd, user.pwd, function (err, res) {
                     if (res) {
                         toResolve = {
                             'userId': user.userId,

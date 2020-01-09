@@ -1,5 +1,6 @@
 const salleBuilder = require('../builders/salle.builder');
 const reservationBuilder = require('../builders/reservation.builder');
+const general = require('./general.service');
 
 //obtenir les salles
 module.exports.get_salles = () => {
@@ -18,11 +19,9 @@ module.exports.get_salles = () => {
 module.exports.get_salle = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (req.query.roomId == null) {
-                return resolve({
-                    code: 400,
-                    result: "roomId manquant dans la requête"
-                });
+            const checkedParams = general.checkParam(req, ["roomId"]);
+            if (checkedParams != null) {
+                return resolve(checkedParams);
             }
             const salle = await salleBuilder.findSalle(req.query.roomId);
             return resolve({ code: 200, result: salle });
@@ -37,10 +36,9 @@ module.exports.get_salle = (req) => {
 module.exports.get_salles_available = (req) => {
     return new Promise(async (resolve, reject) => {
         // Vérification paramètres 
-        if (req.query.capacity == null ||
-            req.query.startDate == null ||
-            req.query.endDate == null) {
-            return resolve({ code: 400, result: 'Params null' });
+        const checkedParams = general.checkParam(req, ["capacity", "startDate", "endDate"])
+        if (checkedParams != null) {
+            return resolve(checkedParams);
         }
         if (isNaN(req.query.capacity)) {
             return resolve({ code: 400, result: 'Capacity n\'est pas un nombre' })
@@ -89,8 +87,9 @@ module.exports.get_salles_available = (req) => {
 module.exports.create_room = (req) => {
     return new Promise(async (resolve, reject) => {
         // Vérification des paramètres
-        if (req.body.name == null || req.body.area == null || req.body.capacity == null) {
-            return resolve({ code: 400, result: 'Un champs est null' })
+        const checkedParams = general.checkParam(req, ["name", "area", "capacity"]);
+        if (checkedParams != null) {
+            return resolve(checkedParams)
         }
         if (isNaN(req.body.capacity)) {
             return resolve({
@@ -126,10 +125,9 @@ module.exports.create_room = (req) => {
 //modification d'une salle
 module.exports.modify_room = (req) => {
     return new Promise(async (resolve, reject) => {
-        // Vérification des paramètres
-        if (req.body.name == null || req.body.area == null || req.body.capacity == null ||
-            req.body.roomId == null) {
-            return resolve({ code: 400, result: 'Un champs est null' })
+        const checkedParams = general.checkParam(req, ["name", "area", "capacity", "roomId"])
+        if (checkedParams != null) {
+            return resolve(checkedParams)
         }
         if (isNaN(req.body.capacity)) {
             return resolve({
@@ -171,9 +169,9 @@ module.exports.modify_room = (req) => {
 //suppression d'une salle
 module.exports.delete_room = (req) => {
     return new Promise(async (resolve, reject) => {
-        // vérification des paramètres
-        if (req.query.roomId == null) {
-            return resolve({ code: 400, result: 'roomId null' });
+        const checkedParams = general.checkParam(req, ["roomId"])
+        if (checkedParams != null) {
+            return resolve(checkedParams);
         }
 
         const deleted = await salleBuilder.destroyRoom(req.query.roomId)
