@@ -83,6 +83,8 @@ module.exports.get_salles_available = (req) => {
     });
 }
 
+
+
 //creation d'une salle
 module.exports.create_room = (req) => {
     return new Promise(async (resolve, reject) => {

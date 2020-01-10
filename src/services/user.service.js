@@ -117,6 +117,8 @@ module.exports.inscription = (req) => {
 //Connection
 module.exports.connexion = (req) => {
     return new Promise(async (resolve, reject) => {
+        const che = general.checkParam(req, ["email", "pwd"]) != null ? console.log("manque un param") : console.log("tout les param")
+
         const checkedParams = general.checkParam(req, ["email", "pwd"]);
         if (checkedParams != null) {
             return resolve(checkedParams);
