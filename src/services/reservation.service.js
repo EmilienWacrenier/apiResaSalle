@@ -157,7 +157,7 @@ module.exports.create_reservation = (req) => {
 
 module.exports.check_existing_reservation = async (roomId, startDate, endDate) => {
     let checkingExistingReservation = await reservationBuilder.checkReservation(roomId, startDate, endDate);
-    if(!checkingExistingReservation){
+    if (!checkingExistingReservation) {
         return true;
     }
     return checkingExistingReservation;
@@ -165,7 +165,7 @@ module.exports.check_existing_reservation = async (roomId, startDate, endDate) =
 
 module.exports.get_reservations = () => {
     return new Promise(async (resolve, reject) => {
-        try {            
+        try {
             const reservations = await reservationBuilder.findReservations();
             return resolve({ code: 200, result: reservations });
         } catch (err) {
@@ -311,24 +311,25 @@ module.exports.delete_reservation = (req) => {
 
 module.exports.modify_reservation = (req) => {
     return new Promise(async (resolve, reject) => {
-        try {
-            const checkedBody = general.checkBody(req, ["startDate", "endDate", "object", "roomId", "reservationId"])
-            if(checkedBody != null){
-                return resolve(checkedBody);
-            }
-            else if (req.body.object == "") {
-                return resolve({ code: 400, result: "Le champs object est vide" })
-            }
-            else if( null /*check s'il y a deja une resa */) {
-                return resolve({ code: 403, result : "Il y a dejà une réservation"})
-            }
-            else{
-                const modifyReservation = await reservationBuilder.modifyReservation(req);
-                return resolve({ code: 200, result: modifyReservation });
-            }
-        } catch (error) {
-            console.log(error);
-            reject(error);
+        const checkedBody = general.checkBody(req, ["startDate", "endDate", "object", "roomId", "reservationId"])
+        if (checkedBody != null) {
+            return resolve(checkedBody);
+        }
+        else if (req.body.object == "") {
+            return resolve({ code: 400, result: "Le champs object est vide" })
+        }
+        else if (null /*check s'il y a deja une resa */) {
+            return resolve({ code: 403, result: "Il y a dejà une réservation" })
+        }
+        else {
+            const modifyReservation = await reservationBuilder.modifyReservation(req)
+                .then(function (modifyReservation) {
+                    if (modifyReservation != null) {
+                        return resolve({ code: 200, result: 'Réservation mise à jour'});
+                    }
+                }).catch(function (err) {
+                    return reject(err);
+                })
         }
     })
 }

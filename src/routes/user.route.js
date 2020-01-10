@@ -15,7 +15,7 @@ router.get('/login', userController.connexion);
 router.post('/register', userController.inscription);
 
 // PUT
-
+router.put('/updateUser', userController.modifyUser);
 
 // DELETE
 
