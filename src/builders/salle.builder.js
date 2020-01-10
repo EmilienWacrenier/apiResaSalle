@@ -65,7 +65,7 @@ module.exports.findSallesAvailable = function (req) {
     return new Promise(async (resolve, reject) => {
         try {
             const availableRoom = await db.sequelize.query(
-                'select room.name, room.area, room.capacity \
+                'select room.roomId room.name, room.area, room.capacity \
                 from room\
                 where capacity >= (:capacity)\
                 AND roomId NOT IN (\

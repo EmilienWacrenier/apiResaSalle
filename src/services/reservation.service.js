@@ -31,18 +31,41 @@ module.exports.checkUsers = async (req) => {
     return toReturn;
 }
 
+module.exports.create_resa_simple = async (req) => {
+    let toResolve = { code: 400, result: "Une erreur est survenu lors de la création" }
+    const dateDebut = momentTz.tz(req.body.startDate, 'YYYY-MM-DD HH:mm:ss');
+    const dateFin = momentTz.tz(req.body.endDate, 'YYYY-MM-DD HH:mm:ss');
+    // Présence de réservation entrant en conflit
+    const existingResa = await reservationBuilder.findReservationByRoomByDate(
+        req.body.roomId, dateDebut, dateFin
+    )
+    if (existingResa != null) {
+        toResolve = { code: 400, result: 'Reservation déjà présente' };
+    }
+    else {
+        var createdReservation = await reservationBuilder.createReservation(
+            dateDebut, dateFin, req.body.object, 1, req.body.userId,
+            null, req.body.roomId, req
+        )
+            .then(function (createdReservation) {
+                toResolve = { code: 200, result: createdReservation };
+            })
+    }
+    return toResolve
+}
+
 module.exports.create_reservation = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
             const checkedUsers = await this.checkUsers(req)
-            if(checkedUsers != null){return resolve (checkedUsers)}
+            if (checkedUsers != null) { return resolve(checkedUsers) }
 
-            const checkedBody = general.checkBody(req, ["startDate", "endDate", "object", "roomId", "userId"])            
+            const checkedBody = general.checkBody(req, ["startDate", "endDate", "object", "roomId", "userId"])
             if (checkedBody != null) {
                 return resolve(checkedBody);
             }
-            else if(req.body.object == ""){
-                return resolve({code:400, result:"Le champs object est vide"})
+            else if (req.body.object == "") {
+                return resolve({ code: 400, result: "Le champs object est vide" })
             }
 
             // Vérification de la présence des infos sur la récurrence
@@ -116,27 +139,8 @@ module.exports.create_reservation = (req) => {
                 }
             }
             else {
-                // Résa simple
                 try {
-                    const dateDebut = momentTz.tz(req.body.startDate, 'YYYY-MM-DD HH:mm:ss');
-                    const dateFin = momentTz.tz(req.body.endDate, 'YYYY-MM-DD HH:mm:ss');
-                    // Présence de réservation entrant en conflit
-                    const existingResa = await reservationBuilder.findReservationByRoomByDate(
-                        req.body.roomId, dateDebut, dateFin
-                    )
-                    if (existingResa != null) {
-                        console.log("bonjour")
-                        return resolve({ code: 400, result: 'Reservation déjà présente' });
-                    }
-
-
-                    var createdReservation = await reservationBuilder.createReservation(
-                        dateDebut, dateFin, req.body.object, 1, req.body.userId,
-                        null, req.body.roomId, req
-                    )
-                        .then(function (createdReservation) {
-                            return resolve({ code: 200, result: createdReservation });
-                        })
+                    return resolve(this.create_resa_simple(req))
                 }
                 catch (error) {
                     return resolve({ code: 400, result: error })
@@ -150,10 +154,16 @@ module.exports.create_reservation = (req) => {
         };
     })
 };
-//get all reservations
+
+module.exports.check_existing_reservation = async (roomId, startDate, endDate) => {
+    let checkingExistingReservation = await reservationBuilder.findReservationByRoomByDate(roomId, startDate, endDate);
+    console.log(checkingExistingReservation.dataValues);
+}
+
 module.exports.get_reservations = () => {
     return new Promise(async (resolve, reject) => {
         try {
+            this.check_existing_reservation(11, "2019-12-10 08:30:00", "2019-12-10 09:00:00");
             const reservations = await reservationBuilder.findReservations();
             return resolve({ code: 200, result: reservations });
         } catch (err) {
@@ -162,15 +172,13 @@ module.exports.get_reservations = () => {
         }
     });
 };
-//get reservation by id
+
 module.exports.get_reservation_by_id = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (req.query.reservationId == null) {
-                return resolve({
-                    code: 400,
-                    result: "Un paramètre est null"
-                })
+            const checkedParams = general.checkParam(req, ["reservationId"])
+            if (checkedBody != null) {
+                return resolve(checkedBody)
             }
             const reservation = await reservationBuilder.findReservationById(req.query.reservationId);
             return resolve({ code: 200, result: reservation });
@@ -180,12 +188,13 @@ module.exports.get_reservation_by_id = (req) => {
         }
     });
 };
-//get les salles occupées entre startDate et endDate
+
 module.exports.get_salles_booked_between = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (!req.query.startDate || !req.query.endDate) {
-                return resolve({ code: 400, result: "Il manque une startDate ou une endDate !" });
+            const checkedParams = general.checkParam(req, ["startDate", "endDate"])
+            if (checkedParams != null) {
+                return resolve(checkedParams);
             }
             if (REGEX.date.test(req.query.startDate) && REGEX.date.test(req.query.endDate)) {
                 const sallesBookedBetween = await reservationBuilder.findSallesBookedBetween(
@@ -205,6 +214,10 @@ module.exports.get_salles_booked_between = (req) => {
 module.exports.get_salles_booked_by_day = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
+            const checkedParams = general.checkParam(req, ["startDate"]);
+            if (checkedParams != null) {
+                return resolve(checkedParams)
+            }
             const sallesBookedByDay = await reservationBuilder.findSallesBookedByDay(req.query.startDate);
             return resolve({ code: 200, result: sallesBookedByDay });
         } catch (err) {
@@ -217,11 +230,9 @@ module.exports.get_salles_booked_by_day = (req) => {
 module.exports.get_salles_booked_by_id = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (req.query.roomId == null || req.query.startDate == null || req.query.endDate == null) {
-                return resolve({
-                    code: 400,
-                    result: "un paramètre est null"
-                })
+            const checkedParams = general.checkParam(req, ["roomId", "startDate", "endDate"]);
+            if (checkedParams != null) {
+                return resolve(checkedParams)
             }
             const sallesBookedById = await reservationBuilder.findSallesBookedById(req);
             return resolve({ code: 200, result: sallesBookedById });
@@ -231,11 +242,13 @@ module.exports.get_salles_booked_by_id = (req) => {
         }
     });
 };
+
 module.exports.get_reservations_by_user_id = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (req.query.userId == null) {
-                return resolve({ code: 400, result: 'userId null' });
+            const checkedParams = general.checkParam(req, ["userId"]);
+            if (checkedParams != null) {
+                return resolve(checkedParams);
             }
             let listReservationWithParticipants = [];
             const reservationsByUserId = await reservationBuilder.findReservationsByUserId(req);
@@ -260,8 +273,9 @@ module.exports.get_reservations_by_user_id = (req) => {
 module.exports.get_participants_by_reservation_id = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (req.query.reservationId == null) {
-                return resolve({ code: 400, result: 'reservationId null' });
+            const checkedParams = general.checkParam(req, ["reservationId"]);
+            if (checkedParams != null) {
+                return resolve(checkedParams);
             }
             const participants = await reservationBuilder.findParticipantsByReservationId(req.query.reservationId);
             return resolve({ code: 200, result: participants })
@@ -275,8 +289,9 @@ module.exports.get_participants_by_reservation_id = (req) => {
 module.exports.delete_reservation = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            if (req.query.reservationId == null) {
-                return resolve({ code: 400, result: 'reservationId null' });
+            const checkedParams = general.checkParam(req, ["reservationId"]);
+            if (checkedParams != null) {
+                return resolve(checkedParams);
             }
             const deleteRes = await reservationBuilder.destroyReservation(req.query.reservationId);
             if (deleteRes) {
