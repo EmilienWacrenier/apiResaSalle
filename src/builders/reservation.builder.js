@@ -233,7 +233,7 @@ module.exports.findReservationByRoomByDate = function (roomId, startDate, endDat
             const result = await db.models.Reservation.findOne({
                 attributes: [
                     'reservationId',
-                    'startDate', 
+                    'startDate',
                     'endDate'
                 ],
                 where: {
@@ -263,6 +263,35 @@ module.exports.findReservationByRoomByDate = function (roomId, startDate, endDat
             resolve(result)
         } catch (error) {
             return reject(error)
+        }
+    })
+}
+
+// Vérifie la disponibilité d'une créneau
+module.exports.checkReservation = function (roomId, startDate, endDate) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const result = await db.sequelize.query('\
+                select * from reservation\
+                where room_id = (:roomId)\
+                AND (\
+                    (endDate >= (:startDate) AND endDate <= (:endDate))\
+                    OR\
+                    (startDate >= (:startDate) AND startDate <= (:endDate))\
+                    OR\
+                    (startDate <= (:startDate) AND endDate >= (:endDate))\
+                )\
+            ', {
+                replacements: {
+                    roomId: roomId,
+                    startDate: startDate,
+                    endDate: endDate
+                },
+                type: db.sequelize.QueryTypes.SELECT
+            })
+            resolve(result)
+        } catch (error) {
+
         }
     })
 }

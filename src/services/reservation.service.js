@@ -156,14 +156,16 @@ module.exports.create_reservation = (req) => {
 };
 
 module.exports.check_existing_reservation = async (roomId, startDate, endDate) => {
-    let checkingExistingReservation = await reservationBuilder.findReservationByRoomByDate(roomId, startDate, endDate);
-    console.log(checkingExistingReservation.dataValues);
+    let checkingExistingReservation = await reservationBuilder.checkReservation(roomId, startDate, endDate);
+    if(!checkingExistingReservation){
+        return true;
+    }
+    return checkingExistingReservation;
 }
 
 module.exports.get_reservations = () => {
     return new Promise(async (resolve, reject) => {
-        try {
-            this.check_existing_reservation(11, "2019-12-10 08:30:00", "2019-12-10 09:00:00");
+        try {            
             const reservations = await reservationBuilder.findReservations();
             return resolve({ code: 200, result: reservations });
         } catch (err) {

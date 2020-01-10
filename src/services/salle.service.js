@@ -127,7 +127,7 @@ module.exports.create_room = (req) => {
 //modification d'une salle
 module.exports.modify_room = (req) => {
     return new Promise(async (resolve, reject) => {
-        const checkedParams = general.checkParam(req, ["name", "area", "capacity", "roomId"])
+        const checkedParams = general.checkBody(req, ["name", "area", "capacity", "roomId"])
         if (checkedParams != null) {
             return resolve(checkedParams)
         }
