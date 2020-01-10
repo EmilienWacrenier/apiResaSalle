@@ -233,7 +233,7 @@ module.exports.findReservationByRoomByDate = function (roomId, startDate, endDat
             const result = await db.models.Reservation.findOne({
                 attributes: [
                     'reservationId',
-                    'startDate', 
+                    'startDate',
                     'endDate'
                 ],
                 where: {
@@ -266,4 +266,31 @@ module.exports.findReservationByRoomByDate = function (roomId, startDate, endDat
         }
     })
 }
+
+//Modifier une réservation
+module.exports.modifyReservation = function (req) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const modifiedReservation = await db.models.Reservation.update(
+                {
+                    startDate: req.body.startDate,
+                    endDate: req.body.endDate,
+                    object: req.body.object,
+                    reservationId: req.body.reservationId,
+                    room_id: req.body.roomId
+                },
+                {
+                    where: {
+                        reservationId: req.body.reservationId
+                    },
+                    returning: true,
+                }).then(function (modifiedReservation){
+                    console.log(modifiedReservation)
+                    return resolve(modifiedReservation);
+                })
+        } catch (error) {
+            return reject(error)
+        }
+    });
+};
 

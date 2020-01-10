@@ -177,7 +177,7 @@ module.exports.get_reservation_by_id = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
             const checkedParams = general.checkParam(req, ["reservationId"])
-            if (checkedBody != null) {
+            if (checkedParams != null) {
                 return resolve(checkedBody)
             }
             const reservation = await reservationBuilder.findReservationById(req.query.reservationId);
@@ -310,17 +310,19 @@ module.exports.delete_reservation = (req) => {
 module.exports.modify_reservation = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            // champ non null
-            
-            if (req.query.reservationId == null) {
-                return resolve({ code: 400, result: 'reservationId null' });
+            const checkedBody = general.checkBody(req, ["startDate", "endDate", "object", "roomId", "reservationId"])
+            if(checkedBody != null){
+                return resolve(checkedBody);
             }
-            const deleteRes = await reservationBuilder.destroyReservation(req.query.reservationId);
-            if (deleteRes) {
-                return resolve({ code: 200, result: 'Suppression effectué' });
+            else if (req.body.object == "") {
+                return resolve({ code: 400, result: "Le champs object est vide" })
             }
-            else {
-                return resolve({ code: 400, result: 'Erreur lors de la suppression' });
+            else if( null /*check s'il y a deja une resa */) {
+                return resolve({ code: 403, result : "Il y a dejà une réservation"})
+            }
+            else{
+                const modifyReservation = await reservationBuilder.modifyReservation(req);
+                return resolve({ code: 200, result: modifyReservation });
             }
         } catch (error) {
             console.log(error);
