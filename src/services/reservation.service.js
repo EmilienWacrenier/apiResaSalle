@@ -291,6 +291,28 @@ module.exports.delete_reservation = (req) => {
         }
     })
 }
+
+module.exports.modify_reservation = (req) => {
+    return new Promise(async (resolve, reject) => {
+        try {
+            // champ non null
+            
+            if (req.query.reservationId == null) {
+                return resolve({ code: 400, result: 'reservationId null' });
+            }
+            const deleteRes = await reservationBuilder.destroyReservation(req.query.reservationId);
+            if (deleteRes) {
+                return resolve({ code: 200, result: 'Suppression effectué' });
+            }
+            else {
+                return resolve({ code: 400, result: 'Erreur lors de la suppression' });
+            }
+        } catch (error) {
+            console.log(error);
+            reject(error);
+        }
+    })
+}
 //******************************************************************************
 // TEST DECOUPE DES FONCTIONS
 //******************************************************************************

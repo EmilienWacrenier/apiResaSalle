@@ -19,6 +19,7 @@ router.post('/createReservation', ReservationController.creerReservation);
 router.post('/createBooking', ReservationController.createBooking);
 
 // PUT
+router.put('/modifyReservation', ReservationController.modifyReservation);
 
 // DELETE
 router.delete('/deleteReservation', ReservationController.deleteReservation);

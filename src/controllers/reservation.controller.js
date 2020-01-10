@@ -37,6 +37,12 @@ exports.getReservationsByUserId = async (req, res) => {
     let data = await reservationService.get_reservations_by_user_id(req);
     return res.status(data.code).json({ result: data.result });
 }
+
+exports.modifyReservation = async (req, res) => {
+    let data = await reservationService.modify_reservation(req);
+    return res.status(data.code).json({ result: data.result });
+}
+
 //test isFreeDate
 exports.isFreeDate = async (req, res) => {
     try {
