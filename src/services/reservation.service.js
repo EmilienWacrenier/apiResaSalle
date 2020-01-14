@@ -11,6 +11,53 @@ const moment = require('moment');
 const momentTz = require('moment-timezone');
 const timeZone = 'Europe/Paris'; //UTC+01:00
 
+module.exports.check_recurrence = async (startDate, endDate, roomId, labelRecurrence, endDateRecurrence) => {
+    return new Promise(async (resolve, reject) => {
+        var reservationsToReturn = [];
+        var currentStartDate = new Date(startDate);
+        var currentEndDate = new Date(endDate);
+        const currentEndDateRecurrence = new Date(endDateRecurrence)
+
+
+        do {
+            var currentReservation = await this.check_existing_reservation(roomId, 
+                moment(currentStartDate).format("YYYY-MM-DD HH:mm:ss").toString(), moment(currentStartDate).format("YYYY-MM-DD HH:mm:ss").toString());
+            if (!currentReservation[0]) {
+                reservationsToReturn.push({ startDate: new Date(currentStartDate), endDate: new Date(currentEndDate), conflit: false })
+            }
+            else {
+                console.log(currentReservation)
+                reservationsToReturn.push({ startDate: currentReservation[0].startDate, endDate: currentReservation[0].endDate, conflit: true, email: currentReservation[0].email })
+            }
+
+            switch (labelRecurrence) {
+                case "quotidien":
+                    currentStartDate.setDate(currentStartDate.getDate() + 1);
+                    currentEndDate.setDate(currentEndDate.getDate() + 1);
+                    break;
+
+                case "hebdomadaire":
+                    currentStartDate.setDate(currentStartDate.getDate() + 7);
+                    currentEndDate.setDate(currentEndDate.getDate() + 7);
+                    break;
+
+                case "mensuel":
+                    currentStartDate.setMonth(currentStartDate.getMonth() + 1);
+                    currentEndDate.setMonth(currentEndDate.getMonth() + 1);
+                    break;
+
+                default:
+                    currentStartDate.setDate(currentStartDate.getDate() + 1);
+                    currentEndDate.setDate(currentEndDate.getDate() + 1);
+                    break;
+            }
+
+        } while (currentEndDate <= currentEndDateRecurrence);
+
+        return resolve({ code: 200, result: reservationsToReturn })
+    })
+}
+
 // A partir d'un tableau de userId envoyé dans la requête, retourne si certains id n'existent pas dans la BDD
 module.exports.checkUsers = async (req) => {
     let toReturn = null
@@ -22,7 +69,6 @@ module.exports.checkUsers = async (req) => {
                 }
             }
             var existingUser = await userBuilder.findUserById(reqq)
-            console.log(existingUser)
             if (existingUser == null) {
                 toReturn = { code: 400, result: 'User non trouve' };
             }
@@ -32,14 +78,19 @@ module.exports.checkUsers = async (req) => {
 }
 
 module.exports.create_resa_simple = async (req) => {
+
     let toResolve = { code: 400, result: "Une erreur est survenu lors de la création" }
     const dateDebut = momentTz.tz(req.body.startDate, 'YYYY-MM-DD HH:mm:ss');
     const dateFin = momentTz.tz(req.body.endDate, 'YYYY-MM-DD HH:mm:ss');
     // Présence de réservation entrant en conflit
-    const existingResa = await reservationBuilder.findReservationByRoomByDate(
+
+    const existingResa = await this.check_existing_reservation(
         req.body.roomId, dateDebut, dateFin
     )
-    if (existingResa != null) {
+    //console.log(existingResa)
+
+    if (existingResa != true) {
+
         toResolve = { code: 400, result: 'Reservation déjà présente' };
     }
     else {
@@ -140,6 +191,7 @@ module.exports.create_reservation = (req) => {
             }
             else {
                 try {
+
                     return resolve(this.create_resa_simple(req))
                 }
                 catch (error) {
@@ -157,7 +209,8 @@ module.exports.create_reservation = (req) => {
 
 module.exports.check_existing_reservation = async (roomId, startDate, endDate) => {
     let checkingExistingReservation = await reservationBuilder.checkReservation(roomId, startDate, endDate);
-    if(!checkingExistingReservation){
+    //console.log(checkingExistingReservation)
+    if (!checkingExistingReservation) {
         return true;
     }
     return checkingExistingReservation;
@@ -165,7 +218,7 @@ module.exports.check_existing_reservation = async (roomId, startDate, endDate) =
 
 module.exports.get_reservations = () => {
     return new Promise(async (resolve, reject) => {
-        try {            
+        try {
             const reservations = await reservationBuilder.findReservations();
             return resolve({ code: 200, result: reservations });
         } catch (err) {

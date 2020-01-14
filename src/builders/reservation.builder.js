@@ -272,7 +272,7 @@ module.exports.checkReservation = function (roomId, startDate, endDate) {
     return new Promise(async (resolve, reject) => {
         try {
             const result = await db.sequelize.query('\
-                select * from reservation\
+                select * from reservation inner join user on reservation.user_id = user.userId\
                 where room_id = (:roomId)\
                 AND (\
                     (endDate >= (:startDate) AND endDate <= (:endDate))\
@@ -291,7 +291,7 @@ module.exports.checkReservation = function (roomId, startDate, endDate) {
             })
             resolve(result)
         } catch (error) {
-
+            console.log(error)
         }
     })
 }

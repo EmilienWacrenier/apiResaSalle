@@ -3,6 +3,7 @@ const workingDaysService = require('../tools/services/workingDays.service');
 // const mailService = require('../services/mail.service');
 const testParamService = require('../tools/services/test_params.service');
 const recurrenceService = require('../services/recurrence.service');
+const generalService = require('../services/general.service');
 
 exports.creerReservation = async (req, res) => {
     let data = await reservationService.create_reservation(req);
@@ -37,6 +38,29 @@ exports.getReservationsByUserId = async (req, res) => {
     let data = await reservationService.get_reservations_by_user_id(req);
     return res.status(data.code).json({ result: data.result });
 }
+
+exports.checkReservation = async (req, res) => {
+    let data = await reservationService.check_existing_reservation(req.query.roomId, req.query.startDate, req.query.endDate);
+    console.log(data)
+    if(!data[0]){
+        return res.status(200).json({result: "Le créneau de réservation est disponible"})
+    }
+    else{
+        return res.status(400).json({result: data})
+    }
+}
+
+exports.checkRecurrence = async (req, res) => {
+    let checkedParams = generalService.checkParam(req, ["startDate", "endDate", "roomId", "labelRecurrence", "endDateRecurrence"]);
+    if(checkedParams != null){
+        return res.status(400).json({result: checkedParams})
+    }
+    let data = await reservationService.check_recurrence(
+        req.query.startDate, req.query.endDate, req.query.roomId, req.query.labelRecurrence, req.query.endDateRecurrence
+    )
+    return res.status(data.code).json({result: data.result});
+}
+
 //test isFreeDate
 exports.isFreeDate = async (req, res) => {
     try {

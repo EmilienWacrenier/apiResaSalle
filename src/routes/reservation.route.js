@@ -13,6 +13,8 @@ router.get('/reservationsByDay', ReservationController.getSallesBookedByDay);
 router.get('/reservationsByRoomId', ReservationController.getReservationByRoomId);
 router.get('/reservationsByUserId', ReservationController.getReservationsByUserId);
 router.get('/participants', ReservationController.getParticipantsByIdReservation);
+router.get('/checkReservation', ReservationController.checkReservation);
+router.get('/checkRecurrence', ReservationController.checkRecurrence);
 
 //POST
 router.post('/createReservation', ReservationController.creerReservation);
