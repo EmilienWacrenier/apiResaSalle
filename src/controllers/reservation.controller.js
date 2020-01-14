@@ -59,6 +59,10 @@ exports.checkRecurrence = async (req, res) => {
         req.query.startDate, req.query.endDate, req.query.roomId, req.query.labelRecurrence, req.query.endDateRecurrence
     )
     return res.status(data.code).json({result: data.result});
+    }
+exports.modifyReservation = async (req, res) => {
+    let data = await reservationService.modify_reservation(req);
+    return res.status(data.code).json({ result: data.result });
 }
 
 //test isFreeDate

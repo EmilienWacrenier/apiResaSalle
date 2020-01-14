@@ -232,7 +232,7 @@ module.exports.get_reservation_by_id = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
             const checkedParams = general.checkParam(req, ["reservationId"])
-            if (checkedBody != null) {
+            if (checkedParams != null) {
                 return resolve(checkedBody)
             }
             const reservation = await reservationBuilder.findReservationById(req.query.reservationId);
@@ -358,6 +358,31 @@ module.exports.delete_reservation = (req) => {
         } catch (error) {
             console.log(error);
             reject(error);
+        }
+    })
+}
+
+module.exports.modify_reservation = (req) => {
+    return new Promise(async (resolve, reject) => {
+        const checkedBody = general.checkBody(req, ["startDate", "endDate", "object", "roomId", "reservationId"])
+        if (checkedBody != null) {
+            return resolve(checkedBody);
+        }
+        else if (req.body.object == "") {
+            return resolve({ code: 400, result: "Le champs object est vide" })
+        }
+        else if (null /*check s'il y a deja une resa */) {
+            return resolve({ code: 403, result: "Il y a dejà une réservation" })
+        }
+        else {
+            const modifyReservation = await reservationBuilder.modifyReservation(req)
+                .then(function (modifyReservation) {
+                    if (modifyReservation != null) {
+                        return resolve({ code: 200, result: 'Réservation mise à jour'});
+                    }
+                }).catch(function (err) {
+                    return reject(err);
+                })
         }
     })
 }

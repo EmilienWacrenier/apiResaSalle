@@ -29,3 +29,8 @@ exports.connexion = async (req, res) => {
     let data = await userService.connexion(req);
     return res.status(data.code).json({ result: data.result });
 }
+
+exports.modifyUser = async(req, res) => {
+    let data = await userService.modify_user(req);
+    return res.status(data.code).json({ result: data.result });
+}
