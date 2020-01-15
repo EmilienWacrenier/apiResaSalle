@@ -2,6 +2,8 @@ const reservationBuilder = require('../builders/reservation.builder');
 const recurrenceBuilder = require('../builders/recurrence.builder');
 // const mailService = require('./mail.service');
 const userBuilder = require('../builders/user.builder');
+const salleBuilder = require('../builders/salle.builder');
+
 const workingDaysService = require('../tools/services/workingDays.service');
 const general = require('./general.service');
 
@@ -206,6 +208,65 @@ module.exports.create_reservation = (req) => {
         };
     })
 };
+
+//check si le tableau est null ou un element des réservation est pas bon
+//return false si vide ou pas de tableau ou pas format tableau
+//return un tableau s'il y a un probleme dans les parametres
+//return true si pas de probleme
+module.exports.check_param_reservation_recurrence = async (req) => {
+    //1- check le tableau est vide 
+    if (req.isArray && req.length > 0 && req != null) {
+        
+        for (let reservation of req) {
+            //2- check si les parametres de reservation sont bons (non null et dans le bon format)
+            let paramIssue = [];
+            if(reservation.startDate == null || reservation.startDate == "" || !REGEX.date.test(reservation.startDate)){
+                paramIssue.push(startDate);
+            }
+            if(reservation.endDate == null || reservation.endDate == "" || !REGEX.date.test(reservation.endDate)){
+                paramIssue.push(endDate);
+            }
+            if(reservation.object == null || reservation.object == ""){
+                paramIssue.push(object);
+            }
+            if(reservation.etat == null || reservation.etat != false || reservation.etat != true){
+                paramIssue.push(etat);
+            }
+            if(reservation.userId == null || reservation.userId == "" /*|| CONTROLE SI USER EST EN BASE */){
+                paramIssue.push(userId);
+            }
+            if(reservation.roomId == null || reservation.roomId == "" || salleBuilder.findSalle(reservation.roomId == null)){
+                paramIssue.push(roomId);
+            }
+            if(paramIssue.isArray && paramIssue.length > 0 ){
+                return paramIssue;
+            }
+            else return true;
+        }
+    }
+    else return false;
+}
+
+//check les reservations par recurrences si elles sont en conflit ou pas
+//retourne un tableau avec toutes les réservations
+// les réservations qui sont en conflits ont une nouvelle clé "isConflict" avec la valeur true
+module.exports.check_existing_reservation_recurrence = async (req) => {
+    let reservationsConflictOrNot = [];
+    
+    for(let reservation of req){
+
+        let checkReservationIfTaken = this.check_existing_reservation(reservation.roomId, reservation.startDate, reservation.endDate)
+
+        if(checkReservationIfTaken != true){
+            reservation.assign(reservation, { isConflict : true });
+        }
+
+        reservationsConflictOrNot.push(reservation);
+    }
+
+    return reservationsConflictOrNot;
+}
+
 
 module.exports.check_existing_reservation = async (roomId, startDate, endDate) => {
     let checkingExistingReservation = await reservationBuilder.checkReservation(roomId, startDate, endDate);
