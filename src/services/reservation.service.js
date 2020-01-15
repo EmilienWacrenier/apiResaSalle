@@ -215,10 +215,12 @@ module.exports.create_reservation = (req) => {
 //return true si pas de probleme
 module.exports.check_param_reservation_recurrence = async (req) => {
     return new Promise(async (resolve, reject) => {
-        //1- check le tableau est vide 
-        if (req.isArray && req.length > 0 && req != null) {
 
-            for (let reservation of req) {
+        let listeReservations = req.body.listeReservations;
+        //1- check le tableau est vide 
+        if (listeReservations.isArray && listeReservations.length > 0 && listeReservations != null) {
+
+            for (let reservation of listeReservations) {
                 //2- check si les parametres de reservation sont bons (non null et dans le bon format)
                 let paramIssue = [];
                 if (reservation.startDate == null || reservation.startDate == "" || !REGEX.date.test(reservation.startDate)) {
@@ -253,10 +255,11 @@ module.exports.check_param_reservation_recurrence = async (req) => {
 //retourne un tableau avec toutes les réservations
 // les réservations qui sont en conflits ont une nouvelle clé "isConflict" avec la valeur true
 module.exports.check_existing_reservation_recurrence = async (req) => {
+    let listeReservations = req.body.listeReservations;
     let codeToResolve = 200;
     let reservationsConflictOrNot = [];
 
-    for (let reservation of req) {
+    for (let reservation of listeReservations) {
 
         let checkReservationIfTaken = this.check_existing_reservation(reservation.roomId, reservation.startDate, reservation.endDate)
 
