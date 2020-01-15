@@ -68,8 +68,21 @@ exports.modifyReservation = async (req, res) => {
 }
 
 exports.createRecurrence = async (req, res) => {
-    let data = await reservationBuilder.insertMultipleReservation(req.body.listReservation);
-    return res.status(200).json(data)
+/*     let data = await reservationBuilder.insertMultipleReservation(req.body.listReservation);
+    return res.status(200).json(data) */
+    let checkParam = await reservationService.check_param_reservation_recurrence(req);
+    if(checkParam.code == 200){
+        let creneauxDispo = await reservationService.check_existing_reservation_recurrence(req);
+        if (creneauxDispo.code == 200) {
+            // Insertion en base
+        }
+        else{
+            return res.status(creneauxDispo.code).json({result: creneauxDispo.result})
+        }
+    }
+    else{
+        return res.status(checkParam.code).json(checkParam.result)
+    }
 }
 
 //test isFreeDate

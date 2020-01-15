@@ -22,7 +22,7 @@ module.exports.check_recurrence = async (startDate, endDate, roomId, labelRecurr
 
 
         do {
-            var currentReservation = await this.check_existing_reservation(roomId, 
+            var currentReservation = await this.check_existing_reservation(roomId,
                 moment(currentStartDate).format("YYYY-MM-DD HH:mm:ss").toString(), moment(currentStartDate).format("YYYY-MM-DD HH:mm:ss").toString());
             if (!currentReservation[0]) {
                 reservationsToReturn.push({ startDate: new Date(currentStartDate), endDate: new Date(currentEndDate), conflit: false })
@@ -214,57 +214,60 @@ module.exports.create_reservation = (req) => {
 //return un tableau s'il y a un probleme dans les parametres
 //return true si pas de probleme
 module.exports.check_param_reservation_recurrence = async (req) => {
-    //1- check le tableau est vide 
-    if (req.isArray && req.length > 0 && req != null) {
-        
-        for (let reservation of req) {
-            //2- check si les parametres de reservation sont bons (non null et dans le bon format)
-            let paramIssue = [];
-            if(reservation.startDate == null || reservation.startDate == "" || !REGEX.date.test(reservation.startDate)){
-                paramIssue.push(startDate);
+    return new Promise(async (resolve, reject) => {
+        //1- check le tableau est vide 
+        if (req.isArray && req.length > 0 && req != null) {
+
+            for (let reservation of req) {
+                //2- check si les parametres de reservation sont bons (non null et dans le bon format)
+                let paramIssue = [];
+                if (reservation.startDate == null || reservation.startDate == "" || !REGEX.date.test(reservation.startDate)) {
+                    paramIssue.push(startDate);
+                }
+                if (reservation.endDate == null || reservation.endDate == "" || !REGEX.date.test(reservation.endDate)) {
+                    paramIssue.push(endDate);
+                }
+                if (reservation.object == null || reservation.object == "") {
+                    paramIssue.push(object);
+                }
+                if (reservation.etat == null || reservation.etat != false || reservation.etat != true) {
+                    paramIssue.push(etat);
+                }
+                if (reservation.userId == null || reservation.userId == "" /*|| CONTROLE SI USER EST EN BASE */) {
+                    paramIssue.push(userId);
+                }
+                if (reservation.roomId == null || reservation.roomId == "" || salleBuilder.findSalle(reservation.roomId == null)) {
+                    paramIssue.push(roomId);
+                }
+                if (paramIssue.isArray && paramIssue.length > 0) {
+                    return resolve ({code: 400, result: paramIssue});
+                }
+                else return resolve({code: 200, result: "Ok"});
             }
-            if(reservation.endDate == null || reservation.endDate == "" || !REGEX.date.test(reservation.endDate)){
-                paramIssue.push(endDate);
-            }
-            if(reservation.object == null || reservation.object == ""){
-                paramIssue.push(object);
-            }
-            if(reservation.etat == null || reservation.etat != false || reservation.etat != true){
-                paramIssue.push(etat);
-            }
-            if(reservation.userId == null || reservation.userId == "" /*|| CONTROLE SI USER EST EN BASE */){
-                paramIssue.push(userId);
-            }
-            if(reservation.roomId == null || reservation.roomId == "" || salleBuilder.findSalle(reservation.roomId == null)){
-                paramIssue.push(roomId);
-            }
-            if(paramIssue.isArray && paramIssue.length > 0 ){
-                return paramIssue;
-            }
-            else return true;
         }
-    }
-    else return false;
+        else return resolve({code: 400, result: "le tableau est vide"});
+    })
 }
 
 //check les reservations par recurrences si elles sont en conflit ou pas
 //retourne un tableau avec toutes les réservations
 // les réservations qui sont en conflits ont une nouvelle clé "isConflict" avec la valeur true
 module.exports.check_existing_reservation_recurrence = async (req) => {
+    let codeToResolve = 200;
     let reservationsConflictOrNot = [];
-    
-    for(let reservation of req){
+
+    for (let reservation of req) {
 
         let checkReservationIfTaken = this.check_existing_reservation(reservation.roomId, reservation.startDate, reservation.endDate)
 
-        if(checkReservationIfTaken != true){
-            reservation.assign(reservation, { isConflict : true });
+        if (checkReservationIfTaken != true) {
+            codeToResolve = 400;
+            reservation.assign(reservation, { isConflict: true });
         }
 
         reservationsConflictOrNot.push(reservation);
     }
-
-    return reservationsConflictOrNot;
+        return resolve({code: codeToResolve, result: reservationsConflictOrNot});
 }
 
 
@@ -441,7 +444,7 @@ module.exports.modify_reservation = (req) => {
             const modifyReservation = await reservationBuilder.modifyReservation(req)
                 .then(function (modifyReservation) {
                     if (modifyReservation != null) {
-                        return resolve({ code: 200, result: 'Réservation mise à jour'});
+                        return resolve({ code: 200, result: 'Réservation mise à jour' });
                     }
                 }).catch(function (err) {
                     return reject(err);
