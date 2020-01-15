@@ -1,4 +1,5 @@
 const reservationService = require('../services/reservation.service');
+const reservationBuilder = require('../builders/reservation.builder')
 const workingDaysService = require('../tools/services/workingDays.service');
 // const mailService = require('../services/mail.service');
 const testParamService = require('../tools/services/test_params.service');
@@ -67,7 +68,8 @@ exports.modifyReservation = async (req, res) => {
 }
 
 exports.createRecurrence = async (req, res) => {
-    
+    let data = await reservationBuilder.insertMultipleReservation(req.body.listReservation);
+    return res.status(200).json(data)
 }
 
 //test isFreeDate

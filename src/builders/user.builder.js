@@ -10,6 +10,7 @@ module.exports.findUsers = function () {
 
 module.exports.findUserById = function (req) {
     return new Promise(async (resolve, reject) => {
+        
         const user = await db.models.User.findOne({
             where: {
                 userId: req.query.userId
