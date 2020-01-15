@@ -322,3 +322,16 @@ module.exports.checkReservation = function (roomId, startDate, endDate) {
     })
 }
 
+module.exports.insertMultipleReservation = function (listReservation) {
+    return new Promise(async (resolve, reject) => {
+        const createdReservation = await db.models.Reservation.bulkCreate(listReservation)
+        .then(function(res){
+            return resolve(res);
+        })
+        .catch(function(err){
+            console.log(err);
+            return resolve(err)
+        })
+    })
+}
+
