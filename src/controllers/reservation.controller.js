@@ -60,9 +60,14 @@ exports.checkRecurrence = async (req, res) => {
     )
     return res.status(data.code).json({result: data.result});
     }
+
 exports.modifyReservation = async (req, res) => {
     let data = await reservationService.modify_reservation(req);
     return res.status(data.code).json({ result: data.result });
+}
+
+exports.createRecurrence = async (req, res) => {
+    
 }
 
 //test isFreeDate

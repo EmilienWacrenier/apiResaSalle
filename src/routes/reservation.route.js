@@ -19,6 +19,7 @@ router.get('/checkRecurrence', ReservationController.checkRecurrence);
 //POST
 router.post('/createReservation', ReservationController.creerReservation);
 router.post('/createBooking', ReservationController.createBooking);
+router.post('/createRecurrence', ReservationController.createRecurrence);
 
 // PUT
 router.put('/modifyReservation', ReservationController.modifyReservation);

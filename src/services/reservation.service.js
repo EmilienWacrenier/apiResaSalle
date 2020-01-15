@@ -362,6 +362,8 @@ module.exports.delete_reservation = (req) => {
     })
 }
 
+
+
 module.exports.modify_reservation = (req) => {
     return new Promise(async (resolve, reject) => {
         const checkedBody = general.checkBody(req, ["startDate", "endDate", "object", "roomId", "reservationId"])
