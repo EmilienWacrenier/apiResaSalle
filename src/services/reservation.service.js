@@ -215,39 +215,44 @@ module.exports.create_reservation = (req) => {
 //return true si pas de probleme
 module.exports.check_param_reservation_recurrence = async (req) => {
     return new Promise(async (resolve, reject) => {
-
+        let checkedBody = general.checkBody(req, ["listeReservations"]);
+        if (checkedBody != null) {
+            return resolve(checkedBody);
+        }
         let listeReservations = req.body.listeReservations;
         //1- check le tableau est vide 
-        if (listeReservations.isArray && listeReservations.length > 0 && listeReservations != null) {
+        if (listeReservations != null) {
 
             for (let reservation of listeReservations) {
                 //2- check si les parametres de reservation sont bons (non null et dans le bon format)
                 let paramIssue = [];
                 if (reservation.startDate == null || reservation.startDate == "" || !REGEX.date.test(reservation.startDate)) {
-                    paramIssue.push(startDate);
+                    paramIssue.push(reservation.startDate);
                 }
                 if (reservation.endDate == null || reservation.endDate == "" || !REGEX.date.test(reservation.endDate)) {
-                    paramIssue.push(endDate);
+                    paramIssue.push(reservation.endDate);
                 }
                 if (reservation.object == null || reservation.object == "") {
-                    paramIssue.push(object);
+                    paramIssue.push(reservation.object);
                 }
-                if (reservation.etat == null || reservation.etat != false || reservation.etat != true) {
-                    paramIssue.push(etat);
+                /*                 if (reservation.state == null || reservation.state != false || reservation.state != true) {
+                                    paramIssue.push(state);
+                                } */
+                if (reservation.user_id == null || reservation.user_id == "" /*|| CONTROLE SI USER EST EN BASE */) {
+                    paramIssue.push(reservation.user_id);
                 }
-                if (reservation.userId == null || reservation.userId == "" /*|| CONTROLE SI USER EST EN BASE */) {
-                    paramIssue.push(userId);
-                }
-                if (reservation.roomId == null || reservation.roomId == "" || salleBuilder.findSalle(reservation.roomId == null)) {
-                    paramIssue.push(roomId);
+                if (reservation.room_id == null || reservation.room_id == "" || await salleBuilder.findSalle(reservation.room_id == null)) {
+                    paramIssue.push(reservation.room_id);
                 }
                 if (paramIssue.isArray && paramIssue.length > 0) {
-                    return resolve ({code: 400, result: paramIssue});
+                    return resolve({ code: 400, result: paramIssue });
                 }
-                else return resolve({code: 200, result: "Ok"});
+                else return resolve(
+                    { code: 200, result: "Ok" }
+                );
             }
         }
-        else return resolve({code: 400, result: "le tableau est vide"});
+        else return resolve({ code: 400, result: "le tableau est vide" });
     })
 }
 
@@ -255,22 +260,25 @@ module.exports.check_param_reservation_recurrence = async (req) => {
 //retourne un tableau avec toutes les réservations
 // les réservations qui sont en conflits ont une nouvelle clé "isConflict" avec la valeur true
 module.exports.check_existing_reservation_recurrence = async (req) => {
-    let listeReservations = req.body.listeReservations;
-    let codeToResolve = 200;
-    let reservationsConflictOrNot = [];
+    return new Promise(async (resolve, reject) => {
+        let listeReservations = req.body.listeReservations;
+        let codeToResolve = 200;
+        let reservationsConflictOrNot = [];
 
-    for (let reservation of listeReservations) {
-
-        let checkReservationIfTaken = this.check_existing_reservation(reservation.roomId, reservation.startDate, reservation.endDate)
-
-        if (checkReservationIfTaken != true) {
-            codeToResolve = 400;
-            reservation.assign(reservation, { isConflict: true });
+        for (let reservation of listeReservations) {
+            reservation.isConflict = false
+            reservation.startDate = moment(reservation.startDate, "YYYY-MM-DD HH:mm:ss").toISOString();
+            reservation.endDate = moment(reservation.endDate, "YYYY-MM-DD HH:mm:ss").toISOString();
+            console.log(reservation.startDate)
+            let checkReservationIfTaken = await this.check_existing_reservation(reservation.room_id, reservation.startDate, reservation.endDate)
+            if (checkReservationIfTaken[0] !== undefined) {
+                codeToResolve = 400;
+                reservation.isConflict = true;
+            }
+            reservationsConflictOrNot.push(reservation);
         }
-
-        reservationsConflictOrNot.push(reservation);
-    }
-        return resolve({code: codeToResolve, result: reservationsConflictOrNot});
+        return resolve({ code: codeToResolve, result: reservationsConflictOrNot });
+    })
 }
 
 

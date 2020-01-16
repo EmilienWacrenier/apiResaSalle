@@ -74,7 +74,8 @@ exports.createRecurrence = async (req, res) => {
     if(checkParam.code == 200){
         let creneauxDispo = await reservationService.check_existing_reservation_recurrence(req);
         if (creneauxDispo.code == 200) {
-            // Insertion en base
+            reservationBuilder.insertMultipleReservation(creneauxDispo.result)
+            return res.status(creneauxDispo.code).json({result: creneauxDispo.result})
         }
         else{
             return res.status(creneauxDispo.code).json({result: creneauxDispo.result})
