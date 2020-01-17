@@ -26,7 +26,7 @@
 				],
 				"body": {
 					"mode": "raw",
-					"raw": "{\n\n\t\t\"startDate\": \"2019-12-09 08:30:00\",\n\t\t\"endDate\": \"2019-12-09 09:00:00\",\n\t\t\"object\": \"uneResaTestEnSalle3\",\n\t\t\"userId\": 1,\n\t\t\"roomId\": 4,\n\t\t\"users\": [\n\t\t\t1\n\t\t\t],\n\t\t\"labelRecurrence\": \"quotidien\",\n\t\t\"startDateRecurrence\": \"2019-12-12 08:30:00\",\n\t\t\"endDateRecurrence\": \"2019-12-12 08:30:00\"\n}"
+					"raw": "{\n\n\t\t\"startDate\": \"2019-12-09 08:30:00\",\n\t\t\"endDate\": \"2019-12-09 09:00:00\",\n\t\t\"object\": \"uneResaTestEnSalle3\",\n\t\t\"userId\": 3,\n\t\t\"roomId\": 11,\n\t\t\"users\": [\n\t\t\t4\n\t\t\t],\n\t\t\"AlabelRecurrence\": \"quotidien\",\n\t\t\"startDateRecurrence\": \"2019-12-12 08:30:00\",\n\t\t\"endDateRecurrence\": \"2019-12-12 08:30:00\"\n}"
 				},
 				"url": {
 					"raw": "localhost:3000/reservation/createReservation",
@@ -2302,6 +2302,118 @@
 					"body": "{\n    \"result\": \"Erreur lors de la suppression\"\n}"
 				}
 			]
+		},
+		{
+			"name": "createRecurrence",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n\t\"listeReservations\": [\n\t\t{\n\t\t\t\"startDate\": \"2018-12-09 08:30:00\",\n\t\t\t\"endDate\": \"2018-12-09 09:00:00\",\n\t\t\t\"object\": \"testBulkCreate1\",\n\t\t\t\"user_id\": 3,\n\t\t\t\"room_id\": 11,\n\t\t\t\"state\": 1\n\t\t},\n\t\t{\n\t\t\t\"startDate\": \"2020-12-09 08:30:00\",\n\t\t\t\"endDate\": \"2020-12-09 09:00:00\",\n\t\t\t\"object\": \"testBulkCreate2\",\n\t\t\t\"user_id\": 3,\n\t\t\t\"room_id\": 11,\n\t\t\t\"state\": 1\n\t\t},\n\t\t{\n\t\t\t\"startDate\": \"2021-12-09 08:30:00\",\n\t\t\t\"endDate\": \"2021-12-09 09:00:00\",\n\t\t\t\"object\": \"testBulkCreate3\",\n\t\t\t\"user_id\": 3,\n\t\t\t\"room_id\": 11,\n\t\t\t\"state\": 1\n\t\t}\n\t]\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "http://localhost:3000/reservation/createRecurrence",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"reservation",
+						"createRecurrence"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "checkRecurrence",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/reservation/checkRecurrence?startDate=2019-12-31 08:31:00&endDate=2019-12-31 08:35:00&roomId=11&labelRecurrence=mensuel&endDateRecurrence=2020-12-13 08:35:00",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"reservation",
+						"checkRecurrence"
+					],
+					"query": [
+						{
+							"key": "startDate",
+							"value": "2019-12-31 08:31:00"
+						},
+						{
+							"key": "endDate",
+							"value": "2019-12-31 08:35:00"
+						},
+						{
+							"key": "roomId",
+							"value": "11"
+						},
+						{
+							"key": "labelRecurrence",
+							"value": "mensuel"
+						},
+						{
+							"key": "endDateRecurrence",
+							"value": "2020-12-13 08:35:00"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "checkReservation",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:3000/reservation/checkReservation?roomId=11&startDate=2019-12-09 08:35:00&endDate=2019-12-09 09:00:00",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"reservation",
+						"checkReservation"
+					],
+					"query": [
+						{
+							"key": "roomId",
+							"value": "11"
+						},
+						{
+							"key": "startDate",
+							"value": "2019-12-09 08:35:00"
+						},
+						{
+							"key": "endDate",
+							"value": "2019-12-09 09:00:00"
+						}
+					]
+				}
+			},
+			"response": []
 		}
 	],
 	"protocolProfileBehavior": {}
