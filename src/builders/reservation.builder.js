@@ -3,7 +3,7 @@ const Op = require('Sequelize').Op;
 
 
 //Créer une réservation
-module.exports.createReservation = function (dateDebut, dateFin, objet, etat, user_id, recurrence_id, salle_id, req) {
+module.exports.createReservation = function (dateDebut, dateFin, objet, etat, user_id, recurrence_id, salle_id) {
     return new Promise(async (resolve, reject) => {
         try {
 
@@ -20,7 +20,7 @@ module.exports.createReservation = function (dateDebut, dateFin, objet, etat, us
                 });
 
             try {
-                if (req.body.users != null) {
+/*                 if (req.body.users != null) {
                     const crea = new Date();
                     // Parcours des idUser de la req
                     req.body.users.forEach(element => {
@@ -36,7 +36,7 @@ module.exports.createReservation = function (dateDebut, dateFin, objet, etat, us
                         }
                         );
                     });
-                }
+                } */
 
             } catch (err) {
                 console.log(err)

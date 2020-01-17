@@ -39,6 +39,19 @@ function checkLastDayMonth(currentDate, originDay) {
     }
 }
 
+module.exports.create_simple_reservation = async (startDate, endDate, object, userId, roomId) => {
+    return new Promise(async (resolve, reject) => {
+        let checkedReservation = await this.check_existing_reservation(roomId, 
+            moment(startDate, "YYYY-MM-DD HH:mm:ss").toISOString(), moment(endDate, "YYYY-MM-DD HH:mm:ss").toISOString());
+        if (!checkedReservation[0]) {
+            let createdReservation = await reservationBuilder.createReservation(startDate, endDate, object, 1, userId, null, roomId);
+            return resolve({code: 200, result: createdReservation})
+        }else{
+            return resolve({code: 400, result: checkedReservation});
+        }
+    })
+}
+
 module.exports.check_recurrence = async (startDate, endDate, roomId, labelRecurrence, endDateRecurrence) => {
     return new Promise(async (resolve, reject) => {
         var reservationsToReturn = [];

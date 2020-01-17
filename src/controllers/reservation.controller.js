@@ -68,6 +68,17 @@ exports.modifyReservation = async (req, res) => {
     return res.status(data.code).json({ result: data.result });
 }
 
+exports.createSimpleReservation = async (req, res) => {
+    let checkedBody = generalService.checkBody(req, ["startDate", "endDate", "object", "userId", "roomId"]);
+    if(checkedBody != null){
+        return res.status(400).json({result: checkedBody});
+    }else{
+        let createdReservation = await reservationService.create_simple_reservation(req.body.startDate, req.body.endDate, req.body.object
+            , req.body.userId, req.body.roomId);
+        return res.status(createdReservation.code).json({result: createdReservation.result});
+    }
+}
+
 exports.createRecurrence = async (req, res) => {
 /*     let data = await reservationBuilder.insertMultipleReservation(req.body.listReservation);
     return res.status(200).json(data) */
