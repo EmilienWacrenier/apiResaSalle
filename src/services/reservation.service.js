@@ -13,6 +13,32 @@ const moment = require('moment');
 const momentTz = require('moment-timezone');
 const timeZone = 'Europe/Paris'; //UTC+01:00
 
+function checkLastDayMonth(currentDate, originDay) {
+    let m = moment(new Date());
+
+    let lastDay = new Date(currentDate.getFullYear(), currentDate.getMonth()+2, 0);
+    lastDay.setHours(currentDate.getHours());
+    lastDay.setMinutes(currentDate.getMinutes());
+    
+    let newDate = new Date(currentDate);
+    newDate.setMonth(currentDate.getMonth() + 1);
+    if (newDate > lastDay) {
+        console.log(lastDay.toDateString())
+        return lastDay;
+    } else {
+        if (newDate.getDate() < originDay.getDate()) {
+            if (originDay.getDate() >= lastDay.getDate()) {
+                newDate.setDate(lastDay.getDate());
+            }
+            else if(originDay.getDate() < currentDate.getDate()){
+                newDate.setDate(originDay.getDate())
+            }
+        }
+        console.log(newDate.toDateString())
+        return newDate;
+    }
+}
+
 module.exports.check_recurrence = async (startDate, endDate, roomId, labelRecurrence, endDateRecurrence) => {
     return new Promise(async (resolve, reject) => {
         var reservationsToReturn = [];
@@ -25,7 +51,7 @@ module.exports.check_recurrence = async (startDate, endDate, roomId, labelRecurr
             var currentReservation = await this.check_existing_reservation(roomId,
                 moment(currentStartDate).format("YYYY-MM-DD HH:mm:ss").toString(), moment(currentStartDate).format("YYYY-MM-DD HH:mm:ss").toString());
             if (!currentReservation[0]) {
-                reservationsToReturn.push({ startDate: new Date(currentStartDate), endDate: new Date(currentEndDate), conflit: false })
+                reservationsToReturn.push({ startDate: new Date(currentStartDate), endDate: new Date(currentEndDate), conflit: false, roomId: roomId })
             }
             else {
                 console.log(currentReservation)
@@ -44,8 +70,11 @@ module.exports.check_recurrence = async (startDate, endDate, roomId, labelRecurr
                     break;
 
                 case "mensuel":
-                    currentStartDate.setMonth(currentStartDate.getMonth() + 1);
+                    currentStartDate = checkLastDayMonth(currentStartDate, new Date(startDate));
+                    currentEndDate = checkLastDayMonth(currentEndDate, new Date(endDate));
+/*                     currentStartDate.setMonth(currentStartDate.getMonth() + 1);
                     currentEndDate.setMonth(currentEndDate.getMonth() + 1);
+                    console.log("\n"+currentStartDate); */
                     break;
 
                 default:

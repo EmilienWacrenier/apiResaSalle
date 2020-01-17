@@ -1,6 +1,7 @@
 const reservationService = require('../services/reservation.service');
 const reservationBuilder = require('../builders/reservation.builder')
 const workingDaysService = require('../tools/services/workingDays.service');
+const recurrenceBuilder = require('../builders/recurrence.builder');
 // const mailService = require('../services/mail.service');
 const testParamService = require('../tools/services/test_params.service');
 const recurrenceService = require('../services/recurrence.service');
@@ -74,6 +75,7 @@ exports.createRecurrence = async (req, res) => {
     if(checkParam.code == 200){
         let creneauxDispo = await reservationService.check_existing_reservation_recurrence(req);
         if (creneauxDispo.code == 200) {
+            let recurrence = await recurrenceBuilder.create_recurrence()
             reservationBuilder.insertMultipleReservation(creneauxDispo.result)
             return res.status(creneauxDispo.code).json({result: creneauxDispo.result})
         }
