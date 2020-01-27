@@ -7,254 +7,6 @@
 	},
 	"item": [
 		{
-			"name": "createReservation",
-			"request": {
-				"method": "POST",
-				"header": [
-					{
-						"key": "Content-Type",
-						"name": "Content-Type",
-						"value": "application/json",
-						"type": "text"
-					},
-					{
-						"key": "Authorization",
-						"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjIsInJvbGUiOjEsImlhdCI6MTU3MzY1NTU1NiwiZXhwIjoxNTczNjU3OTU2fQ.19Cbhf3LM79pO-U8wWnynd2XTX66oQ3J8RTF4YalIhU",
-						"type": "text",
-						"disabled": true
-					}
-				],
-				"body": {
-					"mode": "raw",
-					"raw": "{\n\n\t\t\"startDate\": \"2019-12-09 08:30:00\",\n\t\t\"endDate\": \"2019-12-09 09:00:00\",\n\t\t\"object\": \"uneResaTestEnSalle3\",\n\t\t\"userId\": 3,\n\t\t\"roomId\": 11,\n\t\t\"users\": [\n\t\t\t4\n\t\t\t],\n\t\t\"AlabelRecurrence\": \"quotidien\",\n\t\t\"startDateRecurrence\": \"2019-12-12 08:30:00\",\n\t\t\"endDateRecurrence\": \"2019-12-12 08:30:00\"\n}"
-				},
-				"url": {
-					"raw": "localhost:3000/reservation/createReservation",
-					"host": [
-						"localhost"
-					],
-					"port": "3000",
-					"path": [
-						"reservation",
-						"createReservation"
-					]
-				},
-				"description": "Permet de créer une réservation.\nEn l'abscence de paramètres de récurrence la reservation se créera en tant que reservation simple"
-			},
-			"response": [
-				{
-					"name": "createReservation conflit avec d'autre réservations",
-					"originalRequest": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjIsInJvbGUiOjEsImlhdCI6MTU3MzY1NTU1NiwiZXhwIjoxNTczNjU3OTU2fQ.19Cbhf3LM79pO-U8wWnynd2XTX66oQ3J8RTF4YalIhU",
-								"type": "text",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\n\t\t\"startDate\": \"2019-12-09 08:30:00\",\n\t\t\"endDate\": \"2019-12-09 09:00:00\",\n\t\t\"object\": \"uneResaTestEnSalle3\",\n\t\t\"userId\": 3,\n\t\t\"roomId\": 11,\n\t\t\"users\": [\n\t\t\t4\n\t\t\t],\n\t\t\"labelRecurrence\": \"quotidien\",\n\t\t\"startDateRecurrence\": \"2019-12-12 08:30:00\",\n\t\t\"endDateRecurrence\": \"2019-12-12 08:30:00\"\n}"
-						},
-						"url": {
-							"raw": "localhost:3000/reservation/createReservation",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"reservation",
-								"createReservation"
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "X-Powered-By",
-							"value": "Express"
-						},
-						{
-							"key": "Access-Control-Allow-Origin",
-							"value": "*"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json; charset=utf-8"
-						},
-						{
-							"key": "Content-Length",
-							"value": "368"
-						},
-						{
-							"key": "ETag",
-							"value": "W/\"170-ydyb2Sp7QflTaxDIwHP8QyH3Jbk\""
-						},
-						{
-							"key": "Date",
-							"value": "Tue, 07 Jan 2020 15:46:23 GMT"
-						},
-						{
-							"key": "Connection",
-							"value": "keep-alive"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"result\": [\n        {\n            \"reservationId\": 4,\n            \"startDate\": \"2019-12-10T08:30:00.000Z\",\n            \"endDate\": \"2019-12-10T09:00:00.000Z\",\n            \"user\": {\n                \"lastName\": \"Wacrenier\",\n                \"firstName\": \"Emilien\",\n                \"email\": \"emilien@gmail.com\"\n            }\n        },\n        {\n            \"reservationId\": 5,\n            \"startDate\": \"2019-12-11T08:30:00.000Z\",\n            \"endDate\": \"2019-12-11T09:00:00.000Z\",\n            \"user\": {\n                \"lastName\": \"Wacrenier\",\n                \"firstName\": \"Emilien\",\n                \"email\": \"emilien@gmail.com\"\n            }\n        }\n    ]\n}"
-				},
-				{
-					"name": "createReservation userId non existant",
-					"originalRequest": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjIsInJvbGUiOjEsImlhdCI6MTU3MzY1NTU1NiwiZXhwIjoxNTczNjU3OTU2fQ.19Cbhf3LM79pO-U8wWnynd2XTX66oQ3J8RTF4YalIhU",
-								"type": "text",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\n\t\t\"startDate\": \"2019-12-09 08:30:00\",\n\t\t\"endDate\": \"2019-12-09 09:00:00\",\n\t\t\"object\": \"uneResaTestEnSalle3\",\n\t\t\"userId\": 1,\n\t\t\"roomId\": 4,\n\t\t\"users\": [\n\t\t\t1\n\t\t\t],\n\t\t\"labelRecurrence\": \"quotidien\",\n\t\t\"startDateRecurrence\": \"2019-12-12 08:30:00\",\n\t\t\"endDateRecurrence\": \"2019-12-12 08:30:00\"\n}"
-						},
-						"url": {
-							"raw": "localhost:3000/reservation/createReservation",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"reservation",
-								"createReservation"
-							]
-						}
-					},
-					"status": "Bad Request",
-					"code": 400,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "X-Powered-By",
-							"value": "Express"
-						},
-						{
-							"key": "Access-Control-Allow-Origin",
-							"value": "*"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json; charset=utf-8"
-						},
-						{
-							"key": "Content-Length",
-							"value": "28"
-						},
-						{
-							"key": "ETag",
-							"value": "W/\"1c-BUNbWLPzuLbL2nXEgRv7gB5HHzo\""
-						},
-						{
-							"key": "Date",
-							"value": "Tue, 07 Jan 2020 15:44:07 GMT"
-						},
-						{
-							"key": "Connection",
-							"value": "keep-alive"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"result\": \"User non trouve\"\n}"
-				},
-				{
-					"name": "createReservation correctement",
-					"originalRequest": {
-						"method": "POST",
-						"header": [
-							{
-								"key": "Content-Type",
-								"name": "Content-Type",
-								"value": "application/json",
-								"type": "text"
-							},
-							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjIsInJvbGUiOjEsImlhdCI6MTU3MzY1NTU1NiwiZXhwIjoxNTczNjU3OTU2fQ.19Cbhf3LM79pO-U8wWnynd2XTX66oQ3J8RTF4YalIhU",
-								"type": "text",
-								"disabled": true
-							}
-						],
-						"body": {
-							"mode": "raw",
-							"raw": "{\n\n\t\t\"startDate\": \"2022-12-09 08:30:00\",\n\t\t\"endDate\": \"2022-12-09 09:00:00\",\n\t\t\"object\": \"uneResaTestEnSalle3\",\n\t\t\"userId\": 3,\n\t\t\"roomId\": 11,\n\t\t\"users\": [\n\t\t\t4\n\t\t\t],\n\t\t\"labelRecurrence\": \"quotidien\",\n\t\t\"startDateRecurrence\": \"2022-12-12 08:30:00\",\n\t\t\"endDateRecurrence\": \"2022-12-12 08:30:00\"\n}"
-						},
-						"url": {
-							"raw": "localhost:3000/reservation/createReservation",
-							"host": [
-								"localhost"
-							],
-							"port": "3000",
-							"path": [
-								"reservation",
-								"createReservation"
-							]
-						}
-					},
-					"status": "OK",
-					"code": 200,
-					"_postman_previewlanguage": "json",
-					"header": [
-						{
-							"key": "X-Powered-By",
-							"value": "Express"
-						},
-						{
-							"key": "Access-Control-Allow-Origin",
-							"value": "*"
-						},
-						{
-							"key": "Content-Type",
-							"value": "application/json; charset=utf-8"
-						},
-						{
-							"key": "Content-Length",
-							"value": "13"
-						},
-						{
-							"key": "ETag",
-							"value": "W/\"d-JN9XGbx1zII1nUa2X6sNBTA9YGY\""
-						},
-						{
-							"key": "Date",
-							"value": "Tue, 07 Jan 2020 15:47:14 GMT"
-						},
-						{
-							"key": "Connection",
-							"value": "keep-alive"
-						}
-					],
-					"cookie": [],
-					"body": "{\n    \"result\": []\n}"
-				}
-			]
-		},
-		{
 			"name": "reservations",
 			"request": {
 				"method": "GET",
@@ -2414,6 +2166,338 @@
 				}
 			},
 			"response": []
+		},
+		{
+			"name": "createSimpleReservation",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"name": "Content-Type",
+						"value": "application/x-www-form-urlencoded",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "urlencoded",
+					"urlencoded": [
+						{
+							"key": "startDate",
+							"value": "2018-12-10 07:32:00",
+							"type": "text"
+						},
+						{
+							"key": "endDate",
+							"value": "2018-12-10 09:00:00",
+							"type": "text"
+						},
+						{
+							"key": "object",
+							"value": "uneResaTestEnSalle",
+							"type": "text"
+						},
+						{
+							"key": "userId",
+							"value": "3",
+							"type": "text"
+						},
+						{
+							"key": "roomId",
+							"value": "12",
+							"type": "text"
+						}
+					]
+				},
+				"url": {
+					"raw": "http://localhost:3000/reservation/createSimpleReservation",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "3000",
+					"path": [
+						"reservation",
+						"createSimpleReservation"
+					]
+				}
+			},
+			"response": [
+				{
+					"name": "Conflit avec une réservation",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "startDate",
+									"value": "2018-12-10 07:32:00",
+									"type": "text"
+								},
+								{
+									"key": "endDate",
+									"value": "2018-12-10 09:00:00",
+									"type": "text"
+								},
+								{
+									"key": "object",
+									"value": "uneResaTestEnSalle",
+									"type": "text"
+								},
+								{
+									"key": "userId",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "roomId",
+									"value": "12",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/reservation/createSimpleReservation",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"reservation",
+								"createSimpleReservation"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "390"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"186-eiLDpVTm159CILSJXqzu00QSdVM\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 27 Jan 2020 08:45:32 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": [\n        {\n            \"reservationId\": 151,\n            \"startDate\": \"2018-12-10T06:32:00.000Z\",\n            \"endDate\": \"2018-12-10T08:00:00.000Z\",\n            \"object\": \"uneResaTestEnSalle\",\n            \"state\": 1,\n            \"user_id\": 3,\n            \"recurrence_id\": null,\n            \"room_id\": 12,\n            \"userId\": 3,\n            \"firstName\": \"Emilien\",\n            \"lastName\": \"Wacrenier\",\n            \"das\": \"a111111\",\n            \"email\": \"emilien@gmail.com\",\n            \"pwd\": \"$2a$05$EXx3.2tWYaAE7McGOSGtseTXvf6pZgoKgXN0uu5pjnwi9/L0MJ/R2\",\n            \"isActive\": 0,\n            \"role_id\": 1\n        }\n    ]\n}"
+				},
+				{
+					"name": "Paramètre manquant",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "startDate",
+									"value": "2018-12-10 07:32:00",
+									"type": "text"
+								},
+								{
+									"key": "endDate",
+									"value": "2018-12-10 09:00:00",
+									"type": "text"
+								},
+								{
+									"key": "object",
+									"value": "uneResaTestEnSalle",
+									"type": "text"
+								},
+								{
+									"key": "userId",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "roomId",
+									"value": "12",
+									"type": "text",
+									"disabled": true
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/reservation/createSimpleReservation",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"reservation",
+								"createSimpleReservation"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "68"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"44-c75ibNrSV0cYf+josaFpAg4AEZ0\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 27 Jan 2020 08:46:03 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": {\n        \"code\": 400,\n        \"result\": \"Le paramètre roomId est manquant\"\n    }\n}"
+				},
+				{
+					"name": "Insertion correct",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/x-www-form-urlencoded",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "urlencoded",
+							"urlencoded": [
+								{
+									"key": "startDate",
+									"value": "2018-12-10 07:32:00",
+									"type": "text"
+								},
+								{
+									"key": "endDate",
+									"value": "2018-12-10 09:00:00",
+									"type": "text"
+								},
+								{
+									"key": "object",
+									"value": "uneResaTestEnSalle",
+									"type": "text"
+								},
+								{
+									"key": "userId",
+									"value": "3",
+									"type": "text"
+								},
+								{
+									"key": "roomId",
+									"value": "12",
+									"type": "text"
+								}
+							]
+						},
+						"url": {
+							"raw": "http://localhost:3000/reservation/createSimpleReservation",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"reservation",
+								"createSimpleReservation"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "201"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"c9-RlcDD2l4Nnku5eQBwFLp21kasLw\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 27 Jan 2020 08:39:00 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": {\n        \"reservationId\": 151,\n        \"startDate\": \"2018-12-10T06:32:00.000Z\",\n        \"endDate\": \"2018-12-10T08:00:00.000Z\",\n        \"object\": \"uneResaTestEnSalle\",\n        \"state\": true,\n        \"user_id\": \"3\",\n        \"recurrence_id\": null,\n        \"room_id\": \"12\"\n    }\n}"
+				}
+			]
 		}
 	],
 	"protocolProfileBehavior": {}

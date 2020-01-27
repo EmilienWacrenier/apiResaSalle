@@ -89,7 +89,7 @@ module.exports.get_salles_available = (req) => {
 module.exports.create_room = (req) => {
     return new Promise(async (resolve, reject) => {
         // Vérification des paramètres
-        const checkedParams = general.checkParam(req, ["name", "area", "capacity"]);
+        const checkedParams = general.checkBody(req, ["name", "area", "capacity"]);
         if (checkedParams != null) {
             return resolve(checkedParams)
         }
