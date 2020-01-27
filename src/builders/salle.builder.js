@@ -29,12 +29,13 @@ module.exports.findSalle = function (id) {
     });
 };
 
-module.exports.findSalleByName = function(name) {
+module.exports.findSalleByName = function(name, id) {
     return new Promise(async (resolve, reject) => {
         try {
             const salle = await db.models.Room.findOne({
                 where: {
-                    name: name
+                    name: name,
+                    roomId: {$notId: [id]}
                 }
             });
             resolve(salle);
@@ -70,8 +71,9 @@ module.exports.findSallesAvailable = function (req) {
                 where capacity >= (:capacity)\
                 AND roomId NOT IN (\
                     select room_id from reservation\
-                    where (startDate >= (:startDate) AND startDate <= (:endDate))\
-                    OR (endDate >= (:startDate) AND endDate <= (:endDate))\
+                    where (startDate >= (:startDate) AND startDate < (:endDate))\
+                    OR (endDate > (:startDate) AND endDate <= (:endDate))\
+                    OR (startDate <= (:startDate) AND endDate >= (:endDate))\
                 )', {
                 replacements: {
                     capacity: req.query.capacity,

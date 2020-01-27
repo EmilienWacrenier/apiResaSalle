@@ -146,7 +146,7 @@ module.exports.modify_room = (req) => {
             })
         }
         // Contrôler l'existance du nom pour éviter les doublons
-        const existingRoomByName = await salleBuilder.findSalleByName(req.body.name)
+        const existingRoomByName = await salleBuilder.findSalleByName(req.body.name, req.body.roomId)
         if (existingRoomByName != null) {
             return resolve({
                 code: 400,

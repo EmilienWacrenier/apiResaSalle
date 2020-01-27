@@ -301,9 +301,9 @@ module.exports.checkReservation = function (roomId, startDate, endDate) {
                 select * from reservation inner join user on reservation.user_id = user.userId\
                 where room_id = (:roomId)\
                 AND (\
-                    (endDate >= (:startDate) AND endDate <= (:endDate))\
+                    (endDate > (:startDate) AND endDate <= (:endDate))\
                     OR\
-                    (startDate >= (:startDate) AND startDate <= (:endDate))\
+                    (startDate >= (:startDate) AND startDate < (:endDate))\
                     OR\
                     (startDate <= (:startDate) AND endDate >= (:endDate))\
                 )\
