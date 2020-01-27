@@ -6,6 +6,8 @@ const recurrenceBuilder = require('../builders/recurrence.builder');
 const testParamService = require('../tools/services/test_params.service');
 const recurrenceService = require('../services/recurrence.service');
 const generalService = require('../services/general.service');
+const userService = require('../services/user.service');
+const salleService = require('../services/salle.service');
 
 exports.creerReservation = async (req, res) => {
     let data = await reservationService.create_reservation(req);
@@ -73,6 +75,12 @@ exports.createSimpleReservation = async (req, res) => {
     if(checkedBody != null){
         return res.status(400).json({result: checkedBody});
     }else{
+        if (userService.check_user_id(req.body.userId) === false){
+            return res.status(400).json({result: "L'id utilisateur: " + req.body.userId + " n'existe pas"})
+        }
+        if (salleService.check_room_id(req.body.roomId) === false){
+            return res.status(400).json({result: "L'id room: " + req.body.roomId + " n'existe pas"});
+        }
         let createdReservation = await reservationService.create_simple_reservation(req.body.startDate, req.body.endDate, req.body.object
             , req.body.userId, req.body.roomId);
         return res.status(createdReservation.code).json({result: createdReservation.result});

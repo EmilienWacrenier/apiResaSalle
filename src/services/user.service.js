@@ -24,6 +24,14 @@ module.exports.get_user = (req) => {
     })
 }
 
+module.exports.check_user_id = async (userId) => {
+    const userFound = await userBuilder.checkUserId(userId);
+    if(userFound === null){
+        return false;
+    }
+    return true;
+}
+
 //Obtenir un utilisateur par son ID
 module.exports.get_user_by_id = (req) => {
     return new Promise(async (resolve, reject) => {

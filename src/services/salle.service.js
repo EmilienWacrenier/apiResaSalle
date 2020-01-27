@@ -15,6 +15,14 @@ module.exports.get_salles = () => {
     });
 };
 
+module.exports.check_room_id = async function (roomId) {
+    const roomFound = await salleBuilder.findSalle(roomId);
+    if(roomFound === null){
+        return false;
+    }
+    return true;
+}
+
 //obtenir 1 salle
 module.exports.get_salle = (req) => {
     return new Promise(async (resolve, reject) => {
