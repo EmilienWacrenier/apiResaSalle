@@ -96,7 +96,7 @@ exports.createSimpleReservation = async (req, res) => {
     if(checkedBody != null){
         return res.status(400).json({result: checkedBody});
     }else{
-        if(!REGEX.date.test(req.query.startDate) || !REGEX.date.test(req.query.endDate)){
+        if(!REGEX.date.test(req.body.startDate) || !REGEX.date.test(req.body.endDate)){
             return res.status(400).json({result: "Les dates ne sont pas au bon formats"});
         }
         if (userService.check_user_id(req.body.userId) === false){

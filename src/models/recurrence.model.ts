@@ -1,3 +1,4 @@
+
 module.exports = (sequelize, Sequelize) => {
     const recurrence = sequelize.define('recurrence', {
         recurrenceId: {
@@ -11,10 +12,16 @@ module.exports = (sequelize, Sequelize) => {
             type: Sequelize.STRING(45)
         },
         startDate: {
-            type: Sequelize.DATE
+            type: Sequelize.DATE,
+            get() {
+                return moment(this.getDataValue('startDate')).format('YYYY-MM-DD HH:mm:ss');
+            }
         },
         endDate: {
-            type: Sequelize.DATE
+            type: Sequelize.DATE,
+            get() {
+                return moment(this.getDataValue('endDate')).format('YYYY-MM-DD HH:mm:ss');
+            }
         }
     }, {
         tableName: "recurrence",

@@ -14,7 +14,23 @@ const sequelize = new Sequelize(
         min: 0,
         idle: 30000,
         acquire: 200000,
-    }
+    },
+    define: {
+        underscored: false,
+        freezeTableName: true, //use singular table name
+        timestamps: false,  // I do not want timestamp fields by default
+      },
+      dialectOptions: {
+        useUTC: false, //for reading from database
+        dateStrings: true,
+        typeCast: function (field, next) { // for reading from database
+          if (field.type === 'DATETIME' || field.type === 'TIMESTAMP') {
+            return new Date(field.string() + 'Z');
+          }
+            return next()
+          },
+      },
+      timezone: '+01:00'
 
 });
 

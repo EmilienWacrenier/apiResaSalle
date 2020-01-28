@@ -1,3 +1,5 @@
+const moment = require("moment");
+
 module.exports = (sequelize, Sequelize) => {
     const reservation = sequelize.define('reservation', {
         reservationId: {
@@ -8,10 +10,16 @@ module.exports = (sequelize, Sequelize) => {
             unique: true,
         },
         startDate: {
-            type: Sequelize.DATE
+            type: Sequelize.DATE,
+            get() {
+                return moment(this.getDataValue('startDate')).format('YYYY-MM-DD HH:mm:ss');
+            }
         },
         endDate: {
-            type: Sequelize.DATE
+            type: Sequelize.DATE,
+            get() {
+                return moment(this.getDataValue('endDate')).format('YYYY-MM-DD HH:mm:ss');
+            }
         },
         object: {
             type: Sequelize.STRING(45)
