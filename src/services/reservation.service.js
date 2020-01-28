@@ -121,7 +121,7 @@ module.exports.checkUsers = async (req) => {
     return toReturn;
 }
 
-module.exports.create_resa_simple = async (req) => {
+/*module.exports.create_resa_simple = async (req) => {
 
     let toResolve = { code: 400, result: "Une erreur est survenu lors de la création" }
     const dateDebut = momentTz.tz(req.body.startDate, 'YYYY-MM-DD HH:mm:ss');
@@ -147,9 +147,9 @@ module.exports.create_resa_simple = async (req) => {
             })
     }
     return toResolve
-}
+}*/
 
-module.exports.create_reservation = (req) => {
+/*module.exports.create_reservation = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
             const checkedUsers = await this.checkUsers(req)
@@ -169,7 +169,7 @@ module.exports.create_reservation = (req) => {
 
                 // Vérification du labelRecurrence
                 if (req.body.labelRecurrence == "quotidien" || req.body.labelRecurrence == "hebdomadaire"
-                    || req.body.labelRecurrence == "mensuel" /*|| req.body.labelRecurrence == "annuel"*/) {
+                    || req.body.labelRecurrence == "mensuel" /*|| req.body.labelRecurrence == "annuel") {
 
                     // Création de la récurrence
                     var createdRecurrence = await recurrenceBuilder.create_recurrence(req)
@@ -249,7 +249,7 @@ module.exports.create_reservation = (req) => {
             });
         };
     })
-};
+};*/
 
 //check si le tableau est null ou un element des réservation est pas bon
 //return false si vide ou pas de tableau ou pas format tableau
@@ -348,10 +348,6 @@ module.exports.get_reservations = () => {
 module.exports.get_reservation_by_id = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const checkedParams = general.checkParam(req, ["reservationId"])
-            if (checkedParams != null) {
-                return resolve(checkedBody)
-            }
             const reservation = await reservationBuilder.findReservationById(req.query.reservationId);
             return resolve({ code: 200, result: reservation });
         } catch (err) {
@@ -386,10 +382,6 @@ module.exports.get_salles_booked_between = (req) => {
 module.exports.get_salles_booked_by_day = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const checkedParams = general.checkParam(req, ["startDate"]);
-            if (checkedParams != null) {
-                return resolve(checkedParams)
-            }
             const sallesBookedByDay = await reservationBuilder.findSallesBookedByDay(req.query.startDate);
             return resolve({ code: 200, result: sallesBookedByDay });
         } catch (err) {

@@ -8,6 +8,7 @@ const recurrenceService = require('../services/recurrence.service');
 const generalService = require('../services/general.service');
 const userService = require('../services/user.service');
 const salleService = require('../services/salle.service');
+const REGEX = require('../tools/validation/regex');
 
 exports.creerReservation = async (req, res) => {
     let data = await reservationService.create_reservation(req);
@@ -20,6 +21,10 @@ exports.getReservations = async (req, res) => {
 }
 
 exports.getReservationById = async (req, res) => {
+    const checkedParams = generalService.checkParam(req, ["reservationId"])
+    if (checkedParams != null) {
+        return res.status(checkedParams.code).json({result: checkedParams.result});
+    }
     let data = await reservationService.get_reservation_by_id(req);
     return res.status(data.code).json({ result: data.result });
 }
@@ -29,6 +34,13 @@ exports.getSallesBookedBetween = async (req, res) => {
     return res.status(data.code).json({ result: data.result });
 }
 exports.getSallesBookedByDay = async (req, res) => {
+    const checkedParams = generalService.checkParam(req, ["startDate"]);
+    if (checkedParams != null) {
+        return res.status(checkedParams.code).json({result: checkedParams.result});
+    }
+    if(!REGEX.date.test(req.query.startDate)){
+        return res.status(400).json({result: "La date n'est pas au bon formats"});
+    }
     let data = await reservationService.get_salles_booked_by_day(req);
     return res.status(data.code).json({ result: data.result });
 }
@@ -44,8 +56,14 @@ exports.getReservationsByUserId = async (req, res) => {
 }
 
 exports.checkReservation = async (req, res) => {
+    const checkedParams = generalService.checkParam(req, ["roomId", "startDate", "endDate"]);
+    if(checkedParams != null){
+        return res.status(checkedParams.code).json({result: checkedParams.result});
+    }
+    if(!REGEX.date.test(req.query.startDate) || !REGEX.date.test(req.query.endDate)){
+        return res.status(400).json({result: "Les dates ne sont pas au bon formats"});
+    }
     let data = await reservationService.check_existing_reservation(req.query.roomId, req.query.startDate, req.query.endDate);
-    console.log(data)
     if(!data[0]){
         return res.status(200).json({result: "Le créneau de réservation est disponible"})
     }
@@ -58,6 +76,9 @@ exports.checkRecurrence = async (req, res) => {
     let checkedParams = generalService.checkParam(req, ["startDate", "endDate", "roomId", "labelRecurrence", "endDateRecurrence"]);
     if(checkedParams != null){
         return res.status(400).json({result: checkedParams})
+    }
+    if(!REGEX.date.test(req.query.startDate) || !REGEX.date.test(req.query.endDate) || !REGEX.date.test(req.query.endDateRecurrence)){
+        return res.status(400).json({result: "Les dates ne sont pas au bon formats"});
     }
     let data = await reservationService.check_recurrence(
         req.query.startDate, req.query.endDate, req.query.roomId, req.query.labelRecurrence, req.query.endDateRecurrence
@@ -75,6 +96,9 @@ exports.createSimpleReservation = async (req, res) => {
     if(checkedBody != null){
         return res.status(400).json({result: checkedBody});
     }else{
+        if(!REGEX.date.test(req.query.startDate) || !REGEX.date.test(req.query.endDate)){
+            return res.status(400).json({result: "Les dates ne sont pas au bon formats"});
+        }
         if (userService.check_user_id(req.body.userId) === false){
             return res.status(400).json({result: "L'id utilisateur: " + req.body.userId + " n'existe pas"})
         }
@@ -94,7 +118,14 @@ exports.createRecurrence = async (req, res) => {
     if(checkParam.code == 200){
         let creneauxDispo = await reservationService.check_existing_reservation_recurrence(req);
         if (creneauxDispo.code == 200) {
-            let recurrence = await recurrenceBuilder.create_recurrence()
+            let checkBodyRecurrence = generalService.checkBody(req, ["labelRecurrence", "startDateRecurrence", "endDateRecurrence"]);
+            if(checkBodyRecurrence != null){
+                return res.status(checkBodyRecurrence.code).json({result: checkBodyRecurrence.result});
+            }
+            let recurrence = await recurrenceService.insertRecurrence(req.body.labelRecurrence, req.body.startDateRecurrence, req.body.endDateRecurrence);
+            creneauxDispo.result.forEach(elem => {
+                elem.recurrence_id = recurrence;
+            });
             reservationBuilder.insertMultipleReservation(creneauxDispo.result)
             return res.status(creneauxDispo.code).json({result: creneauxDispo.result})
         }

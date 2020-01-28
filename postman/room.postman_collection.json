@@ -616,6 +616,74 @@
 					],
 					"cookie": [],
 					"body": "{\n    \"result\": [\n        {\n            \"name\": \"salleA\",\n            \"area\": \"A\",\n            \"capacity\": 10\n        },\n        {\n            \"name\": \"Salle5\",\n            \"area\": \"E\",\n            \"capacity\": 14\n        }\n    ]\n}"
+				},
+				{
+					"name": "Dates mauvais format",
+					"originalRequest": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:3000/salle/availableRooms?capacity=2&startDate=aaa&endDate=aaa",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"salle",
+								"availableRooms"
+							],
+							"query": [
+								{
+									"key": "capacity",
+									"value": "2"
+								},
+								{
+									"key": "startDate",
+									"value": "aaa"
+								},
+								{
+									"key": "endDate",
+									"value": "aaa"
+								}
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "48"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"30-HmIWNYNHNqa9HxUhw1uCWiVWTE0\""
+						},
+						{
+							"key": "Date",
+							"value": "Tue, 28 Jan 2020 10:05:17 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": \"Les dates ne sont pas au bon format\"\n}"
 				}
 			]
 		},

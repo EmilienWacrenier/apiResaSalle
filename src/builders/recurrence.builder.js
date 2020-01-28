@@ -2,13 +2,13 @@ const db = require('../config/db.config');
 const Op = require('Sequelize').Op;
 
 module.exports = {
-    create_recurrence: function(req){
+    create_recurrence: function(label, startDate, endDate){
         return new Promise(async(resolve, reject) => {
             try {
                 var createdRecurrence = await db.models.Recurrence.create({
-                    label: req.body.labelRecurrence,
-                    startDate: req.body.startDateRecurrence,
-                    endDate: req.body.endDateRecurrence
+                    label: label,
+                    startDate: startDate,
+                    endDate: endDate
                 }).then(function(createdRecurrence){
                     if(createdRecurrence){
                         resolve(createdRecurrence)
@@ -19,6 +19,4 @@ module.exports = {
             }
         });
     },
-
-
 }

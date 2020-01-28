@@ -1,4 +1,5 @@
 const recurrenceBuilder = require('../builders/recurrence.builder');
+const generalService = require('../services/general.service');
 
 module.exports.createRecurrence = async (req,res) => {
         return new Promise(async (resolve, reject) => {
@@ -62,3 +63,8 @@ module.exports.createRecurrence = async (req,res) => {
             }
         });
 };
+
+module.exports.insertRecurrence = async function(label, startDate, endDate){
+    const recurrence = await recurrenceBuilder.create_recurrence(label, startDate, endDate);
+    return recurrence.dataValues.recurrenceId;
+}

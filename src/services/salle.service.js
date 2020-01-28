@@ -44,10 +44,7 @@ module.exports.get_salle = (req) => {
 module.exports.get_salles_available = (req) => {
     return new Promise(async (resolve, reject) => {
         // Vérification paramètres 
-        const checkedParams = general.checkParam(req, ["capacity", "startDate", "endDate"])
-        if (checkedParams != null) {
-            return resolve(checkedParams);
-        }
+
         if (isNaN(req.query.capacity)) {
             return resolve({ code: 400, result: 'Capacity n\'est pas un nombre' })
         }

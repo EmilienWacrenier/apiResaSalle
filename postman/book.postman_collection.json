@@ -720,7 +720,7 @@
 					"body": "{\n    \"result\": [\n        {\n            \"roomId\": 11,\n            \"name\": \"newRoomaaa\",\n            \"area\": \"A\",\n            \"capacity\": 11,\n            \"reservations\": []\n        }\n    ]\n}"
 				},
 				{
-					"name": "reservationByDay date au mauvais format",
+					"name": "reservationByDay mauvais format date",
 					"originalRequest": {
 						"method": "GET",
 						"header": [],
@@ -743,8 +743,8 @@
 							]
 						}
 					},
-					"status": "OK",
-					"code": 200,
+					"status": "Bad Request",
+					"code": 400,
 					"_postman_previewlanguage": "json",
 					"header": [
 						{
@@ -761,15 +761,15 @@
 						},
 						{
 							"key": "Content-Length",
-							"value": "89"
+							"value": "45"
 						},
 						{
 							"key": "ETag",
-							"value": "W/\"59-Tzje3SAxgIgTfk4g1vcBP59uTPI\""
+							"value": "W/\"2d-f8wZvAyjbQT4CIhsDQqRoEAoNb4\""
 						},
 						{
 							"key": "Date",
-							"value": "Tue, 07 Jan 2020 14:51:52 GMT"
+							"value": "Tue, 28 Jan 2020 10:15:57 GMT"
 						},
 						{
 							"key": "Connection",
@@ -777,7 +777,7 @@
 						}
 					],
 					"cookie": [],
-					"body": "{\n    \"result\": [\n        {\n            \"roomId\": 11,\n            \"name\": \"newRoomaaa\",\n            \"area\": \"A\",\n            \"capacity\": 11,\n            \"reservations\": []\n        }\n    ]\n}"
+					"body": "{\n    \"result\": \"La date n'est pas au bon formats\"\n}"
 				},
 				{
 					"name": "reservationByDay correctement",
@@ -2089,7 +2089,218 @@
 					]
 				}
 			},
-			"response": []
+			"response": [
+				{
+					"name": "Conflit avec toutes les réservations",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"listeReservations\": [\n\t\t{\n\t\t\t\"startDate\": \"2018-12-09 08:30:00\",\n\t\t\t\"endDate\": \"2018-12-09 09:00:00\",\n\t\t\t\"object\": \"testBulkCreate1\",\n\t\t\t\"user_id\": 3,\n\t\t\t\"room_id\": 11,\n\t\t\t\"state\": 1\n\t\t},\n\t\t{\n\t\t\t\"startDate\": \"2020-12-09 08:30:00\",\n\t\t\t\"endDate\": \"2020-12-09 09:00:00\",\n\t\t\t\"object\": \"testBulkCreate2\",\n\t\t\t\"user_id\": 3,\n\t\t\t\"room_id\": 11,\n\t\t\t\"state\": 1\n\t\t},\n\t\t{\n\t\t\t\"startDate\": \"2021-12-09 08:30:00\",\n\t\t\t\"endDate\": \"2021-12-09 09:00:00\",\n\t\t\t\"object\": \"testBulkCreate3\",\n\t\t\t\"user_id\": 3,\n\t\t\t\"room_id\": 11,\n\t\t\t\"state\": 1\n\t\t}\n\t]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/reservation/createRecurrence",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"reservation",
+								"createRecurrence"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "486"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"1e6-1kD4UuvJQSnUOfCUCiLVnjr2Tfw\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 27 Jan 2020 08:52:16 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": [\n        {\n            \"startDate\": \"2018-12-09T07:30:00.000Z\",\n            \"endDate\": \"2018-12-09T08:00:00.000Z\",\n            \"object\": \"testBulkCreate1\",\n            \"user_id\": 3,\n            \"room_id\": 11,\n            \"state\": 1,\n            \"isConflict\": true\n        },\n        {\n            \"startDate\": \"2020-12-09T07:30:00.000Z\",\n            \"endDate\": \"2020-12-09T08:00:00.000Z\",\n            \"object\": \"testBulkCreate2\",\n            \"user_id\": 3,\n            \"room_id\": 11,\n            \"state\": 1,\n            \"isConflict\": true\n        },\n        {\n            \"startDate\": \"2021-12-09T07:30:00.000Z\",\n            \"endDate\": \"2021-12-09T08:00:00.000Z\",\n            \"object\": \"testBulkCreate3\",\n            \"user_id\": 3,\n            \"room_id\": 11,\n            \"state\": 1,\n            \"isConflict\": true\n        }\n    ]\n}"
+				},
+				{
+					"name": "Insertion correct",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"listeReservations\": [\n\t\t{\n\t\t\t\"startDate\": \"2018-12-09 08:30:00\",\n\t\t\t\"endDate\": \"2018-12-09 09:00:00\",\n\t\t\t\"object\": \"testBulkCreate1\",\n\t\t\t\"user_id\": 3,\n\t\t\t\"room_id\": 11,\n\t\t\t\"state\": 1\n\t\t},\n\t\t{\n\t\t\t\"startDate\": \"2020-12-09 08:30:00\",\n\t\t\t\"endDate\": \"2020-12-09 09:00:00\",\n\t\t\t\"object\": \"testBulkCreate2\",\n\t\t\t\"user_id\": 3,\n\t\t\t\"room_id\": 11,\n\t\t\t\"state\": 1\n\t\t},\n\t\t{\n\t\t\t\"startDate\": \"2021-12-09 08:30:00\",\n\t\t\t\"endDate\": \"2021-12-09 09:00:00\",\n\t\t\t\"object\": \"testBulkCreate3\",\n\t\t\t\"user_id\": 3,\n\t\t\t\"room_id\": 11,\n\t\t\t\"state\": 1\n\t\t}\n\t]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/reservation/createRecurrence",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"reservation",
+								"createRecurrence"
+							]
+						}
+					},
+					"status": "OK",
+					"code": 200,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "489"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"1e9-rzdBr6Ohfr4EYV4jOjy0EWeEvN0\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 27 Jan 2020 08:52:02 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": [\n        {\n            \"startDate\": \"2018-12-09T07:30:00.000Z\",\n            \"endDate\": \"2018-12-09T08:00:00.000Z\",\n            \"object\": \"testBulkCreate1\",\n            \"user_id\": 3,\n            \"room_id\": 11,\n            \"state\": 1,\n            \"isConflict\": false\n        },\n        {\n            \"startDate\": \"2020-12-09T07:30:00.000Z\",\n            \"endDate\": \"2020-12-09T08:00:00.000Z\",\n            \"object\": \"testBulkCreate2\",\n            \"user_id\": 3,\n            \"room_id\": 11,\n            \"state\": 1,\n            \"isConflict\": false\n        },\n        {\n            \"startDate\": \"2021-12-09T07:30:00.000Z\",\n            \"endDate\": \"2021-12-09T08:00:00.000Z\",\n            \"object\": \"testBulkCreate3\",\n            \"user_id\": 3,\n            \"room_id\": 11,\n            \"state\": 1,\n            \"isConflict\": false\n        }\n    ]\n}"
+				},
+				{
+					"name": "Conflit partiel",
+					"originalRequest": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"name": "Content-Type",
+								"value": "application/json",
+								"type": "text"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\n\t\"listeReservations\": [\n\t\t{\n\t\t\t\"startDate\": \"2018-12-09 08:00:00\",\n\t\t\t\"endDate\": \"2018-12-09 08:25:00\",\n\t\t\t\"object\": \"testBulkCreate1\",\n\t\t\t\"user_id\": 3,\n\t\t\t\"room_id\": 11,\n\t\t\t\"state\": 1\n\t\t},\n\t\t{\n\t\t\t\"startDate\": \"2020-12-09 08:30:00\",\n\t\t\t\"endDate\": \"2020-12-09 09:00:00\",\n\t\t\t\"object\": \"testBulkCreate2\",\n\t\t\t\"user_id\": 3,\n\t\t\t\"room_id\": 11,\n\t\t\t\"state\": 1\n\t\t},\n\t\t{\n\t\t\t\"startDate\": \"2021-12-09 08:30:00\",\n\t\t\t\"endDate\": \"2021-12-09 09:00:00\",\n\t\t\t\"object\": \"testBulkCreate3\",\n\t\t\t\"user_id\": 3,\n\t\t\t\"room_id\": 11,\n\t\t\t\"state\": 1\n\t\t}\n\t]\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:3000/reservation/createRecurrence",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "3000",
+							"path": [
+								"reservation",
+								"createRecurrence"
+							]
+						}
+					},
+					"status": "Bad Request",
+					"code": 400,
+					"_postman_previewlanguage": "json",
+					"header": [
+						{
+							"key": "X-Powered-By",
+							"value": "Express"
+						},
+						{
+							"key": "Access-Control-Allow-Origin",
+							"value": "*"
+						},
+						{
+							"key": "Content-Type",
+							"value": "application/json; charset=utf-8"
+						},
+						{
+							"key": "Content-Length",
+							"value": "487"
+						},
+						{
+							"key": "ETag",
+							"value": "W/\"1e7-45UX/5hQNqg4Tnz3BI6JR+OPYFg\""
+						},
+						{
+							"key": "Date",
+							"value": "Mon, 27 Jan 2020 08:52:57 GMT"
+						},
+						{
+							"key": "Connection",
+							"value": "keep-alive"
+						}
+					],
+					"cookie": [],
+					"body": "{\n    \"result\": [\n        {\n            \"startDate\": \"2018-12-09T07:00:00.000Z\",\n            \"endDate\": \"2018-12-09T07:25:00.000Z\",\n            \"object\": \"testBulkCreate1\",\n            \"user_id\": 3,\n            \"room_id\": 11,\n            \"state\": 1,\n            \"isConflict\": false\n        },\n        {\n            \"startDate\": \"2020-12-09T07:30:00.000Z\",\n            \"endDate\": \"2020-12-09T08:00:00.000Z\",\n            \"object\": \"testBulkCreate2\",\n            \"user_id\": 3,\n            \"room_id\": 11,\n            \"state\": 1,\n            \"isConflict\": true\n        },\n        {\n            \"startDate\": \"2021-12-09T07:30:00.000Z\",\n            \"endDate\": \"2021-12-09T08:00:00.000Z\",\n            \"object\": \"testBulkCreate3\",\n            \"user_id\": 3,\n            \"room_id\": 11,\n            \"state\": 1,\n            \"isConflict\": true\n        }\n    ]\n}"
+				}
+			]
 		},
 		{
 			"name": "checkRecurrence",
