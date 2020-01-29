@@ -363,7 +363,6 @@ module.exports.checkReservation = function (roomId, startDate, endDate) {
                 },
                 type: db.sequelize.QueryTypes.SELECT
             }) */
-            console.log(result)
             resolve(result)
         } catch (error) {
             console.log(error)

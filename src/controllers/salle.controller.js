@@ -8,6 +8,13 @@ exports.getSalles = async (req, res) => {
 };
 
 exports.getSalle = async (req, res) => {
+    const checkedParams = general.checkParam(req, ["roomId"]);
+    if (checkedParams != null) {
+        return res.status(checkedParams.code).json({result: checkedParams.result});
+    }
+    if(isNaN(req.query.roomId)){
+        return res.status(400).json({result: "roomId n'est pas un chiffre"});
+    }
     let data = await salleService.get_salle(req);
     return res.status(data.code).json({ result: data.result });
 };
@@ -35,6 +42,13 @@ exports.modifyRoom = async (req, res) => {
 }
 
 exports.deleteRoom = async (req, res) => {
+    const checkedParams = general.checkParam(req, ["roomId"])
+    if (checkedParams != null) {
+        return res.status(checkedParams.code).json({result: checkedParams.result});
+    }
+    if (isNaN(req.query.roomId)){
+        return res.status(400).json({result: "roomId n'est pas un nombre"})
+    }
     let data = await salleService.delete_room(req);
     return res.status(data.code).json({result: data.result});
 }
