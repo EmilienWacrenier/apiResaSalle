@@ -314,7 +314,6 @@ module.exports.check_existing_reservation_recurrence = async (req) => {
             reservation.isConflict = false
             reservation.startDate = moment(reservation.startDate, "YYYY-MM-DD HH:mm:ss").toISOString();
             reservation.endDate = moment(reservation.endDate, "YYYY-MM-DD HH:mm:ss").toISOString();
-            console.log(reservation.startDate)
             let checkReservationIfTaken = await this.check_existing_reservation(reservation.room_id, reservation.startDate, reservation.endDate)
             if (checkReservationIfTaken[0] !== undefined) {
                 codeToResolve = 400;

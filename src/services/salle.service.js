@@ -27,10 +27,6 @@ module.exports.check_room_id = async function (roomId) {
 module.exports.get_salle = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const checkedParams = general.checkParam(req, ["roomId"]);
-            if (checkedParams != null) {
-                return resolve(checkedParams);
-            }
             const salle = await salleBuilder.findSalle(req.query.roomId);
             return resolve({ code: 200, result: salle });
         } catch (err) {
@@ -106,7 +102,8 @@ module.exports.create_room = (req) => {
         }
 
         // Contrôler l'existance du nom pour éviter les doublons
-        const existingRoom = await salleBuilder.findSalleByName(req.body.name)
+        const existingRoom = await salleBuilder.findSalleByName(req.body.name, -1)
+        console.log(existingRoom);
         if (existingRoom != null) {
             return resolve({
                 code: 400,
@@ -176,11 +173,6 @@ module.exports.modify_room = (req) => {
 //suppression d'une salle
 module.exports.delete_room = (req) => {
     return new Promise(async (resolve, reject) => {
-        const checkedParams = general.checkParam(req, ["roomId"])
-        if (checkedParams != null) {
-            return resolve(checkedParams);
-        }
-
         const deleted = await salleBuilder.destroyRoom(req.query.roomId)
             .then(function (deleted) {
                 // Vérification de la suppression

@@ -35,7 +35,7 @@ module.exports.findSalleByName = function(name, id) {
             const salle = await db.models.Room.findOne({
                 where: {
                     name: name,
-                    roomId: {$notId: [id]}
+                    roomId: {[Op.not]: id}
                 }
             });
             resolve(salle);

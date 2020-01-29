@@ -112,10 +112,10 @@ exports.createSimpleReservation = async (req, res) => {
         if(!REGEX.date.test(req.body.startDate) || !REGEX.date.test(req.body.endDate)){
             return res.status(400).json({result: "Les dates ne sont pas au bon formats"});
         }
-        if (userService.check_user_id(req.body.userId) === false){
+        if (await userService.check_user_id(req.body.userId) === false){
             return res.status(400).json({result: "L'id utilisateur: " + req.body.userId + " n'existe pas"})
         }
-        if (salleService.check_room_id(req.body.roomId) === false){
+        if (await salleService.check_room_id(req.body.roomId) === false){
             return res.status(400).json({result: "L'id room: " + req.body.roomId + " n'existe pas"});
         }
         let createdReservation = await reservationService.create_simple_reservation(req.body.startDate, req.body.endDate, req.body.object
