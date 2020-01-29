@@ -10,7 +10,7 @@ router.get('/reservations', ReservationController.getReservations);
 router.get('/reservationById', ReservationController.getReservationById);
 router.get('/reservationsByDate', ReservationController.getSallesBookedBetween);
 router.get('/reservationsByDay', ReservationController.getSallesBookedByDay);
-router.get('/reservationsByRoomId', ReservationController.getReservationByRoomId);
+router.get('/reservationsByRoomIdByDate', ReservationController.getReservationByRoomId);
 router.get('/reservationsByUserId', ReservationController.getReservationsByUserId);
 router.get('/participants', ReservationController.getParticipantsByIdReservation);
 router.get('/checkReservation', ReservationController.checkReservation);

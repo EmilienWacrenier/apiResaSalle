@@ -18,14 +18,15 @@ const sequelize = new Sequelize(
     define: {
         underscored: false,
         freezeTableName: true, //use singular table name
-        timestamps: false,  // I do not want timestamp fields by default
+        timestamps: true,  // I do not want timestamp fields by default
+        charset: 'utf8'
       },
       dialectOptions: {
-        useUTC: false, //for reading from database
+        useUTC: true, //for reading from database
         dateStrings: true,
         typeCast: function (field, next) { // for reading from database
           if (field.type === 'DATETIME' || field.type === 'TIMESTAMP') {
-            return new Date(field.string() + 'Z');
+            return field.string();
           }
             return next()
           },

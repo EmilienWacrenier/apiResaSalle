@@ -17,7 +17,7 @@ exports.getSallesAvailable = async (req, res) => {
     if (checkedParams != null) {
         return res.status(checkedParams.code).json({result: checkedParams.result});
     }
-    if(!REGEX.test(req.query.startDate || !REGEX.test(req.query.endDate))){
+    if(!REGEX.test(req.query.startDate) || !REGEX.test(req.query.endDate)){
         return res.status(400).json({result: "Les dates ne sont pas au bon format"});
     }
     let data = await salleService.get_salles_available(req);

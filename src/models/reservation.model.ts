@@ -11,13 +11,13 @@ module.exports = (sequelize, Sequelize) => {
         },
         startDate: {
             type: Sequelize.DATE,
-            get() {
+            get: function(startDate) {
                 return moment(this.getDataValue('startDate')).format('YYYY-MM-DD HH:mm:ss');
             }
         },
         endDate: {
             type: Sequelize.DATE,
-            get() {
+            get: function(endDate) {
                 return moment(this.getDataValue('endDate')).format('YYYY-MM-DD HH:mm:ss');
             }
         },

@@ -61,14 +61,17 @@ module.exports.check_recurrence = async (startDate, endDate, roomId, labelRecurr
 
 
         do {
+            console.log(startDate);
+            
             var currentReservation = await this.check_existing_reservation(roomId,
-                moment(currentStartDate).format("YYYY-MM-DD HH:mm:ss").toString(), moment(currentStartDate).format("YYYY-MM-DD HH:mm:ss").toString());
+                moment(currentStartDate).format("YYYY-MM-DD HH:mm:ss").toString(), moment(currentEndDate).format("YYYY-MM-DD HH:mm:ss").toString());
             if (!currentReservation[0]) {
-                reservationsToReturn.push({ startDate: new Date(currentStartDate), endDate: new Date(currentEndDate), conflit: false, roomId: roomId })
+                reservationsToReturn.push({ startDate: moment(currentStartDate).format("YYYY-MM-DD HH:mm:ss").toString(), endDate: moment(currentEndDate).format("YYYY-MM-DD HH:mm:ss").toString(), conflit: false, roomId: roomId })
             }
             else {
                 console.log(currentReservation)
-                reservationsToReturn.push({ startDate: currentReservation[0].startDate, endDate: currentReservation[0].endDate, conflit: true, email: currentReservation[0].email })
+                reservationsToReturn.push({ startDate: moment(currentReservation[0].startDate).format("YYYY-MM-DD HH:mm:ss").toString(), 
+                endDate: moment(currentReservation[0].endDate).format("YYYY-MM-DD HH:mm:ss").toString(), conflit: true, email: currentReservation[0].email })
             }
 
             switch (labelRecurrence) {
@@ -325,11 +328,14 @@ module.exports.check_existing_reservation_recurrence = async (req) => {
 
 
 module.exports.check_existing_reservation = async (roomId, startDate, endDate) => {
-    let checkingExistingReservation = await reservationBuilder.checkReservation(roomId, startDate, endDate);
-    //console.log(checkingExistingReservation)
+    var checkingExistingReservation = await reservationBuilder.checkReservation(roomId, startDate, endDate);
     if (!checkingExistingReservation) {
         return true;
     }
+    /*checkingExistingReservation.forEach(element => {
+        element.startDate = moment(element.startDate).format("YYYY-MM-DD HH:mm:ss").toString()
+        element.endDate = moment(element.endDate).format("YYYY-MM-DD HH:mm:ss").toString()
+    });*/
     return checkingExistingReservation;
 }
 
@@ -337,6 +343,7 @@ module.exports.get_reservations = () => {
     return new Promise(async (resolve, reject) => {
         try {
             const reservations = await reservationBuilder.findReservations();
+            console.log(new Date(reservations[0].dataValues.startDate).toLocaleString())
             return resolve({ code: 200, result: reservations });
         } catch (err) {
             console.log(err);
@@ -394,10 +401,6 @@ module.exports.get_salles_booked_by_day = (req) => {
 module.exports.get_salles_booked_by_id = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const checkedParams = general.checkParam(req, ["roomId", "startDate", "endDate"]);
-            if (checkedParams != null) {
-                return resolve(checkedParams)
-            }
             const sallesBookedById = await reservationBuilder.findSallesBookedById(req);
             return resolve({ code: 200, result: sallesBookedById });
         } catch (err) {
@@ -453,10 +456,6 @@ module.exports.get_participants_by_reservation_id = (req) => {
 module.exports.delete_reservation = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
-            const checkedParams = general.checkParam(req, ["reservationId"]);
-            if (checkedParams != null) {
-                return resolve(checkedParams);
-            }
             const deleteRes = await reservationBuilder.destroyReservation(req.query.reservationId);
             if (deleteRes) {
                 return resolve({ code: 200, result: 'Suppression effectué' });

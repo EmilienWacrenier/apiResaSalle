@@ -56,7 +56,7 @@ module.exports.createReservation = function (dateDebut, dateFin, objet, etat, us
 module.exports.findReservations = function () {
     return new Promise(async (resolve, reject) => {
         try {
-            const reservations = await db.models.Reservation.findAll();
+            const reservations = await db.models.Reservation.findAll();            
             resolve(reservations);
         } catch (err) {
             console.log(err);
@@ -297,8 +297,56 @@ module.exports.modifyReservation = function (req) {
 module.exports.checkReservation = function (roomId, startDate, endDate) {
     return new Promise(async (resolve, reject) => {
         try {
-            const result = await db.sequelize.query('\
-                select * from reservation inner join user on reservation.user_id = user.userId\
+            let result = await db.models.Reservation.findAll({
+                attributes: [
+                    'reservationId',
+                    'startDate',
+                    'endDate',
+                    'room_id',
+                ],
+                where: {
+                    
+                        room_id: roomId,
+                        [Op.or]: {
+                            
+                                endDate: {
+                                    [Op.gt]: startDate,
+                                    [Op.lte]: endDate
+                                },
+                            
+                            
+                                startDate: {
+                                    [Op.gte]: startDate,
+                                    [Op.lt]: endDate
+                                },
+                            
+                            [Op.and]: {
+                                startDate: {
+                                    [Op.lte]: startDate
+                                }, 
+                                endDate: {
+                                    [Op.gte]: endDate
+                                }
+                            }
+                        }
+                    
+                },
+                include: [{
+                    model: db.models.User,
+                    required: true,
+                    attributes: [
+                        'userId',
+                        'firstName',
+                        'lastName',
+                        'email'
+                    ]
+                }]
+            })
+
+            //result = await db.models.Reservation.findAll();
+
+            /* const result = await db.sequelize.query('\
+                select reservationId, startDate, endDate, room_id, userId, firstName, lastName, email from reservation inner join user on reservation.user_id = user.userId\
                 where room_id = (:roomId)\
                 AND (\
                     (endDate > (:startDate) AND endDate <= (:endDate))\
@@ -314,7 +362,8 @@ module.exports.checkReservation = function (roomId, startDate, endDate) {
                     endDate: endDate
                 },
                 type: db.sequelize.QueryTypes.SELECT
-            })
+            }) */
+            console.log(result)
             resolve(result)
         } catch (error) {
             console.log(error)
