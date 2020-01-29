@@ -263,7 +263,7 @@ Services liés aux entitées de la base de données
 Services annexes utilisés pour tester différents paramètres
 
 - Services
-    
+
 | Fichier                | Explication du service            |
 | :--------------------: | :----------------------: |
 | test_params.service.js | Pour la réservation, vérification des paramètres avec l'existence des participants et des                               paramètres. Pour la Récurrence, vérification de l'existance des paramètres |
@@ -276,7 +276,7 @@ Services annexes utilisés pour tester différents paramètres
 
 | Fichier                | Explication du service            |
 | :--------------------: | :----------------------: |
-| regex.js               | Ajout des expressions rationnelles pour email et les dates |
+| regex.js               | Ajout des expressions régulières pour email et les dates |
 | resa-controle.js       | Ca sert a rien :) |
 
 ### Logique de développement
@@ -294,7 +294,4 @@ https://github.com/EmilienWacrenier/apiResaSalle
 Les différentes branches présentes :
 
 - master : Branche par defaut
-- dev : Branche utilisée principalement au debut du projet
-- max2 : Branche utilisée par 'Brocel' pour l'organisation de son code
-- api_outlook : Branche utilisée pour tester la synchronisation Outlook (dead)
-- newDev : Branche principale utilisée actuellement, l'evolution de la branche dev 
+- newDev : Branche principale utilisée actuellement
