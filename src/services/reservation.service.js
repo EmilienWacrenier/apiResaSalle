@@ -64,11 +64,19 @@ module.exports.check_recurrence = async (startDate, endDate, roomId, labelRecurr
             var currentReservation = await this.check_existing_reservation(roomId,
                 moment(currentStartDate).format("YYYY-MM-DD HH:mm:ss").toString(), moment(currentEndDate).format("YYYY-MM-DD HH:mm:ss").toString());
             if (!currentReservation[0]) {
-                reservationsToReturn.push({ startDate: moment(currentStartDate).format("YYYY-MM-DD HH:mm:ss").toString(), endDate: moment(currentEndDate).format("YYYY-MM-DD HH:mm:ss").toString(), conflit: false, roomId: roomId })
+                if(workingDaysService.is_working_day(moment(currentStartDate).format("YYYY-MM-DD HH:mm:ss").toString())){
+                    reservationsToReturn.push({ startDate: moment(currentStartDate).format("YYYY-MM-DD HH:mm:ss").toString(), 
+                    endDate: moment(currentEndDate).format("YYYY-MM-DD HH:mm:ss").toString(), conflit: false, workingDay: true, roomId: roomId })
+                }
+                else{
+                    reservationsToReturn.push({ startDate: moment(currentStartDate).format("YYYY-MM-DD HH:mm:ss").toString(), 
+                    endDate: moment(currentEndDate).format("YYYY-MM-DD HH:mm:ss").toString(), conflit: false, workingDay: false, roomId: roomId })
+                }
+
             }
             else {
                 reservationsToReturn.push({ startDate: moment(currentReservation[0].startDate).format("YYYY-MM-DD HH:mm:ss").toString(), 
-                endDate: moment(currentReservation[0].endDate).format("YYYY-MM-DD HH:mm:ss").toString(), conflit: true, email: currentReservation[0].email })
+                endDate: moment(currentReservation[0].endDate).format("YYYY-MM-DD HH:mm:ss").toString(), conflit: true, workingDay: true, email: currentReservation[0].email })
             }
 
             switch (labelRecurrence) {
