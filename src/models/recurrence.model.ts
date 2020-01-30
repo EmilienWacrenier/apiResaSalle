@@ -1,4 +1,3 @@
-
 module.exports = (sequelize, Sequelize) => {
     const recurrence = sequelize.define('recurrence', {
         recurrenceId: {
