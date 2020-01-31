@@ -2,6 +2,8 @@ const salleService = require('../services/salle.service');
 const REGEX = require('../tools/validation/regex').date;
 const general = require('../services/general.service');
 
+
+// GET
 exports.getSalles = async (req, res) => {
     let data = await salleService.get_salles();
     return res.status(data.code).json({ result: data.result });
@@ -31,16 +33,22 @@ exports.getSallesAvailable = async (req, res) => {
     return res.status(data.code).json({ result: data.result });
 }
 
+
+// POST
 exports.createRoom = async (req, res) => {
     let data = await salleService.create_room(req);
     return res.status(data.code).json({result: data.result});
 }
 
+
+// PUT
 exports.modifyRoom = async (req, res) => {
     let data = await salleService.modify_room(req);
     return res.status(data.code).json({result: data.result});
 }
 
+
+// DELETE
 exports.deleteRoom = async (req, res) => {
     const checkedParams = general.checkParam(req, ["roomId"])
     if (checkedParams != null) {
