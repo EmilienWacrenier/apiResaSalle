@@ -10,17 +10,17 @@ router.get('/reservations', ReservationController.getReservations);
 router.get('/reservationById', ReservationController.getReservationById);
 router.get('/reservationsByDate', ReservationController.getSallesBookedBetween);
 router.get('/reservationsByDay', ReservationController.getSallesBookedByDay);
-router.get('/reservationsByRoomIdByDate', ReservationController.getReservationByRoomId);
+router.get('/reservationsByRoomIdByDate', ReservationController.getReservationByRoomIdByDate);
 router.get('/reservationsByUserId', ReservationController.getReservationsByUserId);
-router.get('/participants', ReservationController.getParticipantsByIdReservation);
+//router.get('/participants', ReservationController.getParticipantsByIdReservation);
 router.get('/checkReservation', ReservationController.checkReservation);
 router.get('/checkRecurrence', ReservationController.checkRecurrence);
 
 //POST
-router.post('/createReservation', ReservationController.creerReservation);
-router.post('/createBooking', ReservationController.createBooking);
-router.post('/createRecurrence', ReservationController.createRecurrence);
+//router.post('/createReservation', ReservationController.creerReservation);
+//router.post('/createBooking', ReservationController.createBooking);
 router.post('/createSimpleReservation', ReservationController.createSimpleReservation);
+router.post('/createRecurrence', ReservationController.createRecurrence);
 
 // PUT
 router.put('/modifyReservation', ReservationController.modifyReservation);
