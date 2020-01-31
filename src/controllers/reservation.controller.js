@@ -14,7 +14,7 @@ exports.creerReservation = async (req, res) => {
     let data = await reservationService.create_reservation(req);
     return res.status(data.code).json({ result: data.result });
 };
-
+// GET
 exports.getReservations = async (req, res) => {
     let data = await reservationService.get_reservations();
     return res.status(data.code).json({ result: data.result });
@@ -33,6 +33,7 @@ exports.getSallesBookedBetween = async (req, res) => {
     let data = await reservationService.get_salles_booked_between(req);
     return res.status(data.code).json({ result: data.result });
 }
+
 exports.getSallesBookedByDay = async (req, res) => {
     const checkedParams = generalService.checkParam(req, ["startDate"]);
     if (checkedParams != null) {
@@ -72,7 +73,7 @@ exports.checkReservation = async (req, res) => {
     }
     let data = await reservationService.check_existing_reservation(req.query.roomId, req.query.startDate, req.query.endDate);
     if(!data[0]){
-        return res.status(200).json({result: "Le créneau de réservation est disponible"})
+        return res.status(200).json({result: true})
     }
     else{
         return res.status(400).json({result: data})
@@ -90,15 +91,16 @@ exports.checkRecurrence = async (req, res) => {
     if(isNaN(req.query.roomId)){
         return res.status(400).json({result: "RoomId n'est pas un chiffre"})
     }
-    if((req.query.labelRecurrence != "quotidienne" && req.query.labelRecurrence != "mensuel" && req.query.labelRecurrence != "hebdomadaire")){
+    if((req.query.labelRecurrence != "quotidienne" && req.query.labelRecurrence != "mensuelle" && req.query.labelRecurrence != "hebdomadaire")){
         return res.status(400).json({result: "Le label est incorrect"});
     }
     let data = await reservationService.check_recurrence(
         req.query.startDate, req.query.endDate, req.query.roomId, req.query.labelRecurrence, req.query.endDateRecurrence
     )
     return res.status(data.code).json({result: data.result});
-    }
+}
 
+// POST
 exports.modifyReservation = async (req, res) => {
     let data = await reservationService.modify_reservation(req);
     return res.status(data.code).json({ result: data.result });
@@ -150,6 +152,8 @@ exports.createRecurrence = async (req, res) => {
         return res.status(checkParam.code).json(checkParam.result)
     }
 }
+
+
 
 //test isFreeDate
 exports.isFreeDate = async (req, res) => {
@@ -236,6 +240,7 @@ exports.createBooking = async (req, res) => {
         return res.status(data1.code).json({ result: data1.result });
     }
 };
+
 exports.testParamsBooking = async (req, res) => {
     let testParam = await testParamService.test_params_booking(req);
     console.log('testParam.result (controller) : ' + testParam.result);

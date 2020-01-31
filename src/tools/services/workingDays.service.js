@@ -71,7 +71,7 @@ module.exports.is_working_day = (startDate) => {
         result = false;
     }
     console.log(result + ' result dans is_working_day');
-    return { code:200, result:result };
+    return result
 }
 // Jour de week end
 module.exports.is_week_end = (j) => {
