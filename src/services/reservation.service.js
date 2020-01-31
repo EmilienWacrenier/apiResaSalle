@@ -76,7 +76,7 @@ module.exports.check_recurrence = async (startDate, endDate, roomId, labelRecurr
             }
             else {
                 reservationsToReturn.push({ startDate: moment(currentReservation[0].startDate).format("YYYY-MM-DD HH:mm:ss").toString(), 
-                endDate: moment(currentReservation[0].endDate).format("YYYY-MM-DD HH:mm:ss").toString(), conflit: true, workingDay: true, email: currentReservation[0].email })
+                endDate: moment(currentReservation[0].endDate).format("YYYY-MM-DD HH:mm:ss").toString(), roomId: roomId, conflit: true, workingDay: true, email: currentReservation[0].email })
             }
 
             switch (labelRecurrence) {
@@ -193,6 +193,7 @@ module.exports.check_existing_reservation_recurrence = async (req) => {
                 codeToResolve = 400;
                 reservation.isConflict = true;
             }
+
             reservationsConflictOrNot.push(reservation);
         }
         return resolve({ code: codeToResolve, result: reservationsConflictOrNot });

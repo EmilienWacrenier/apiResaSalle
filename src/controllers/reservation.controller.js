@@ -14,7 +14,7 @@ exports.creerReservation = async (req, res) => {
     let data = await reservationService.create_reservation(req);
     return res.status(data.code).json({ result: data.result });
 };
-
+// GET
 exports.getReservations = async (req, res) => {
     let data = await reservationService.get_reservations();
     return res.status(data.code).json({ result: data.result });
@@ -73,7 +73,7 @@ exports.checkReservation = async (req, res) => {
     }
     let data = await reservationService.check_existing_reservation(req.query.roomId, req.query.startDate, req.query.endDate);
     if(!data[0]){
-        return res.status(200).json({result: "Le créneau de réservation est disponible"})
+        return res.status(200).json({result: true})
     }
     else{
         return res.status(400).json({result: data})
@@ -100,6 +100,7 @@ exports.checkRecurrence = async (req, res) => {
     return res.status(data.code).json({result: data.result});
 }
 
+// POST
 exports.modifyReservation = async (req, res) => {
     let data = await reservationService.modify_reservation(req);
     return res.status(data.code).json({ result: data.result });
@@ -151,6 +152,8 @@ exports.createRecurrence = async (req, res) => {
         return res.status(checkParam.code).json(checkParam.result)
     }
 }
+
+
 
 //test isFreeDate
 exports.isFreeDate = async (req, res) => {
