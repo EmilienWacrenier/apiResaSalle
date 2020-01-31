@@ -2,7 +2,8 @@ const salleBuilder = require('../builders/salle.builder');
 const reservationBuilder = require('../builders/reservation.builder');
 const general = require('./general.service');
 
-//obtenir les salles
+
+//GET
 module.exports.get_salles = () => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -15,15 +16,6 @@ module.exports.get_salles = () => {
     });
 };
 
-module.exports.check_room_id = async function (roomId) {
-    const roomFound = await salleBuilder.findSalle(roomId);
-    if(roomFound === null){
-        return false;
-    }
-    return true;
-}
-
-//obtenir 1 salle
 module.exports.get_salle = (req) => {
     return new Promise(async (resolve, reject) => {
         try {
@@ -36,7 +28,6 @@ module.exports.get_salle = (req) => {
     });
 };
 
-//obtenir les salles disponibles
 module.exports.get_salles_available = (req) => {
     return new Promise(async (resolve, reject) => {
         // Vérification paramètres 
@@ -85,8 +76,7 @@ module.exports.get_salles_available = (req) => {
 }
 
 
-
-//creation d'une salle
+// POST
 module.exports.create_room = (req) => {
     return new Promise(async (resolve, reject) => {
         // Vérification des paramètres
@@ -126,7 +116,8 @@ module.exports.create_room = (req) => {
     })
 }
 
-//modification d'une salle
+
+// PUT
 module.exports.modify_room = (req) => {
     return new Promise(async (resolve, reject) => {
         const checkedParams = general.checkBody(req, ["name", "area", "capacity", "roomId"])
@@ -170,7 +161,8 @@ module.exports.modify_room = (req) => {
     })
 }
 
-//suppression d'une salle
+
+// DELETE
 module.exports.delete_room = (req) => {
     return new Promise(async (resolve, reject) => {
         const deleted = await salleBuilder.destroyRoom(req.query.roomId)
@@ -184,4 +176,14 @@ module.exports.delete_room = (req) => {
                 return reject(err)
             })
     })
+}
+
+
+// ANNEXE
+module.exports.check_room_id = async function (roomId) {
+    const roomFound = await salleBuilder.findSalle(roomId);
+    if(roomFound === null){
+        return false;
+    }
+    return true;
 }
