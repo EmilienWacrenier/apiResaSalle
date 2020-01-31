@@ -151,6 +151,7 @@ exports.createRecurrence = async (req, res) => {
     return res.status(data.code).json({ result: data.result });
 }; */
 
+
 // PUT
 exports.modifyReservation = async (req, res) => {
     let data = await reservationService.modify_reservation(req);
