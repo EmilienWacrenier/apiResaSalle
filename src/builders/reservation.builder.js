@@ -340,6 +340,13 @@ module.exports.checkReservation = function (roomId, startDate, endDate) {
                         'lastName',
                         'email'
                     ]
+                },
+                {
+                    model: db.models.Room,
+                    required: true,
+                    attributes: [
+                        'name'
+                    ]
                 }]
             })
 

@@ -60,23 +60,24 @@ module.exports.check_recurrence = async (startDate, endDate, roomId, labelRecurr
         var currentEndDate = new Date(endDate);
         const currentEndDateRecurrence = new Date(endDateRecurrence)
 
-        do {            
+        do {
+            const currentRoom = await salleBuilder.findSalle(roomId);            
             var currentReservation = await this.check_existing_reservation(roomId,
                 moment(currentStartDate).format("YYYY-MM-DD HH:mm:ss").toString(), moment(currentEndDate).format("YYYY-MM-DD HH:mm:ss").toString());
             if (!currentReservation[0]) {
                 if(workingDaysService.is_working_day(moment(currentStartDate).format("YYYY-MM-DD HH:mm:ss").toString())){
                     reservationsToReturn.push({ startDate: moment(currentStartDate).format("YYYY-MM-DD HH:mm:ss").toString(), 
-                    endDate: moment(currentEndDate).format("YYYY-MM-DD HH:mm:ss").toString(), conflit: false, workingDay: true, roomId: roomId })
+                    endDate: moment(currentEndDate).format("YYYY-MM-DD HH:mm:ss").toString(), conflit: false, workingDay: true, roomId: roomId, roomName: currentRoom.name })
                 }
                 else{
                     reservationsToReturn.push({ startDate: moment(currentStartDate).format("YYYY-MM-DD HH:mm:ss").toString(), 
-                    endDate: moment(currentEndDate).format("YYYY-MM-DD HH:mm:ss").toString(), conflit: false, workingDay: false, roomId: roomId })
+                    endDate: moment(currentEndDate).format("YYYY-MM-DD HH:mm:ss").toString(), conflit: false, workingDay: false, roomId: roomId, roomName: currentRoom.name })
                 }
 
             }
             else {
                 reservationsToReturn.push({ startDate: moment(currentReservation[0].startDate).format("YYYY-MM-DD HH:mm:ss").toString(), 
-                endDate: moment(currentReservation[0].endDate).format("YYYY-MM-DD HH:mm:ss").toString(), roomId: roomId, conflit: true, workingDay: true, email: currentReservation[0].email })
+                endDate: moment(currentReservation[0].endDate).format("YYYY-MM-DD HH:mm:ss").toString(), roomName: currentReservation[0].room.name, roomId: roomId, conflit: true, workingDay: true, email: currentReservation[0].email })
             }
 
             switch (labelRecurrence) {
