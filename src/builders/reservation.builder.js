@@ -2,57 +2,7 @@ const db = require('../config/db.config');
 const Op = require('Sequelize').Op;
 
 
-//Créer une réservation
-module.exports.createReservation = function (dateDebut, dateFin, objet, etat, user_id, recurrence_id, salle_id) {
-    return new Promise(async (resolve, reject) => {
-        try {
-
-            const nouvReservation = await db.models.Reservation.create(
-                {
-                    startDate: dateDebut,
-                    endDate: dateFin,
-                    object: objet,
-                    state: etat,
-                    user_id: user_id,
-                    recurrence_id: recurrence_id,
-                    room_id: salle_id
-
-                });
-
-            try {
-/*                 if (req.body.users != null) {
-                    const crea = new Date();
-                    // Parcours des idUser de la req
-                    req.body.users.forEach(element => {
-                        const raw1 = db.sequelize.query(
-                            'INSERT into user_reservation (createdAt, updatedAt, reservationId, userId)\
-                            VALUES ((:crea), (:crea),(:reservation_id), (:user_id))', {
-                            replacements: {
-                                crea: crea,
-                                reservation_id: nouvReservation.reservationId,
-                                user_id: element
-                            },
-                            type: db.sequelize.QueryTypes.INSERT
-                        }
-                        );
-                    });
-                } */
-
-            } catch (err) {
-                console.log(err)
-                resolve(err)
-            }
-
-            resolve(nouvReservation);
-
-        } catch (err) {
-            console.log(err);
-            reject(err);
-        }
-    });
-};
-
-//Trouver toutes les reservations
+// GET
 module.exports.findReservations = function () {
     return new Promise(async (resolve, reject) => {
         try {
@@ -65,7 +15,6 @@ module.exports.findReservations = function () {
     });
 };
 
-//Trouver 1 reservation
 module.exports.findReservationById = function (id) {
     return new Promise(async (resolve, reject) => {
         try {
@@ -84,7 +33,6 @@ module.exports.findReservationById = function (id) {
     });
 };
 
-//Trouver les salles réservées par jour (body: date)
 module.exports.findSallesBookedByDay = function (startDate) {
     return new Promise(async (resolve, reject) => {
         try {
@@ -111,7 +59,6 @@ module.exports.findSallesBookedByDay = function (startDate) {
     });
 };
 
-//Trouver les salles occupées entre startDate et endDate
 module.exports.findSallesBookedBetween = function (startDate, endDate) {
     return new Promise(async (resolve, reject) => {
         try {
@@ -135,7 +82,6 @@ module.exports.findSallesBookedBetween = function (startDate, endDate) {
     });
 };
 
-//Trouver plusieurs réservations par utilisateurs
 module.exports.findReservationsByUserId = function (req) {
     return new Promise(async (resolve, reject) => {
         try {
@@ -165,7 +111,6 @@ module.exports.findReservationsByUserId = function (req) {
     });
 };
 
-//Trouver les participants à une réservation
 module.exports.findParticipantsByReservationId = function (idReservation) {
     return new Promise(async (resolve, reject) => {
         const participants = await db.sequelize.query(
@@ -180,7 +125,6 @@ module.exports.findParticipantsByReservationId = function (idReservation) {
     })
 }
 
-//Trouver des salles occupées par ID
 module.exports.findSallesBookedById = function (req) {
     return new Promise(async (resolve, reject) => {
         try {
@@ -208,25 +152,6 @@ module.exports.findSallesBookedById = function (req) {
     })
 }
 
-//supprimer une réservation
-module.exports.destroyReservation = function (id) {
-    return new Promise(async (resolve, reject) => {
-        try {
-            db.models.Reservation.destroy({
-                where: {
-                    reservationId: id
-                }
-            }).then((result) => {
-                resolve(result);
-            });
-        } catch (error) {
-            console.log(error);
-            reject(error);
-        }
-    })
-}
-
-//Trouver des réservations par salle et par Date définie
 module.exports.findReservationByRoomByDate = function (roomId, startDate, endDate) {
     return new Promise(async (resolve, reject) => {
         try {
@@ -267,33 +192,6 @@ module.exports.findReservationByRoomByDate = function (roomId, startDate, endDat
     })
 }
 
-//Modifier une réservation
-module.exports.modifyReservation = function (req) {
-    return new Promise(async (resolve, reject) => {
-        try {
-            const modifiedReservation = await db.models.Reservation.update(
-                {
-                    startDate: req.body.startDate,
-                    endDate: req.body.endDate,
-                    object: req.body.object,
-                    reservationId: req.body.reservationId,
-                    room_id: req.body.roomId
-                },
-                {
-                    where: {
-                        reservationId: req.body.reservationId
-                    },
-                    returning: true,
-                }).then(function (modifiedReservation){
-                    console.log(modifiedReservation)
-                    return resolve(modifiedReservation);
-                })
-        } catch (error) {
-            return reject(error)
-        }
-    });
-};
-// Vérifie la disponibilité d'une créneau
 module.exports.checkReservation = function (roomId, startDate, endDate) {
     return new Promise(async (resolve, reject) => {
         try {
@@ -377,6 +275,57 @@ module.exports.checkReservation = function (roomId, startDate, endDate) {
     })
 }
 
+
+// POST
+module.exports.createReservation = function (dateDebut, dateFin, objet, etat, user_id, recurrence_id, salle_id) {
+    return new Promise(async (resolve, reject) => {
+        try {
+
+            const nouvReservation = await db.models.Reservation.create(
+                {
+                    startDate: dateDebut,
+                    endDate: dateFin,
+                    object: objet,
+                    state: etat,
+                    user_id: user_id,
+                    recurrence_id: recurrence_id,
+                    room_id: salle_id
+
+                });
+
+            try {
+/*                 if (req.body.users != null) {
+                    const crea = new Date();
+                    // Parcours des idUser de la req
+                    req.body.users.forEach(element => {
+                        const raw1 = db.sequelize.query(
+                            'INSERT into user_reservation (createdAt, updatedAt, reservationId, userId)\
+                            VALUES ((:crea), (:crea),(:reservation_id), (:user_id))', {
+                            replacements: {
+                                crea: crea,
+                                reservation_id: nouvReservation.reservationId,
+                                user_id: element
+                            },
+                            type: db.sequelize.QueryTypes.INSERT
+                        }
+                        );
+                    });
+                } */
+
+            } catch (err) {
+                console.log(err)
+                resolve(err)
+            }
+
+            resolve(nouvReservation);
+
+        } catch (err) {
+            console.log(err);
+            reject(err);
+        }
+    });
+};
+
 module.exports.insertMultipleReservation = function (listReservation) {
     return new Promise(async (resolve, reject) => {
         const createdReservation = await db.models.Reservation.bulkCreate(listReservation)
@@ -390,3 +339,49 @@ module.exports.insertMultipleReservation = function (listReservation) {
     })
 }
 
+
+// PUT
+module.exports.modifyReservation = function (req) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            const modifiedReservation = await db.models.Reservation.update(
+                {
+                    startDate: req.body.startDate,
+                    endDate: req.body.endDate,
+                    object: req.body.object,
+                    reservationId: req.body.reservationId,
+                    room_id: req.body.roomId
+                },
+                {
+                    where: {
+                        reservationId: req.body.reservationId
+                    },
+                    returning: true,
+                }).then(function (modifiedReservation){
+                    console.log(modifiedReservation)
+                    return resolve(modifiedReservation);
+                })
+        } catch (error) {
+            return reject(error)
+        }
+    });
+};
+
+
+// DELETE
+module.exports.destroyReservation = function (id) {
+    return new Promise(async (resolve, reject) => {
+        try {
+            db.models.Reservation.destroy({
+                where: {
+                    reservationId: id
+                }
+            }).then((result) => {
+                resolve(result);
+            });
+        } catch (error) {
+            console.log(error);
+            reject(error);
+        }
+    })
+}

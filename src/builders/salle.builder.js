@@ -1,6 +1,8 @@
 const db = require('../config/db.config');
 const Op = require('Sequelize').Op;
 
+
+// GET
 module.exports.findSalles = function () {
     return new Promise(async (resolve, reject) => {
         try {
@@ -91,6 +93,8 @@ module.exports.findSallesAvailable = function (req) {
     })
 }
 
+
+// POST
 module.exports.createRoom = function (name, area, capacity) {
     return new Promise(async (resolve, reject) => {
         const newRoom = await db.models.Room.create({
@@ -108,6 +112,8 @@ module.exports.createRoom = function (name, area, capacity) {
     })
 }
 
+
+// PUT
 module.exports.modifyRoom = function (name, area, capacity, roomId) {
     return new Promise(async (resolve, reject) => {
         try {
@@ -131,6 +137,8 @@ module.exports.modifyRoom = function (name, area, capacity, roomId) {
     })
 }
 
+
+// DELETE
 module.exports.destroyRoom = function(roomId){
     return new Promise(async (resolve, reject) => {
         try {
