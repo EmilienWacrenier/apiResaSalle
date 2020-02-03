@@ -19,7 +19,6 @@ module.exports.checkUserId = async function (userId){
 
 module.exports.findUserById = function (req) {
     return new Promise(async (resolve, reject) => {
-        
         const user = await db.models.User.findOne({
             where: {
                 userId: req.query.userId

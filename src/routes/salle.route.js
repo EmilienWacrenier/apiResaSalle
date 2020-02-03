@@ -10,14 +10,18 @@ router.get('/rooms', SalleController.getSalles);
 router.get('/roomById', SalleController.getSalle);
 router.get('/availableRooms', SalleController.getSallesAvailable);
 
+
 // POST
 router.post('/createRoom', SalleController.createRoom);
+
+
+// PUT
+router.put('/modifyRoom', SalleController.modifyRoom);
+
 
 // DELETE
 router.delete('/deleteRoom', SalleController.deleteRoom);
 
-// PUT
-router.put('/modifyRoom', SalleController.modifyRoom);
 
 // Export routes
 module.exports = router;

@@ -6,8 +6,9 @@ const jwt = require('../interceptors/jwt');
 const db = require('../config/db.config');
 const Op = require('Sequelize').Op;
 
-exports.getUsers = async (req, res) => {
 
+// GET
+exports.getUsers = async (req, res) => {
     let data = await userService.get_users();
     return res.status(data.code).json({ result: data.result });
 }
@@ -17,6 +18,13 @@ exports.getUserById = async (req, res) => {
     return res.status(data.code).json({ result: data.result });
 }
 
+exports.connexion = async (req, res) => {
+    let data = await userService.connexion(req);
+    return res.status(data.code).json({ result: data.result });
+}
+
+
+// POST
 exports.inscription = async (req, res) => {
     let data = await userService.inscription(req);
     // if (data.code===200) {
@@ -25,12 +33,12 @@ exports.inscription = async (req, res) => {
     return res.status(data.code).json({ result: data.result }) + mail;
 }
 
-exports.connexion = async (req, res) => {
-    let data = await userService.connexion(req);
-    return res.status(data.code).json({ result: data.result });
-}
 
+// PUT
 exports.modifyUser = async(req, res) => {
     let data = await userService.modify_user(req);
     return res.status(data.code).json({ result: data.result });
 }
+
+
+// DELETE

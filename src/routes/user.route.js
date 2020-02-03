@@ -11,11 +11,14 @@ router.get('/users', userController.getUsers);
 router.get('/userById', userController.getUserById);
 router.get('/login', userController.connexion);
 
+
 // POST
 router.post('/register', userController.inscription);
 
+
 // PUT
 router.put('/updateUser', userController.modifyUser);
+
 
 // DELETE
 

@@ -10,10 +10,7 @@ const userService = require('../services/user.service');
 const salleService = require('../services/salle.service');
 const REGEX = require('../tools/validation/regex');
 
-exports.creerReservation = async (req, res) => {
-    let data = await reservationService.create_reservation(req);
-    return res.status(data.code).json({ result: data.result });
-};
+
 // GET
 exports.getReservations = async (req, res) => {
     let data = await reservationService.get_reservations();
@@ -46,7 +43,7 @@ exports.getSallesBookedByDay = async (req, res) => {
     return res.status(data.code).json({ result: data.result });
 }
 
-exports.getReservationByRoomId = async (req, res) => {
+exports.getReservationByRoomIdByDate = async (req, res) => {
     const checkedParams = generalService.checkParam(req, ["roomId", "startDate", "endDate"]);
     if (checkedParams != null) {
         return res.status(checkedParams.code).json({result: checkedParams.result});
@@ -100,12 +97,8 @@ exports.checkRecurrence = async (req, res) => {
     return res.status(data.code).json({result: data.result});
 }
 
-// POST
-exports.modifyReservation = async (req, res) => {
-    let data = await reservationService.modify_reservation(req);
-    return res.status(data.code).json({ result: data.result });
-}
 
+// POST
 exports.createSimpleReservation = async (req, res) => {
     let checkedBody = generalService.checkBody(req, ["startDate", "endDate", "object", "userId", "roomId"]);
     if(checkedBody != null){
@@ -153,6 +146,31 @@ exports.createRecurrence = async (req, res) => {
     }
 }
 
+/* exports.creerReservation = async (req, res) => {
+    let data = await reservationService.create_reservation(req);
+    return res.status(data.code).json({ result: data.result });
+}; */
+
+
+// PUT
+exports.modifyReservation = async (req, res) => {
+    let data = await reservationService.modify_reservation(req);
+    return res.status(data.code).json({ result: data.result });
+}
+
+
+// DELETE
+exports.deleteReservation = async (req, res) => {
+    const checkedParams = generalService.checkParam(req, ["reservationId"]);
+    if (checkedParams != null) {
+        return res.status(checkedParams.code).json({result: checkedParams.result});
+    }
+    if(isNaN(req.query.reservationId)){
+        return res.status(400).json({result: "L'id n'est pas un nombre"})
+    }
+    let data = await reservationService.delete_reservation(req);
+    return res.status(data.code).json({ result: data.result });
+}
 
 
 //test isFreeDate
@@ -203,17 +221,7 @@ exports.getParticipantsByIdReservation = async (req, res) => {
     return res.status(data.code).json({ result: data.result });
 }
 
-exports.deleteReservation = async (req, res) => {
-    const checkedParams = generalService.checkParam(req, ["reservationId"]);
-    if (checkedParams != null) {
-        return res.status(checkedParams.code).json({result: checkedParams.result});
-    }
-    if(isNaN(req.query.reservationId)){
-        return res.status(400).json({result: "L'id n'est pas un nombre"})
-    }
-    let data = await reservationService.delete_reservation(req);
-    return res.status(data.code).json({ result: data.result });
-}
+
 //******************************************************************************
 // TEST DECOUPE DES FONCTIONS
 //******************************************************************************
