@@ -37,14 +37,28 @@ logger.info(`Environment: ${CONFIG.app}`);
 //     logger.error('Unable to connect to the database:', err.message);
 //   });
 
-// Sync Database
-db.sequelize.sync().then(function() {
-  console.log('Sync has been established successfully.');
-}).catch(function(err) {
-  console.log('Unable to connect to the database:', err.message);
-});
+if (CONFIG.app === 'dev') {
+  // Sync Database
+  db.sequelize.sync({ force: true }).then(function () {
+    require('./bddinit')(db);
 
-app.listen(PORT, ()=> {
+    console.log('Sync has been established successfully.');
+  }).catch(function (err) {
+    console.log('Unable to connect to the database:', err.message);
+  });
+}
+else {
+  // Sync Database
+  db.sequelize.sync().then(function () {
+    console.log('Sync has been established successfully.');
+  }).catch(function (err) {
+    console.log('Unable to connect to the database:', err.message);
+  });
+}
+
+
+
+app.listen(PORT, () => {
   if (CONFIG.app === 'local') {
     logger.info(`PVC SERVER STARTED ON ${PORT}`);
   }
