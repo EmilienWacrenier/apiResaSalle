@@ -70,10 +70,10 @@ exports.checkReservation = async (req, res) => {
     }
     let data = await reservationService.check_existing_reservation(req.query.roomId, req.query.startDate, req.query.endDate);
     if(!data[0]){
-        return res.status(200).json({result: true})
+        return res.status(200).json({result: {isConflict: false, data: req.query}})
     }
     else{
-        return res.status(400).json({result: data})
+        return res.status(400).json({result: {isConflict: true, data: data}})
     }
 }
 
