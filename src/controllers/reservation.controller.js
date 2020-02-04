@@ -69,11 +69,18 @@ exports.checkReservation = async (req, res) => {
         return res.status(400).json({result: "Les dates ne sont pas au bon formats"});
     }
     let data = await reservationService.check_existing_reservation(req.query.roomId, req.query.startDate, req.query.endDate);
+    let room = await salleService.get_salle(req);
+    if(room.result === null){
+        console.log(room)
+        return res.status(400).json({result: "roomId incorrect"})
+    }
     if(!data[0]){
-        return res.status(200).json({result: {isConflict: false, data: req.query}})
+        return res.status(200).json({result: {isConflict: false, roomName: room.result.dataValues.name, startDate: req.query.startDate, endDate: req.query.endDate,
+        room_id: req.query.roomId, workingDay: workingDaysService.is_working_day(req.query.startDate)}})
     }
     else{
-        return res.status(400).json({result: {isConflict: true, data: data}})
+        return res.status(400).json({result: {isConflict: true, startDate: data[0].startDate, endDate: data[0].endDate, reservationId: data[0].reservationId, 
+        user: data[0].user, roomName: data[0].room.name, workingDay: workingDaysService.is_working_day(data[0].startDate)}})
     }
 }
 
