@@ -221,7 +221,7 @@ module.exports.modify_reservation = (req) => {
         else if (req.body.object == "") {
             return resolve({ code: 400, result: "Le champs object est vide" })
         }
-        else if (null /*check s'il y a deja une resa */) {
+        else if (this.check_existing_reservation(req.body.roomId, req.body.startDate, req.body.endDate)) {
             return resolve({ code: 403, result: "Il y a dejà une réservation" })
         }
         else {
