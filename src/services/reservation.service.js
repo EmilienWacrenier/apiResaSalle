@@ -161,16 +161,6 @@ module.exports.get_reservations_by_user_id = (req) => {
             }
             let listReservationWithParticipants = [];
             const reservationsByUserId = await reservationBuilder.findReservationsByUserId(req);
-
-            for (var reservation of reservationsByUserId) {
-                const listParticipant = await reservationBuilder.findParticipantsByReservationId(
-                    reservation.reservationId
-                )
-                currentReservation = reservation
-                currentReservation.dataValues["participants"] = listParticipant;
-                listReservationWithParticipants.push(currentReservation);
-            }
-            //console.log(listReservationWithParticipants)
             return resolve({ code: 200, result: reservationsByUserId });
         } catch (err) {
             console.log(err);
