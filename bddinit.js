@@ -17,7 +17,7 @@ module.exports = function (db) {
     function initRoom() {
         roomList = [
             { name: 'Opéra', area: 'B', capacity: 3 },
-            { name: 'Sébastol', area: 'C', capacity: 6 },
+            { name: 'Sébastopol', area: 'C', capacity: 6 },
             { name: 'Citadelle', area: 'C', capacity: 8 },
             { name: 'Beaux-Arts', area: 'D', capacity: 8 },
             { name: 'Treille', area: 'D', capacity: 3 },
@@ -45,8 +45,8 @@ module.exports = function (db) {
 
     function initReservation() {
         reservationList = [
-            {startDate: '2020-02-07 14:00:00', endDate: '2020-02-15 16:00:00', object: 'Démonstration application ResEkla', state: 1, user_id: 1, recurrence_id: null, room_id: 1},
-            {startDate: '2020-02-10 10:00:00', endDate: '2020-03-14 11:30:00', object: 'Point sur l\'avancement de l\'application', state: 1, user_id: 2, recurrence_id: null, room_id: 3}
+            {startDate: '2020-02-07 14:00:00', endDate: '2020-02-07 16:00:00', object: 'Démonstration application ResEkla', state: 1, user_id: 1, recurrence_id: null, room_id: 1},
+            {startDate: '2020-02-10 10:00:00', endDate: '2020-02-10 11:30:00', object: 'Point sur l\'avancement de l\'application', state: 1, user_id: 2, recurrence_id: null, room_id: 3}
         ]
         db.models.Reservation.bulkCreate(reservationList)
     }
