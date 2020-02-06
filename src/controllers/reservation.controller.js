@@ -75,11 +75,11 @@ exports.checkReservation = async (req, res) => {
         return res.status(400).json({result: "roomId incorrect"})
     }
     if(!data[0]){
-        return res.status(200).json({result: {isConflict: false, roomName: room.result.dataValues.name, startDate: req.query.startDate, endDate: req.query.endDate,
+        return res.status(200).json({result: {conflit: false, roomName: room.result.dataValues.name, startDate: req.query.startDate, endDate: req.query.endDate,
         room_id: req.query.roomId, workingDay: workingDaysService.is_working_day(req.query.startDate)}})
     }
     else{
-        return res.status(400).json({result: {isConflict: true, startDate: data[0].startDate, endDate: data[0].endDate, reservationId: data[0].reservationId, 
+        return res.status(400).json({result: {conflit: true, startDate: data[0].startDate, endDate: data[0].endDate, reservationId: data[0].reservationId, 
         user: data[0].user, roomName: data[0].room.name, workingDay: workingDaysService.is_working_day(data[0].startDate)}})
     }
 }

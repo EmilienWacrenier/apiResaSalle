@@ -90,7 +90,8 @@ module.exports.findReservationsByUserId = function (req) {
                     'reservationId',
                     'startDate',
                     'endDate',
-                    'object'
+                    'object',
+                    'recurrence_id'
                 ],
                 where: {
                     user_id: req.query.userId,

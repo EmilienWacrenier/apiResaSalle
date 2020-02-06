@@ -24,26 +24,36 @@ module.exports.check_recurrence = async (startDate, endDate, roomId, labelRecurr
             const currentRoom = await salleBuilder.findSalle(roomId);            
             var currentReservation = await this.check_existing_reservation(roomId,
                 moment(currentStartDate).format("YYYY-MM-DD HH:mm:ss").toString(), moment(currentEndDate).format("YYYY-MM-DD HH:mm:ss").toString());
-            if (!currentReservation[0]) {
-                if(workingDaysService.is_working_day(moment(currentStartDate).format("YYYY-MM-DD HH:mm:ss").toString())){
-                    reservationsToReturn.push({ startDate: moment(currentStartDate).format("YYYY-MM-DD HH:mm:ss").toString(), 
-                    endDate: moment(currentEndDate).format("YYYY-MM-DD HH:mm:ss").toString(), conflit: false, workingDay: true, room_id: roomId, roomName: currentRoom.name })
-                }
-                else{
-                    reservationsToReturn.push({ startDate: moment(currentStartDate).format("YYYY-MM-DD HH:mm:ss").toString(), 
-                    endDate: moment(currentEndDate).format("YYYY-MM-DD HH:mm:ss").toString(), conflit: false, workingDay: false, room_id: roomId, roomName: currentRoom.name })
-                }
+
+            if(labelRecurrence === 'quotidienne' && !workingDaysService.is_working_day(moment(currentStartDate).format("YYYY-MM-DD HH:mm:ss").toString())){
 
             }
             else {
-                reservationsToReturn.push({ startDate: moment(currentReservation[0].startDate).format("YYYY-MM-DD HH:mm:ss").toString(), 
-                endDate: moment(currentReservation[0].endDate).format("YYYY-MM-DD HH:mm:ss").toString(), roomName: currentReservation[0].room.name, room_id: roomId, conflit: true, workingDay: true, email: currentReservation[0].email })
+                if (!currentReservation[0]) {
+                    if(workingDaysService.is_working_day(moment(currentStartDate).format("YYYY-MM-DD HH:mm:ss").toString())){
+                        reservationsToReturn.push({ startDate: moment(currentStartDate).format("YYYY-MM-DD HH:mm:ss").toString(), 
+                        endDate: moment(currentEndDate).format("YYYY-MM-DD HH:mm:ss").toString(), conflit: false, workingDay: true, room_id: roomId, roomName: currentRoom.name })
+                    }
+                    else{
+                        reservationsToReturn.push({ startDate: moment(currentStartDate).format("YYYY-MM-DD HH:mm:ss").toString(), 
+                        endDate: moment(currentEndDate).format("YYYY-MM-DD HH:mm:ss").toString(), conflit: false, workingDay: false, room_id: roomId, roomName: currentRoom.name })
+                    }
+    
+                }
+                else {
+                    reservationsToReturn.push({ startDate: moment(currentReservation[0].startDate).format("YYYY-MM-DD HH:mm:ss").toString(), 
+                    endDate: moment(currentReservation[0].endDate).format("YYYY-MM-DD HH:mm:ss").toString(), roomName: currentReservation[0].room.name, room_id: roomId, conflit: true, workingDay: true, email: currentReservation[0].email })
+                }
             }
 
             switch (labelRecurrence) {
                 case "quotidienne":
                     currentStartDate.setDate(currentStartDate.getDate() + 1);
                     currentEndDate.setDate(currentEndDate.getDate() + 1);
+                    while(!workingDaysService.is_working_day(currentStartDate)){
+                        currentStartDate.setDate(currentStartDate.getDate() + 1);
+                        currentEndDate.setDate(currentEndDate.getDate() + 1);
+                    }
                     break;
 
                 case "hebdomadaire":
@@ -161,16 +171,6 @@ module.exports.get_reservations_by_user_id = (req) => {
             }
             let listReservationWithParticipants = [];
             const reservationsByUserId = await reservationBuilder.findReservationsByUserId(req);
-
-            for (var reservation of reservationsByUserId) {
-                const listParticipant = await reservationBuilder.findParticipantsByReservationId(
-                    reservation.reservationId
-                )
-                currentReservation = reservation
-                currentReservation.dataValues["participants"] = listParticipant;
-                listReservationWithParticipants.push(currentReservation);
-            }
-            //console.log(listReservationWithParticipants)
             return resolve({ code: 200, result: reservationsByUserId });
         } catch (err) {
             console.log(err);

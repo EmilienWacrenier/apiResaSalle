@@ -1,0 +1,8 @@
+--opts ./test/mocha.opts
+--ui bdd
+--reporter spec
+--timeout 30000
+--recursive
+--require ./test/prepare
+--file ./test/prepare
+--exclude ['./test/integrerListeIdentifiants.tests.js']
