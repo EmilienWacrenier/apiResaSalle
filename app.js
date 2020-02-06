@@ -60,8 +60,10 @@ else {
 
 app.listen(PORT, () => {
   if (CONFIG.app === 'local') {
+
     logger.info(`PVC SERVER STARTED ON ${PORT}`);
   }
 });
+
 
 module.exports = app;
