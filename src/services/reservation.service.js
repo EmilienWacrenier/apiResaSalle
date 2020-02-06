@@ -214,6 +214,7 @@ module.exports.create_simple_reservation = async (startDate, endDate, object, us
 // PUT
 module.exports.modify_reservation = (req) => {
     return new Promise(async (resolve, reject) => {
+
         const checkedBody = general.checkBody(req, ["startDate", "endDate", "object", "roomId", "reservationId"])
         if (checkedBody != null) {
             return resolve(checkedBody);
@@ -221,8 +222,10 @@ module.exports.modify_reservation = (req) => {
         else if (req.body.object == "") {
             return resolve({ code: 400, result: "Le champs object est vide" })
         }
-        else if (this.check_existing_reservation(req.body.roomId, req.body.startDate, req.body.endDate)) {
-            return resolve({ code: 403, result: "Il y a dejà une réservation" })
+        let checkedReservation = await this.check_existing_reservation(req.body.roomId, moment(req.body.startDate, "YYYY-MM-DD HH:mm:ss").toISOString(), moment(req.body.endDate, "YYYY-MM-DD HH:mm:ss").toISOString())
+        console.log(checkedReservation[0])
+        if (checkedReservation[0]) {
+            return resolve({ code: 403, result: checkedReservation })
         }
         else {
             const modifyReservation = await reservationBuilder.modifyReservation(req)

@@ -271,7 +271,7 @@ module.exports.checkReservation = function (roomId, startDate, endDate) {
             }) */
             resolve(result)
         } catch (error) {
-            console.log(error)
+            console.error(error)
         }
     })
 }
